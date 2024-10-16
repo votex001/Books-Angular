@@ -4,6 +4,7 @@ import cors from "cors";
 const app = express();
 const server = http.createServer(app);
 import cookieParser from "cookie-parser";
+import { booksRoutes } from "./apis/books/books.routes.js";
 
 const corsOptions = {
   origin: [
@@ -18,9 +19,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
-app.get("/api/books", (req, res) => {
-  res.send("hello world");
-});
+//Routes
+app.use("/api/books", booksRoutes);
 
 const port = 2027;
 server.listen(port, () => {
