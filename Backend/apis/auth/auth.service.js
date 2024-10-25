@@ -10,7 +10,7 @@ async function signup({ login, password, fullName }) {
   const saltRounds = 10;
   try {
     console.log(
-      `auth.service - signup with username: ${fullName}, login: ${login}`
+      `auth.service - signup with fullName: ${fullName}, login: ${login}`
     );
 
     if (!login || !password || !fullName) {
@@ -21,7 +21,7 @@ async function signup({ login, password, fullName }) {
     if (userExist) {
       throw "login already exist";
     }
-    const hash = await bcrypt.hash(password, saltRounds);
+    const hash = await bcrypt.hash(String(password), saltRounds);
 
     return userService.save({
       fullName,
@@ -37,7 +37,7 @@ async function signup({ login, password, fullName }) {
 async function login(login, password) {
   const user = await userService.getByLogin(login);
   if (!user) throw "Invalid login";
-  const match = bcrypt.compare(password, user.password);
+  const match = bcrypt.compare(String(password), user.password);
   if (!match) throw "Invalid password or login";
 
   delete user.password;

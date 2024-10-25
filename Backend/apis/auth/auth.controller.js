@@ -28,7 +28,8 @@ export async function signup(req, res) {
 export async function login(req, res) {
   const { login, password } = req.body;
 
-  if (!login || !password) res.status(401).send({ err: "Failed to login" });
+  if (!login || !password)
+    return res.status(401).send({ err: "Failed to login" });
 
   try {
     const user = await authService.login(login, password);
