@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { booksRoutes } from "./apis/books/books.routes.js";
 import { authRoutes } from "./apis/auth/auth.routes.js";
 import { userRoutes } from "./apis/user/user.routes.js";
+import { userFavorites } from "./apis/userFavorites/favorites.routes.js";
 
 const corsOptions = {
   origin: [
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use("/api/books", booksRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/fav", userFavorites);
 
 const port = 2027;
 server.listen(port, () => {
