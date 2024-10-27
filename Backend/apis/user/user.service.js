@@ -1,4 +1,5 @@
 import { getCollection } from "../../data/mongo.js";
+import { loggerService } from "../../services/logger.service.js";
 
 export const userService = {
   save,
@@ -25,6 +26,7 @@ async function save(userToSave) {
     return userToSave;
   } catch (err) {
     console.error("userService[save] : ", err);
+    loggerService.error(err)
     throw err;
   }
 }
@@ -36,6 +38,7 @@ async function getByLogin(login) {
     return user;
   } catch (err) {
     console.log(err);
+    loggerService.error(err)
     throw err;
   }
 }

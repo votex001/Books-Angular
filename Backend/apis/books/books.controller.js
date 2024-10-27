@@ -1,3 +1,4 @@
+import { loggerService } from "../../services/logger.service.js";
 import { booksService } from "./books.service.js";
 
 export async function getBooks(req, res) {
@@ -14,6 +15,7 @@ export async function getBooks(req, res) {
     res.send(data);
   } catch (error) {
     res.status(500).send({ error: "Failed to fetch books", details: error.message });
+    loggerService.error(error)
   }
 }
 
@@ -34,5 +36,6 @@ export async function getById(req, res) {
     res.send(data);
   } catch (error) {
     res.status(500).send({ error: "Failed to fetch book by ID", details: error.message });
+    loggerService.error(error)
   }
 }

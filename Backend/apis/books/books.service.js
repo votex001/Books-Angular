@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import { getRandomString } from "../../services/functions.js";
+import { loggerService } from "../../services/logger.service.js";
 dotenv.config();
 
 const key = process.env.GOOGLE_TOKEN;
@@ -49,6 +50,7 @@ async function query(filter) {
     return data;
   } catch (error) {
     console.error("Error in query function:", error);
+    loggerService.error(e)
   }
 }
 
@@ -63,6 +65,7 @@ async function getById(id) {
     return data;
   } catch (error) {
     console.error("Error in getById function:", error);
+    loggerService.error(e)
   }
 }
 
@@ -73,6 +76,7 @@ async function fetchAndParse(url) {
     return await res.json();
   } catch (error) {
     console.error("Error in fetchAndParse:", error);
+    loggerService.error(error)
     return null;
   }
 }
