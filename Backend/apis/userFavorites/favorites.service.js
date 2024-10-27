@@ -1,8 +1,10 @@
 import { getCollection } from "../../data/mongo.js";
+import { loggerService } from "../../services/logger.service.js";
 
 export const userFavService = {
   getUserBooks,
   save,
+  deleteBook,
 };
 
 async function getUserBooks(userId) {
@@ -13,6 +15,22 @@ async function getUserBooks(userId) {
   } catch (e) {
     console.log(e);
     return res.status(500).send({ err: "Failed to find users books" });
+  }
+}
+
+async function deleteBook(userId, bookId) {
+  try {
+    const userBooks = await getCollection("users-books");
+    const result = await userBooks.updateOne(
+      { userId: userId }, // Find document by userId
+      { $pull: { books: { id: bookId } } } // Remove book with matching bookId
+    );
+    if (result.modifiedCount === 0) {
+      throw "Cannot found this book";
+    }
+  } catch (err) {
+    console.log(err);
+    loggerService.error(err);
   }
 }
 
@@ -27,7 +45,9 @@ async function save(userId, bookToSave) {
       };
       favBooksCollection.insertOne(newFavLib);
     } else {
-      const match = await favBooksCollection.findOne({ "books.id": bookToSave.id });
+      const match = await favBooksCollection.findOne({
+        "books.id": bookToSave.id,
+      });
       if (match) return match;
       userBooks.books.push(bookToSave);
       const result = await favBooksCollection.updateOne(
@@ -38,8 +58,9 @@ async function save(userId, bookToSave) {
         throw `Couldn't save books to library of user with id ${userId}`;
       }
     }
-    return bookToSave
+    return bookToSave;
   } catch (e) {
     console.log(e);
+    loggerService.error(e);
   }
 }
