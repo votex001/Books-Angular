@@ -1,0 +1,18 @@
+.header {
+  box-shadow: rgba(9, 30, 66, 0.15) 0px 0.1rem 0.1rem 0px;
+  .header-main {
+    margin: 0 auto;
+    max-width: 1320px;
+    min-width: 480px;
+    display: flex;
+    justify-content: space-between;
+    .logo {
+      display: flex;
+      font-size: 24px;
+      gap: 5px;
+      margin: 10px 20px;
+      text-decoration: none;
+      color: #006fff;
+    }
+  }
+}

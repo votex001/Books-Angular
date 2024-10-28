@@ -1,23 +1,18 @@
-import { Route, Routes } from "react-router";
-import svg from "../public/imgs/logo.svg";
-import { ReactSVG } from "react-svg";
+import { Component } from "react";
+import { Route, Switch } from "react-router-dom";
+import { Header } from "./components/Header";
 
-export function RootCmp() {
-  return (
-    <div>
-      <main>
-        <Routes>
-          <Route path="" />
-          <Route
-            path="/profile"
-            element={
-              <div>
-                <ReactSVG src={svg} wrapper="span" />
-              </div>
-            }
-          />
-        </Routes>
-      </main>
-    </div>
-  );
+export class RootCmp extends Component {
+  render() {
+    return (
+      <section>
+        <Header/>
+        <main>
+          <Switch>
+            <Route path={"/hello"} component={() => "lol"} />
+          </Switch>
+        </main>
+      </section>
+    );
+  }
 }
