@@ -1,15 +1,22 @@
-import { Component, ReactNode } from "react";
+import { Component } from "react";
 import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import logo from "/imgs/logo.svg";
+import { connect } from "react-redux";
+import { RootState } from "../../store/store";
+import { User } from "../assets/models/user.model";
 
-export class Header extends Component {
+interface HeaderProps {
+  user: User | null;
+}
+
+export class _Header extends Component<HeaderProps> {
   links = [
     { title: "Home", to: "/" },
-    { title: "Profile", to: "/profile" },
-    { title: "Login", to: "/login" },
+    { title: "Profile", to: "/profile", hidden: !this.props.user },
+    { title: "Login", to: "/login", hidden: this.props.user },
+    { title: "Sign out", to: "/logout", hidden: !this.props.user },
   ];
-
   render() {
     return (
       <section className="header">
@@ -19,12 +26,15 @@ export class Header extends Component {
             <h1>MyBook</h1>
           </Link>
           <nav className="navigation">
-            <ul className="">
-              {this.links.map((link) => (
-                <li key={link.to}>
-                  <Link to={link.to}>{link.title}</Link>
-                </li>
-              ))}
+            <ul className="list">
+              {this.links.map(
+                (link) =>
+                  !link.hidden && (
+                    <li key={link.to}>
+                      <Link to={link.to}>{link.title}</Link>
+                    </li>
+                  )
+              )}
             </ul>
           </nav>
         </main>
@@ -32,3 +42,8 @@ export class Header extends Component {
     );
   }
 }
+const mapStateToProp = (state: RootState) => ({
+  user: state.userModule.user,
+});
+
+export const Header = connect(mapStateToProp)(_Header);

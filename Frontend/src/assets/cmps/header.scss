@@ -14,5 +14,16 @@
       text-decoration: none;
       color: #006fff;
     }
+    .navigation {
+      align-self: center;
+      .list {
+        display: flex;
+        gap: 20px;
+        a{
+          text-decoration: none;
+          color: #006fff;
+        }
+      }
+    }
   }
 }
