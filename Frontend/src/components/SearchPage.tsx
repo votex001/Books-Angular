@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { Books } from "./Books";
-import { book } from "./test.book";
 import { useFetchBooks } from "../customHooks/useFetchBooks";
 import { Book } from "../assets/models/favoriteBooks.models";
 
