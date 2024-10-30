@@ -1,5 +1,4 @@
 import { Component, ReactNode } from "react";
-import { Link } from "react-router-dom";
 import { Book } from "../assets/models/favoriteBooks.models.ts";
 
 interface BookPreviewProps {
