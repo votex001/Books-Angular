@@ -5,17 +5,18 @@ export interface UserFav {
 
 export interface Book {
   id: string;
-  volumeInfo: {
-    title: string;
-    authors: string;
-    pageCount: number;
-    imageLinks: {
-      smallThumbnail: string;
-      thumbnail: string;
-    };
-    language: string;
-    previewLink: string;
+  categories?: string[];
+  title: string;
+  subtitle?: string;
+  authors: string[];
+  pageCount: number;
+  publishedDate: string;
+  imageLinks: {
+    smallThumbnail: string;
+    thumbnail: string;
   };
+  language: string;
+  previewLink: string;
 }
 
 export interface FavBooksState {

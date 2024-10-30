@@ -1,15 +1,16 @@
 import { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Header } from "./components/Header";
+import { SearchPage } from "./components/SearchPage";
 
 export class RootCmp extends Component {
   render() {
     return (
       <section>
-        <Header/>
+        <Header />
         <main>
           <Switch>
-            <Route path={"/hello"} component={() => "lol"} />
+            <Route path={"/"} component={SearchPage} />
           </Switch>
         </main>
       </section>

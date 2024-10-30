@@ -19,7 +19,7 @@ async function query(filter) {
       `maxResults=6`,
       "filter=free-ebooks",
       filter.lang ? `langRestrict=${filter.lang}` : "",
-      filter.startIndex ? `startIndex=${filter.startIndex}` : "",
+      filter.page ? `startIndex=${+filter.page * 6}` : "",
       filter.orderBy ? `orderBy=${filter.orderBy}` : "",
     ]
       .filter(Boolean)
@@ -46,18 +46,47 @@ async function query(filter) {
 
     delete data.kind;
     data.search = q;
+    data.items = data.items.map((book) => {
+      const {
+        kind,
+        etag,
+        selfLink,
+        saleInfo,
+        accessInfo,
+        searchInfo,
+        volumeInfo,
+        averageRating,
+        ratingsCount,
+        ...rest
+      } = book;
 
+      // Spread `volumeInfo` into `mergedBook` and exclude `industryIdentifiers` if it exists
+      const {
+        industryIdentifiers,
+        panelizationSummary,
+        printType,
+        canonicalVolumeLink,
+        maturityRating,
+        allowAnonLogging,
+        contentVersion,
+        infoLink,
+        readingModes,
+        ...volumeInfoRest
+      } = volumeInfo || {};
+
+      return { ...rest, ...volumeInfoRest };
+    });
     return data;
   } catch (error) {
     console.error("Error in query function:", error);
-    loggerService.error(e)
+    loggerService.error(e);
   }
 }
 
 async function getById(id) {
   try {
     if (!id) throw new Error("Book ID is required.");
-    
+
     const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
     const data = await fetchAndParse(url);
 
@@ -65,7 +94,7 @@ async function getById(id) {
     return data;
   } catch (error) {
     console.error("Error in getById function:", error);
-    loggerService.error(e)
+    loggerService.error(e);
   }
 }
 
@@ -76,7 +105,7 @@ async function fetchAndParse(url) {
     return await res.json();
   } catch (error) {
     console.error("Error in fetchAndParse:", error);
-    loggerService.error(error)
+    loggerService.error(error);
     return null;
   }
 }
