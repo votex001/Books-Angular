@@ -1,5 +1,5 @@
 import { Component, ReactNode } from "react";
-import { BookPreview } from "./BookPreview";
+import { BookCard } from "./BookCard";
 import { Book } from "../assets/models/favoriteBooks.models";
 
 interface BooksProps {
@@ -9,9 +9,9 @@ interface BooksProps {
 export class Books extends Component<BooksProps> {
   render(): ReactNode {
     return (
-      <section>
+      <section className="book-list">
         {this.props.books.map((book: Book) => (
-          <BookPreview book={book} key={book.id}/>
+          <BookCard book={book} key={book.id} />
         ))}
       </section>
     );
