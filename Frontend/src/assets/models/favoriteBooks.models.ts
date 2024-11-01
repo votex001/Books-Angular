@@ -8,7 +8,7 @@ export interface Book {
   categories?: string[];
   title: string;
   subtitle?: string;
-  authors: string[];
+  authors?: string[];
   pageCount: number;
   publishedDate: string;
   imageLinks: {
