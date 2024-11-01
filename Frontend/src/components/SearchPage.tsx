@@ -1,8 +1,9 @@
-import { Component } from "react";
+import { Component, ReactNode } from "react";
 import { Books } from "./Books";
 import { useFetchBooks } from "../customHooks/useFetchBooks";
 import { Book } from "../assets/models/favoriteBooks.models";
-
+import { data } from "./text";
+import { Pagination } from "antd";
 interface SearchPageState {
   data: {
     items: Book[];
@@ -23,12 +24,12 @@ export class SearchPage extends Component<{}, SearchPageState> {
     this.bookFetcher = new useFetchBooks(
       "http://127.0.0.1:2027/api/books",
       undefined,
-      1
+      0
     );
   }
 
   componentDidMount(): void {
-    this.fetchBooks();
+    // this.fetchBooks();
   }
 
   fetchBooks = async () => {
@@ -48,7 +49,7 @@ export class SearchPage extends Component<{}, SearchPageState> {
     this.fetchBooks();
   };
 
-  render() {
+  render(): ReactNode {
     return (
       <section className="search-page">
         <header>
@@ -60,7 +61,15 @@ export class SearchPage extends Component<{}, SearchPageState> {
           </form>
         </header>
         <main>
-          <Books books={this.state.data.items} />
+          <Books books={data} />
+          <Pagination
+            total={this.bookFetcher.data.totalItems}
+            defaultCurrent={1}
+            defaultPageSize={6}
+            showSizeChanger={false}
+            size="default"
+            align="center"
+          />
         </main>
       </section>
     );
