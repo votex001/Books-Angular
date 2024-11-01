@@ -2,6 +2,7 @@ import { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Header } from "./components/Header";
 import { SearchPage } from "./components/SearchPage";
+import { BookDetails } from "./components/BookDetails";
 
 export class RootCmp extends Component {
   render() {
@@ -10,6 +11,10 @@ export class RootCmp extends Component {
         <Header />
         <main>
           <Switch>
+            <Route
+              path={"/:id"}
+              component={BookDetails}
+            />
             <Route path={"/"} component={SearchPage} />
           </Switch>
         </main>
