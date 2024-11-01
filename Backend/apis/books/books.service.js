@@ -4,6 +4,7 @@ import { loggerService } from "../../services/logger.service.js";
 dotenv.config();
 
 const key = process.env.GOOGLE_TOKEN;
+const PAGE_SIZE = 9
 
 export const booksService = {
   query,
@@ -19,7 +20,7 @@ async function query(filter) {
       `maxResults=6`,
       "filter=free-ebooks",
       filter.lang ? `langRestrict=${filter.lang}` : "",
-      filter.page ? `startIndex=${+filter.page * 6}` : "",
+      filter.page ? `startIndex=${+filter.page * PAGE_SIZE}` : "",
       filter.orderBy ? `orderBy=${filter.orderBy}` : "",
     ]
       .filter(Boolean)
@@ -31,7 +32,7 @@ async function query(filter) {
 
     // Запрос для исправления неверного значения `totalItems`
     const totalItemsData = await fetchAndParse(
-      `https://www.googleapis.com/books/v1/volumes?q=${q}&filter=free-ebooks&key=${key}&maxResults=6`
+      `https://www.googleapis.com/books/v1/volumes?q=${q}&filter=free-ebooks&key=${key}&maxResults=${PAGE_SIZE}`
     );
     if (totalItemsData) {
       data.totalItems = totalItemsData.totalItems;
@@ -91,10 +92,35 @@ async function getById(id) {
     const data = await fetchAndParse(url);
 
     if (!data) throw new Error("Book data not found.");
-    return data;
+    const {
+      kind,
+      etag,
+      selfLink,
+      saleInfo,
+      accessInfo,
+      searchInfo,
+      volumeInfo,
+      averageRating,
+      ratingsCount,
+      ...rest
+    } = data;
+    const {
+      industryIdentifiers,
+      panelizationSummary,
+      printType,
+      canonicalVolumeLink,
+      maturityRating,
+      allowAnonLogging,
+      contentVersion,
+      infoLink,
+      readingModes,
+      ...volumeInfoRest
+    } = volumeInfo || {};
+    return { ...rest, ...volumeInfoRest };
+
   } catch (error) {
     console.error("Error in getById function:", error);
-    loggerService.error(e);
+    loggerService.error(error);
   }
 }
 
