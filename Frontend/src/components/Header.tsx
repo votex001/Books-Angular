@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import logo from "/imgs/logo.svg";
@@ -17,7 +17,7 @@ export class _Header extends Component<HeaderProps> {
     { title: "Login", to: "/login", hidden: this.props.user },
     { title: "Sign out", to: "/logout", hidden: !this.props.user },
   ];
-  render() {
+  render(): ReactNode {
     return (
       <section className="header">
         <main className="header-main">
