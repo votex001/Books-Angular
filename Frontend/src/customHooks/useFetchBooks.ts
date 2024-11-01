@@ -15,15 +15,18 @@ export class useFetchBooks {
   }
   public async fetchBooks() {
     const queryParams = new URLSearchParams();
-    if (this.query?.search) {
-      queryParams.append("search", this.query.search);
+    if (this.query) {
+      if (this.query.search) {
+        queryParams.append("search", this.query.search);
+      }
+      if (this.query.lang) {
+        queryParams.append("lang", this.query.lang);
+      }
     }
-    if (this.query?.lang) {
-      queryParams.append("lang", this.query.lang);
-    }
-    queryParams.append("page", this.page.toString());
-
-    const finalUrl = `${this.url}?${queryParams.toString()}`;
+    if (this.page) queryParams.append("page", this.page.toString());
+    const finalUrl = `${this.url}${
+      queryParams.size > 0 ? "?" + queryParams.toString() : ""
+    }`;
 
     try {
       const res = await fetch(finalUrl);
