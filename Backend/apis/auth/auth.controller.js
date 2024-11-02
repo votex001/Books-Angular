@@ -72,3 +72,27 @@ export async function resendCode(req, res) {
     res.status(400).json({ err: "Failed to resend code." });
   }
 }
+
+export async function requestPasswordReset(req, res) {
+  const { email } = req.body;
+
+  try {
+    await authService.requestPasswordReset(email);
+    res.status(200).json({ message: 'Password reset link sent to your email.' });
+  } catch (e) {
+    console.error("Failed to send reset link: ", e);
+    res.status(400).send({ err: "Failed to send reset link" });
+  }
+}
+
+export async function resetPassword(req, res) {
+  const { token, newPassword } = req.body;
+
+  try {
+    await authService.resetPassword(token, newPassword);
+    res.status(200).json({ message: 'Password has been successfully reset.' });
+  } catch (e) {
+    console.error("Failed to reset password: ", e);
+    res.status(400).send({ err: "Failed to reset password" });
+  }
+}

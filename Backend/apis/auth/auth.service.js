@@ -23,14 +23,15 @@ export const authService = {
   validateToken,
   verifyEmail,
   resendCode,
+  requestPasswordReset,
+  resetPassword,
 };
 
 // Verification code generation function
 function generateVerificationCode() {
-  return crypto.randomInt(100000, 999999).toString(); // 6-значный код
+  return crypto.randomInt(100000, 999999).toString();
 }
 
-// Регистрация нового пользователя с отправкой кода на email
 async function signup({ email, password, fullName }) {
   try {
     console.log(
@@ -48,16 +49,14 @@ async function signup({ email, password, fullName }) {
 
     const hash = await bcrypt.hash(String(password), saltRounds);
 
-    // Генерация и отправка кода подтверждения
     const verificationCode = generateVerificationCode();
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: email, // предполагаем, что login — это email
+      to: email,
       subject: "Email confirmation",
       text: `Your confirmation code: ${verificationCode}`,
     });
 
-    // Сохранение неподтвержденного пользователя с кодом
     return userService.saveUnverifiedUser({
       fullName,
       password: hash,
@@ -72,12 +71,10 @@ async function signup({ email, password, fullName }) {
   }
 }
 
-// Подтверждение email с кодом
 async function verifyEmail(email, code) {
   const unverifiedUser = await userService.getUnverifiedUserByLogin(email);
   if (!unverifiedUser) throw "User not found or already verified";
   if (unverifiedUser.verificationCode === code) {
-    // Перенос пользователя в основную коллекцию, удаление из неподтвержденных
     const user = await userService.save({
       fullName: unverifiedUser.fullName,
       email: unverifiedUser.email,
@@ -91,7 +88,6 @@ async function verifyEmail(email, code) {
   }
 }
 
-// Повторная отправка кода подтверждения
 async function resendCode(login) {
   const unverifiedUser = await userService.getUnverifiedUserByLogin(login);
   if (!unverifiedUser) throw "User not found or already verified";
@@ -110,7 +106,6 @@ async function resendCode(login) {
   return { message: "A new confirmation code has been sent to your email." };
 }
 
-// Вход пользователя с проверкой статуса верификации
 async function login(login, password) {
   const user = await userService.getByLogin(login);
   if (!user) throw "Invalid login";
@@ -141,4 +136,39 @@ function validateToken(token) {
   } catch (err) {
     return null;
   }
+}
+
+async function requestPasswordReset(email) {
+  const user = await userService.getByLogin(email);
+  if (!user) {
+    throw "User not found";
+  }
+
+  const token = crypto.randomBytes(20).toString("hex");
+
+  // save token
+  await userService.savePasswordResetToken(user.email, token);
+
+  // send email
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Password Reset",
+    text: `You are receiving this email because you requested a password reset. Please click the following link, or paste it into your browser to complete the process: 
+    http://yourfrontend.com/reset-password?token=${token}`,
+  });
+}
+
+// Reset pass
+async function resetPassword(token, newPassword) {
+  const user = await userService.getByResetToken(token);
+  if (!user) {
+    throw "Invalid or expired token";
+  }
+
+  const hashedPassword = await bcrypt.hash(String(newPassword), saltRounds);
+  await userService.updatePassword(user.email, hashedPassword);
+
+  // delete token
+  await userService.clearPasswordResetToken(user.email);
 }

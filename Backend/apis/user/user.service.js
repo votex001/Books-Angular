@@ -9,6 +9,10 @@ export const userService = {
   getUnverifiedUserByLogin,
   updateUnverifiedUser,
   deleteUnverifiedUser,
+  savePasswordResetToken,
+  getByResetToken,
+  updatePassword,
+  clearPasswordResetToken,
 };
 
 // Сохранение подтвержденного пользователя в коллекцию "users"
@@ -105,4 +109,37 @@ async function deleteUnverifiedUser(email) {
     loggerService.error(err);
     throw err;
   }
+}
+
+async function savePasswordResetToken(email, token) {
+  await getCollection("users").updateOne(
+    { email },
+    {
+      $set: {
+        resetPasswordToken: token,
+        resetTokenExpiry: Date.now() + 3600000,
+      },
+    }
+  );
+}
+
+async function getByResetToken(token) {
+  return await getCollection("users").findOne({
+    resetPasswordToken: token,
+    resetTokenExpiry: { $gt: Date.now() },
+  });
+}
+
+async function updatePassword(email, newPassword) {
+  await getCollection("users").updateOne(
+    { email },
+    { $set: { password: newPassword } }
+  );
+}
+
+async function clearPasswordResetToken(email) {
+  await getCollection("users").updateOne(
+    { email },
+    { $unset: { resetPasswordToken: "", resetTokenExpiry: "" } }
+  );
 }
