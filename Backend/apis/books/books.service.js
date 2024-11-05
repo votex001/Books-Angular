@@ -3,84 +3,31 @@ import { getRandomString } from "../../services/functions.js";
 import { loggerService } from "../../services/logger.service.js";
 dotenv.config();
 
-const key = process.env.GOOGLE_TOKEN;
-const PAGE_SIZE = 9
-
 export const booksService = {
   query,
   getById,
+  bookToTxt,
 };
 
 async function query(filter) {
   try {
-    const q = filter.search || getRandomString();
     const baseParams = [
-      `q=${q}`,
-      `key=${key}`,
-      `maxResults=6`,
-      "filter=free-ebooks",
-      filter.lang ? `langRestrict=${filter.lang}` : "",
-      filter.page ? `startIndex=${+filter.page * PAGE_SIZE}` : "",
-      filter.orderBy ? `orderBy=${filter.orderBy}` : "",
-    ]
-      .filter(Boolean)
-      .join("&");
-    const url = `https://www.googleapis.com/books/v1/volumes?${baseParams}`;
-
+      filter?.search ? `search=${filter.search}` : "",
+      filter?.lang ? `languages=${filter.lang}` : "",
+      filter?.page ? `page=${filter.page}` : "",
+      filter?.sort ? `sort=${filter.sort}` : "",
+    ].filter(Boolean);
+    console.log(baseParams.join("&"));
+    const url = `https://gutendex.com/books?${baseParams.join("&")}`;
     let data = await fetchAndParse(url);
-    if (!data) throw new Error("Failed to fetch books data.");
-
-    // Запрос для исправления неверного значения `totalItems`
-    const totalItemsData = await fetchAndParse(
-      `https://www.googleapis.com/books/v1/volumes?q=${q}&filter=free-ebooks&key=${key}&maxResults=${PAGE_SIZE}`
-    );
-    if (totalItemsData) {
-      data.totalItems = totalItemsData.totalItems;
+    if (!data) {
+      throw new Error("Failed to fetch books data. Query[data=null]");
     }
 
-    // Обработка случаев, когда `totalItems` < 10
-    let tries = 0;
-    while (data.totalItems <= 10 && tries < 3) {
-      tries++;
-      data = await query({ search: getRandomString() });
-    }
-
-    delete data.kind;
-    data.search = q;
-    data.items = data.items.map((book) => {
-      const {
-        kind,
-        etag,
-        selfLink,
-        saleInfo,
-        accessInfo,
-        searchInfo,
-        volumeInfo,
-        averageRating,
-        ratingsCount,
-        ...rest
-      } = book;
-
-      // Spread `volumeInfo` into `mergedBook` and exclude `industryIdentifiers` if it exists
-      const {
-        industryIdentifiers,
-        panelizationSummary,
-        printType,
-        canonicalVolumeLink,
-        maturityRating,
-        allowAnonLogging,
-        contentVersion,
-        infoLink,
-        readingModes,
-        ...volumeInfoRest
-      } = volumeInfo || {};
-
-      return { ...rest, ...volumeInfoRest };
-    });
     return data;
   } catch (error) {
     console.error("Error in query function:", error);
-    loggerService.error(e);
+    loggerService.error(error);
   }
 }
 
@@ -88,38 +35,35 @@ async function getById(id) {
   try {
     if (!id) throw new Error("Book ID is required.");
 
-    const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
+    const url = `https://gutendex.com/books/${id}`;
     const data = await fetchAndParse(url);
 
-    if (!data) throw new Error("Book data not found.");
-    const {
-      kind,
-      etag,
-      selfLink,
-      saleInfo,
-      accessInfo,
-      searchInfo,
-      volumeInfo,
-      averageRating,
-      ratingsCount,
-      ...rest
-    } = data;
-    const {
-      industryIdentifiers,
-      panelizationSummary,
-      printType,
-      canonicalVolumeLink,
-      maturityRating,
-      allowAnonLogging,
-      contentVersion,
-      infoLink,
-      readingModes,
-      ...volumeInfoRest
-    } = volumeInfo || {};
-    return { ...rest, ...volumeInfoRest };
+    if (!data) throw new Error("Book data not found.Query[data=null]");
 
+    return data;
   } catch (error) {
     console.error("Error in getById function:", error);
+    loggerService.error(error);
+  }
+}
+
+async function bookToTxt(id) {
+  try {
+    if (!id) throw new Error("Book ID is required.");
+
+    // const response = await fetch(
+    //   `https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`
+    // );
+     const response = await fetch(
+      `https://www.gutenberg.org/cache/epub/${id}/pg${id}-images.html`
+    );
+    const data = await response.text();
+
+    if (!data) throw new Error("Book data not found.Query[data=null]");
+
+    return data;
+  } catch (error) {
+    console.error("Error in bookToTxt function:", error);
     loggerService.error(error);
   }
 }

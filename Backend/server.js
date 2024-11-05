@@ -29,6 +29,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/fav", userFavorites);
 
+
 const port = 2027;
 server.listen(port, () => {
   console.log(`Server listening on port http://127.0.0.1:${port}`);
