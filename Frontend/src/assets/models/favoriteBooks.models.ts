@@ -4,19 +4,14 @@ export interface UserFav {
 }
 
 export interface Book {
-  id: string;
-  categories?: string[];
-  title: string;
-  subtitle?: string;
-  authors?: string[];
-  pageCount: number;
-  publishedDate: string;
-  imageLinks: {
-    smallThumbnail: string;
-    thumbnail: string;
+  id: number;
+  authors: { birth_year: number; death_year: number; name: string }[];
+  download_count: number;
+  formats: {
+    "image/jpeg": string;
   };
-  language: string;
-  previewLink: string;
+  languages: string[];
+  title: string;
 }
 
 export interface FavBooksState {

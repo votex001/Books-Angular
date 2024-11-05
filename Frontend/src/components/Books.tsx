@@ -10,7 +10,7 @@ export class Books extends Component<BooksProps> {
   render(): ReactNode {
     return (
       <section className="book-list">
-        {this.props.books.map((book: Book) => (
+        {this.props.books?.map((book: Book) => (
           <BookCard book={book} key={book.id} />
         ))}
       </section>

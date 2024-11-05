@@ -29,14 +29,14 @@ export class SearchPage extends Component<{}, SearchPageState> {
   }
 
   componentDidMount(): void {
-    // this.fetchBooks();
+    this.fetchBooks();
   }
 
   fetchBooks = async () => {
     await this.bookFetcher.fetchBooks();
-
     this.setState({
       data: this.bookFetcher.data,
+      search: this.bookFetcher.data.search,
     });
   };
 
@@ -49,7 +49,14 @@ export class SearchPage extends Component<{}, SearchPageState> {
     this.fetchBooks();
   };
 
+  onChangePage = (page: number) => {
+    this.setState({ page: page });
+    this.bookFetcher.componentDidUpdate({ search: this.state.search }, page);
+    this.fetchBooks();
+  };
+
   render(): ReactNode {
+    console.log(this.state.data)
     return (
       <section className="search-page">
         <header>
@@ -61,14 +68,15 @@ export class SearchPage extends Component<{}, SearchPageState> {
           </form>
         </header>
         <main>
-          <Books books={data} />
+          <Books books={this.state.data.items} />
           <Pagination
             total={this.bookFetcher.data.totalItems}
             defaultCurrent={1}
-            defaultPageSize={6}
+            defaultPageSize={9}
             showSizeChanger={false}
             size="default"
             align="center"
+            onChange={this.onChangePage}
           />
         </main>
       </section>

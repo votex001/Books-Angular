@@ -4,6 +4,7 @@ export class useFetchBooks {
   private page: number;
 
   public data: any = {};
+  public cachedData: any = {};
   constructor(
     url: string,
     query?: { search?: string; lang?: string },
@@ -27,12 +28,17 @@ export class useFetchBooks {
     const finalUrl = `${this.url}${
       queryParams.size > 0 ? "?" + queryParams.toString() : ""
     }`;
+    
+    if (this.cachedData[finalUrl]) {
+      this.data = this.cachedData[finalUrl];
+      return;
+    }
 
     try {
       const res = await fetch(finalUrl);
       const result = await res.json();
-
       this.data = result;
+      this.cachedData[finalUrl] = result;
     } catch (e) {
       console.log(e);
       throw e;
@@ -42,10 +48,18 @@ export class useFetchBooks {
     newQuery: { search?: string; lang?: string },
     newPage: number
   ) {
-    if (newQuery !== this.query || newPage !== this.page) {
+    const isQueryChanged =
+      JSON.stringify(this.query) !== JSON.stringify(newQuery);
+    const isPageChanged = newPage !== this.page;
+
+    if (isQueryChanged || isPageChanged) {
       this.query = newQuery;
       this.page = newPage;
-      this.fetchBooks();
+
+      // Clear cache if search has changed
+      if (isQueryChanged) {
+        this.cachedData = {};
+      }
     }
   }
 }
