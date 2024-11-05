@@ -2,7 +2,6 @@ import { Component, ReactNode } from "react";
 import { Books } from "./Books";
 import { useFetchBooks } from "../customHooks/useFetchBooks";
 import { Book } from "../assets/models/favoriteBooks.models";
-import { data } from "./text";
 import { Pagination } from "antd";
 interface SearchPageState {
   data: {
