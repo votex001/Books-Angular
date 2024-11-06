@@ -5,11 +5,9 @@ export interface UserFav {
 
 export interface Book {
   id: number;
-  authors: { birth_year: number; death_year: number; name: string }[];
+  authors: { name: string }[];
   download_count: number;
-  formats: {
-    "image/jpeg": string;
-  };
+  cover: string;
   languages: string[];
   title: string;
 }

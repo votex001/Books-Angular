@@ -3,7 +3,7 @@ import { BookCard } from "./BookCard";
 import { Book } from "../assets/models/favoriteBooks.models";
 
 interface BooksProps {
-  books: Book[];
+  books?: Book[];
 }
 
 export class Books extends Component<BooksProps> {

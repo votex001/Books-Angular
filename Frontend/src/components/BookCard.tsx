@@ -13,15 +13,12 @@ export class BookCard extends Component<BookCardProps> {
     return (
       <section>
         <Link to={`/${book.id}`}>
-          <img src={book.imageLinks.thumbnail} />
-          <h1 className="title">
-            {book.title.split(" ").slice(0, this.num).join(" ")}
-            {book.title.split(" ").length > this.num && "..."}
-          </h1>
+          <img src={book.cover} />
+          <h1 className="title">{book.title}</h1>
           <p className="subtitle">
-            <span>{book.publishedDate}</span>
+            {!!book.authors.length && <span>{book.authors[0].name}</span>}
             {/* {book.subtitle.split(" ").slice(0, 5).join(" ")}... */}
-            {book.categories ? ", " + book?.categories : ""}
+            {/* {book.categories ? ", " + book?.categories : ""} */}
           </p>
         </Link>
       </section>
