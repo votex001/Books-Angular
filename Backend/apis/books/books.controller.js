@@ -29,6 +29,8 @@ export async function getBooks(req, res) {
         return book;
       }),
     };
+    delete filteredData.next
+    delete filteredData.previous
     res.send(filteredData);
   } catch (error) {
     res

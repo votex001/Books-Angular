@@ -96,3 +96,18 @@ export async function resetPassword(req, res) {
     res.status(400).send({ err: "Failed to reset password" });
   }
 }
+
+
+export async function logout(req, res) {
+  try {
+    res.clearCookie("loginToken", {
+      path: "/",
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      httpOnly: true,
+      sameSite: "Strict",
+    });
+    res.send({ msg: "Logged out successfully" });
+  } catch (err) {
+    res.status(400).send({ err: "Failed to logout" });
+  }
+}

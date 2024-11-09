@@ -17,7 +17,6 @@ async function query(filter) {
       filter?.page ? `page=${filter.page}` : "",
       filter?.sort ? `sort=${filter.sort}` : "",
     ].filter(Boolean);
-    console.log(baseParams.join("&"));
     const url = `https://gutendex.com/books?${baseParams.join("&")}`;
     let data = await fetchAndParse(url);
     if (!data) {
