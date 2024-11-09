@@ -1,10 +1,10 @@
 // components/SearchPage.tsx
 import React, { Component, ReactNode } from "react";
 import { Books } from "./Books"; // Assuming you have this component for displaying books
-import { useFetchBooks } from "../customHooks/useFetchBooks";
 import { Book } from "../assets/models/favoriteBooks.models"; // Assuming you have a Book model
 import { Pagination } from "antd";
 import UseFindPage from "../customHooks/useFindPage";
+import { useFetchBooks } from "../customHooks/useFetchBooks";
 
 interface SearchPageState {
   data: {
@@ -27,7 +27,7 @@ export class SearchPage extends Component<{}, SearchPageState> {
     };
     // Instantiate useFetchBooks with the appropriate URL
     this.bookFetcher = new useFetchBooks("http://127.0.0.1:2027/api/books");
-    this.bookPager = new UseFindPage(0)
+    this.bookPager = new UseFindPage(0);
   }
 
   componentDidMount(): void {
@@ -37,7 +37,8 @@ export class SearchPage extends Component<{}, SearchPageState> {
   // Fetch books based on current search and page
   fetchBooks = async () => {
     await this.bookFetcher.fetchBooks();
-    this.bookPager.setTotalBooks(this.bookFetcher.data.count)
+    this.bookPager.setTotalBooks(this.bookFetcher.data.count);
+
     this.setState({
       data: this.bookFetcher.data,
       search: this.bookFetcher.data.search || this.state.search,
@@ -66,30 +67,21 @@ export class SearchPage extends Component<{}, SearchPageState> {
   // Handle pagination
   onChangePage = (page: number) => {
     this.setState({ page });
-    // this.bookFetcher.componentDidUpdate({ search: this.state.search }, page);
-    // this.fetchBooks();
-  };
+    this.bookPager.setPage(page);
+    const pagesArray = this.bookPager.findPage();
 
-
-  renderedBooks = (slicedBooks: Book[]) => {
-    this.bookPager.setPage(this.state.page);
-
-    if (slicedBooks.length < 9) {
-      const page = this.bookPager.findPage();
-      console.log(page);
-      return slicedBooks;
-    } else {
-      return slicedBooks;
-    }
+    console.log(pagesArray);
+    this.bookFetcher.componentDidUpdate(
+      { search: this.state.search },
+      pagesArray.shelfNumber
+    );
+    this.fetchBooks();
   };
 
   render(): ReactNode {
-    const booksPerPage = 9;
-    const startIndex = (this.state.page - 1) * booksPerPage;
-    const endIndex = startIndex + booksPerPage;
-    const books = this.state.data.results.length
-      ? this.renderedBooks(this.state.data.results.slice(startIndex, endIndex))
-      : undefined;
+    const sliceInfo = this.bookPager.findPage();
+    console.log(this.state.data.results.length);
+    console.log(sliceInfo);
     return (
       <section className="search-page">
         <header>
@@ -101,7 +93,14 @@ export class SearchPage extends Component<{}, SearchPageState> {
           </form>
         </header>
         <main>
-          {!!this.state.data.results.length && <Books books={books} />}{" "}
+          {!!this.state.data.results.length && (
+            <Books
+              books={this.state.data.results.slice(
+                sliceInfo.firstIndex,
+                sliceInfo.lastIndex
+              )}
+            />
+          )}{" "}
           {/* Pass the books to Books component */}
           <Pagination
             total={this.bookFetcher.data.count} // Total number of books
