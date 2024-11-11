@@ -10,6 +10,7 @@ export interface Book {
   cover: string;
   languages: string[];
   title: string;
+  subjects: string[];
 }
 
 export interface FavBooksState {
