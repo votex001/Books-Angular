@@ -70,7 +70,6 @@ export class SearchPage extends Component<{}, SearchPageState> {
     this.bookPager.setPage(page);
     const pagesArray = this.bookPager.findPage();
 
-    console.log(pagesArray);
     this.bookFetcher.componentDidUpdate(
       { search: this.state.search },
       pagesArray.shelfNumber
@@ -80,8 +79,7 @@ export class SearchPage extends Component<{}, SearchPageState> {
 
   render(): ReactNode {
     const sliceInfo = this.bookPager.findPage();
-    console.log(this.state.data.results.length);
-    console.log(sliceInfo);
+
     return (
       <section className="search-page">
         <header>
