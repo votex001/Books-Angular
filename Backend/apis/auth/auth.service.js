@@ -72,7 +72,7 @@ async function signup({ email, password, fullName }) {
 }
 
 async function verifyEmail(email, code) {
-  const unverifiedUser = await userService.getUnverifiedUserByLogin(email);
+  const unverifiedUser = await userService.getUnverifiedUserByEmail(email);
   if (!unverifiedUser) throw "User not found or already verified";
   if (unverifiedUser.verificationCode === code) {
     const user = await userService.save({
@@ -89,7 +89,7 @@ async function verifyEmail(email, code) {
 }
 
 async function resendCode(login) {
-  const unverifiedUser = await userService.getUnverifiedUserByLogin(login);
+  const unverifiedUser = await userService.getUnverifiedUserByEmail(login);
   if (!unverifiedUser) throw "User not found or already verified";
 
   const newCode = generateVerificationCode();

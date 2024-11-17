@@ -1,13 +1,23 @@
+import { userService } from "../user/user.service.js";
 import { authService } from "./auth.service.js";
 
 export async function signup(req, res) {
   try {
     const credentials = req.body;
 
-    await authService.signup(credentials);
-    res.status(201).json({
-      message: "The confirmation code has been sent to your email."
-    });
+    const user = await userService.getUnverifiedUserByEmail(credentials.email);
+    if (user) {
+      return res.status(201).json({
+        message: "The confirmation code has been sent already",
+        status: 201,
+      });
+    } else {
+      await authService.signup(credentials);
+      res.status(201).json({
+        message: "The confirmation code has been sent to your email.",
+        status: 201,
+      });
+    }
   } catch (e) {
     console.error("Failed to signup " + e);
     if (e === "login already exist") {
@@ -29,7 +39,7 @@ export async function login(req, res) {
 
     if (!user.isVerified) {
       return res.status(403).send({
-        err: "Email is not confirmed. Check your mail and confirm your email."
+        err: "Email is not confirmed. Check your mail and confirm your email.",
       });
     }
 
@@ -66,7 +76,9 @@ export async function resendCode(req, res) {
   try {
     const { email } = req.body;
     await authService.resendCode(email);
-    res.status(200).json({ message: "A new confirmation code has been sent to your email." });
+    res.status(200).json({
+      message: "A new confirmation code has been sent to your email.",
+    });
   } catch (error) {
     console.error("Failed to resend code: " + error);
     res.status(400).json({ err: "Failed to resend code." });
@@ -78,7 +90,9 @@ export async function requestPasswordReset(req, res) {
 
   try {
     await authService.requestPasswordReset(email);
-    res.status(200).json({ message: 'Password reset link sent to your email.' });
+    res
+      .status(200)
+      .json({ message: "Password reset link sent to your email." });
   } catch (e) {
     console.error("Failed to send reset link: ", e);
     res.status(400).send({ err: "Failed to send reset link" });
@@ -90,13 +104,12 @@ export async function resetPassword(req, res) {
 
   try {
     await authService.resetPassword(token, newPassword);
-    res.status(200).json({ message: 'Password has been successfully reset.' });
+    res.status(200).json({ message: "Password has been successfully reset." });
   } catch (e) {
     console.error("Failed to reset password: ", e);
     res.status(400).send({ err: "Failed to reset password" });
   }
 }
-
 
 export async function logout(req, res) {
   try {

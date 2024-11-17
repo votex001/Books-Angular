@@ -6,7 +6,7 @@ export const userService = {
   save,
   getByLogin,
   saveUnverifiedUser,
-  getUnverifiedUserByLogin,
+  getUnverifiedUserByEmail,
   updateUnverifiedUser,
   deleteUnverifiedUser,
   savePasswordResetToken,
@@ -39,7 +39,6 @@ async function save(userToSave) {
   }
 }
 
-// Получение подтвержденного пользователя по логину
 async function getByLogin(login) {
   try {
     const users = await getCollection("users");
@@ -64,13 +63,12 @@ async function saveUnverifiedUser(userToSave) {
   }
 }
 
-// Getting unconfirmed user by login
-async function getUnverifiedUserByLogin(email) {
+async function getUnverifiedUserByEmail(email) {
   try {
     const unverifiedUsers = await getCollection("unverifiedUsers");
     return await unverifiedUsers.findOne({ email });
   } catch (err) {
-    console.error("userService[getUnverifiedUserByLogin] : ", err);
+    console.error("userService[getUnverifiedUserByEmail] : ", err);
     loggerService.error(err);
     throw err;
   }
