@@ -5,20 +5,29 @@ import { SearchPage } from "./components/SearchPage";
 import { BookDetails } from "./components/BooksDetails/BookDetails";
 import { BookText } from "./components/BookText";
 import { Signup } from "./components/Signup";
-import { ReadWindow } from "./components/BooksDetails/ReadWindow";
+import { App } from "./App";
 
 export class RootCmp extends Component {
   render() {
+    const HeaderAnd = (ChildComponent: React.ComponentType) => {
+      return () => (
+        <>
+          <Header />
+          <ChildComponent />
+        </>
+      );
+    };
     return (
       <section>
-        <Header />
         <main>
-          <Switch>
-            <Route path={"/signup"} component={Signup} />
-            <Route path={"/:id/txt"} component={BookText} />
-            <Route path={"/:id"} component={BookDetails} />
-            <Route component={SearchPage} />
-          </Switch>
+          <App>
+            <Switch>
+              <Route path={"/signup"} component={Signup} />
+              <Route path={"/:id/txt"} component={HeaderAnd(BookText)} />
+              <Route path={"/:id"} component={HeaderAnd(BookDetails)} />
+              <Route component={HeaderAnd(SearchPage)} />
+            </Switch>
+          </App>
         </main>
       </section>
     );
