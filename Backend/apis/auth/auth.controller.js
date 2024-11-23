@@ -60,9 +60,16 @@ export async function login(req, res) {
 export async function verifyEmail(req, res) {
   try {
     const { email, code } = req.body;
-    const result = await authService.verifyEmail(email, code);
-    if (result) {
-      res.status(200).json({ message: "Email successfully confirmed." });
+    const user = await authService.verifyEmail(email, code);
+    if (user) {
+      const loginToken = authService.getLoginToken(user);
+
+      res.cookie("loginToken", loginToken, {
+        sameSite: "None",
+        secure: true,
+        maxAge: 86400000,
+      });
+      res.status(200).json(user);
     } else {
       res.status(400).json({ err: "Invalid confirmation code." });
     }

@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 
 export const userService = {
   save,
-  getByLogin,
+  getByEmail,
   saveUnverifiedUser,
   getUnverifiedUserByEmail,
   updateUnverifiedUser,
@@ -39,12 +39,15 @@ async function save(userToSave) {
   }
 }
 
-async function getByLogin(login) {
+async function getByEmail(email) {
   try {
     const users = await getCollection("users");
-    return await users.findOne({ login });
+    const user = await users.findOne({ email });
+    delete user?._id;
+    delete user?.password;
+    return user;
   } catch (err) {
-    console.error("userService[getByLogin] : ", err);
+    console.error("userService[getByEmail] : ", err);
     loggerService.error(err);
     throw err;
   }

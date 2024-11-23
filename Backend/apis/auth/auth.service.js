@@ -42,7 +42,7 @@ async function signup({ email, password, fullName }) {
       throw "Missing required signup information";
     }
 
-    const userExist = await userService.getByLogin(email);
+    const userExist = await userService.getByEmail(email);
     if (userExist) {
       throw "Login already exists";
     }
@@ -82,14 +82,16 @@ async function verifyEmail(email, code) {
       isVerified: true,
     });
     await userService.deleteUnverifiedUser(email);
+    delete user._id;
+    delete user.password;
     return user;
   } else {
     throw "Invalid verification code";
   }
 }
 
-async function resendCode(login) {
-  const unverifiedUser = await userService.getUnverifiedUserByEmail(login);
+async function resendCode(email) {
+  const unverifiedUser = await userService.getUnverifiedUserByEmail(email);
   if (!unverifiedUser) throw "User not found or already verified";
 
   const newCode = generateVerificationCode();
@@ -98,7 +100,7 @@ async function resendCode(login) {
 
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
-    to: login,
+    to: email,
     subject: "Email confirmation",
     text: `Your confirmation code: ${newCode}`,
   });
@@ -107,7 +109,7 @@ async function resendCode(login) {
 }
 
 async function login(login, password) {
-  const user = await userService.getByLogin(login);
+  const user = await userService.getByEmail(login);
   if (!user) throw "Invalid login";
 
   if (!user.isVerified) throw "Email not verified";
@@ -139,7 +141,7 @@ function validateToken(token) {
 }
 
 async function requestPasswordReset(email) {
-  const user = await userService.getByLogin(email);
+  const user = await userService.getByEmail(email);
   if (!user) {
     throw "User not found";
   }
