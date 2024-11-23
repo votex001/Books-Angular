@@ -61,11 +61,19 @@ export class Signup extends Component<{}, signupState> {
 
   onConfirm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement; // Указываем тип
+    const form = e.target as HTMLFormElement;
     const codeInput =
       form.querySelector<HTMLInputElement>('input[name="code"]');
-    if (codeInput) {
-      console.log("Entered code:", codeInput.value);
+    try {
+      if (codeInput) {
+        const res = await userService.confirmEmail(
+          this.state.form.email,
+          codeInput.value
+        );
+        console.log(res);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
