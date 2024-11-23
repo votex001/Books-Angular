@@ -11,12 +11,15 @@ interface HeaderProps {
 }
 
 export class _Header extends Component<HeaderProps> {
-  links = [
-    { title: "Home", to: "/" },
-    { title: "Profile", to: "/profile", hidden: !this.props.user },
-    { title: "Login", to: "/login", hidden: this.props.user },
-    { title: "Sign out", to: "/logout", hidden: !this.props.user },
-  ];
+  getLinks = () => {
+    const { user } = this.props;
+    return [
+      { title: "Home", to: "/" },
+      { title: "Profile", to: "/profile", hidden: !user },
+      { title: "Login", to: "/login", hidden: user },
+      { title: "Sign out", to: "/logout", hidden: !user },
+    ];
+  };
   render(): ReactNode {
     return (
       <section className="header">
@@ -27,7 +30,7 @@ export class _Header extends Component<HeaderProps> {
           </Link>
           <nav className="navigation">
             <ul className="list">
-              {this.links.map(
+              {this.getLinks().map(
                 (link) =>
                   !link.hidden && (
                     <li key={link.to}>
