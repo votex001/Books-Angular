@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from "react";
-import { userService } from "../services/userService";
+import { userService } from "../../services/userService";
 
 interface signupState {
   form: {
@@ -77,6 +77,23 @@ export class Signup extends Component<{}, signupState> {
     }
   };
 
+  get alert() {
+    return {
+      fullName: this.state.alert && !this.state.form.fullName && (
+        <p>Enter your full name</p>
+      ),
+      password: this.state.alert && !this.state.form.password && (
+        <p>Password can't be empty</p>
+      ),
+      confPass: this.state.alert && !this.state.form.confirmPass && (
+        <p>Confirm your password</p>
+      ),
+      matchPass: this.state.confPassAlert && !!this.state.form.confirmPass && (
+        <p>Passwords do not match</p>
+      ),
+    };
+  }
+
   render(): ReactNode {
     return (
       <section>
@@ -86,7 +103,7 @@ export class Signup extends Component<{}, signupState> {
             <form onSubmit={this.onConfirm}>
               <h2>Confirm Your Email</h2>
               <p>We have sent a code to your email. Please enter it below:</p>
-              <input name="code" />
+              <input name="code" type="email" required />
               <button>Confirm</button>
             </form>
           ) : (
@@ -108,9 +125,7 @@ export class Signup extends Component<{}, signupState> {
                   value={this.state.form.fullName}
                   onChange={this.handleChange}
                 />
-                {this.state.alert && !this.state.form.fullName && (
-                  <p>Enter your full name</p>
-                )}
+                {this.alert.fullName}
               </label>
               <label>
                 <h2>Password</h2>
@@ -119,9 +134,7 @@ export class Signup extends Component<{}, signupState> {
                   value={this.state.form.password}
                   onChange={this.handleChange}
                 />
-                {this.state.alert && !this.state.form.password && (
-                  <p>Password can't be empty</p>
-                )}
+                {this.alert.password}
               </label>
               <label>
                 <h2>Confirm Password</h2>
@@ -130,12 +143,8 @@ export class Signup extends Component<{}, signupState> {
                   value={this.state.form.confirmPass}
                   onChange={this.handleChange}
                 />
-                {this.state.alert && !this.state.form.confirmPass && (
-                  <p>Confirm your password</p>
-                )}
-                {this.state.confPassAlert && !!this.state.form.confirmPass && (
-                  <p>Passwords do not match</p>
-                )}
+                {this.alert.confPass}
+                {this.alert.matchPass}
               </label>
               <button>Sign Up</button>
             </form>
