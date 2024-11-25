@@ -43,8 +43,6 @@ async function getByEmail(email) {
   try {
     const users = await getCollection("users");
     const user = await users.findOne({ email });
-    delete user?._id;
-    delete user?.password;
     return user;
   } catch (err) {
     console.error("userService[getByEmail] : ", err);
