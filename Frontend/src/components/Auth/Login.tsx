@@ -2,27 +2,35 @@ import { Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import React, { Component } from "react";
 import { login } from "../../../store/actions/user.actions";
+import { Link } from "react-router-dom";
 interface LoginState {
   form: {
     email: string;
     password: string;
   };
+  err: boolean;
 }
 export class Login extends Component<{}, LoginState> {
   constructor(props: any) {
     super(props);
     this.state = {
       form: { email: "", password: "" },
+      err: false,
     };
   }
   onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { email, password } = this.state.form;
-    if (email && password) {
-      const user = await login({ email, password });
-      if(user){
-        window.location.href = "/"
+    try {
+      if (email && password) {
+        const user = await login({ email, password });
+        console.log(user);
+        if (user) {
+          window.location.href = "/";
+        }
       }
+    } catch (e) {
+      this.setState({ err: true });
     }
   };
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +65,8 @@ export class Login extends Component<{}, LoginState> {
                   value={this.state.form.password}
                 />
               </label>
-              <button type="button">Forgot Password?</button>
+              {this.state.err && <span>Wrong email or password</span>}
+              <Link to={"/resetPassword"}>Forgot Password?</Link>
               <button>Login</button>
             </form>
           </div>
