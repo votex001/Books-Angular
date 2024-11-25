@@ -36,12 +36,6 @@ async function ajax<T>(
     });
     return res.data;
   } catch (err) {
-    console.log(
-      `Had issues ${method}ing to the backend, endpoint: ${endpoint}, with data: `,
-      data
-    );
-    console.dir(err);
-
     throw err;
   }
 }
