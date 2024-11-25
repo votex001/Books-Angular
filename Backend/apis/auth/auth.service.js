@@ -108,9 +108,9 @@ async function resendCode(email) {
   return { message: "A new confirmation code has been sent to your email." };
 }
 
-async function login(login, password) {
-  const user = await userService.getByEmail(login);
-  if (!user) throw "Invalid login";
+async function login(email, password) {
+  const user = await userService.getByEmail(email);
+  if (!user) throw "Invalid email";
 
   if (!user.isVerified) throw "Email not verified";
 

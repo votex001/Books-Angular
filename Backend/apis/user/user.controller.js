@@ -15,6 +15,7 @@ export async function verifyToken(req, res) {
     } else {
       existUser.id = existUser._id;
       delete existUser._id;
+      delete existUser.password;
       return res.status(200).send(existUser);
     }
   } catch (err) {
