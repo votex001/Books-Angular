@@ -2,6 +2,7 @@ import { User } from "../../src/assets/models/user.model";
 import { UserActionsTypes } from "../interface/user.store";
 import { store } from "../store";
 import { userService } from "../../src/services/userService";
+import { httpService } from "../../src/services/http.service";
 
 export async function login(credentials?: {
   email: string;
@@ -10,7 +11,7 @@ export async function login(credentials?: {
   var user: User | null = null;
   try {
     if (credentials) {
-      console.log("need to do");
+      user = await httpService.post("auth/login", credentials);
     } else {
       user = await userService.verifyToken();
     }
