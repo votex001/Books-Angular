@@ -25,6 +25,7 @@ export class RootCmp extends Component {
             <Switch>
               <Route path={"/signup"} component={Signup} />
               <Route path={"/login"} component={Login} />
+              <Route path={"/resetPassword"} />
               <Route path={"/:id/txt"} component={HeaderAnd(BookText)} />
               <Route path={"/:id"} component={HeaderAnd(BookDetails)} />
               <Route component={HeaderAnd(SearchPage)} />
