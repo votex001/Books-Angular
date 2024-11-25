@@ -4,8 +4,9 @@ import { Header } from "./components/Header";
 import { SearchPage } from "./components/SearchPage";
 import { BookDetails } from "./components/BooksDetails/BookDetails";
 import { BookText } from "./components/BookText";
-import { Signup } from "./components/Signup";
+import { Signup } from "./components/Auth/Signup";
 import { App } from "./App";
+import { Login } from "./components/Auth/Login";
 
 export class RootCmp extends Component {
   render() {
@@ -23,6 +24,7 @@ export class RootCmp extends Component {
           <App>
             <Switch>
               <Route path={"/signup"} component={Signup} />
+              <Route path={"/login"} component={Login} />
               <Route path={"/:id/txt"} component={HeaderAnd(BookText)} />
               <Route path={"/:id"} component={HeaderAnd(BookDetails)} />
               <Route component={HeaderAnd(SearchPage)} />
