@@ -111,7 +111,8 @@ async function deleteUnverifiedUser(email) {
 }
 
 async function savePasswordResetToken(email, token) {
-  await getCollection("users").updateOne(
+  const collection = await getCollection("users");
+  await collection.updateOne(
     { email },
     {
       $set: {
