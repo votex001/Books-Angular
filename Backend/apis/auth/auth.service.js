@@ -143,7 +143,7 @@ function validateToken(token) {
 async function requestPasswordReset(email) {
   const user = await userService.getByEmail(email);
   if (!user) {
-    throw "User not found";
+    return false;
   }
 
   const token = crypto.randomBytes(20).toString("hex");
@@ -157,8 +157,9 @@ async function requestPasswordReset(email) {
     to: email,
     subject: "Password Reset",
     text: `You are receiving this email because you requested a password reset. Please click the following link, or paste it into your browser to complete the process: 
-    http://yourfrontend.com/reset-password?token=${token}`,
+   http://localhost:5173/resetPassword/${token}`,
   });
+  return true;
 }
 
 // Reset pass
