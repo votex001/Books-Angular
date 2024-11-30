@@ -94,12 +94,15 @@ export async function resendCode(req, res) {
 
 export async function requestPasswordReset(req, res) {
   const { email } = req.body;
-
   try {
-    await authService.requestPasswordReset(email);
-    res
-      .status(200)
-      .json({ message: "Password reset link sent to your email." });
+    const booleanAns = await authService.requestPasswordReset(email);
+    if (booleanAns) {
+      res
+        .status(200)
+        .json({ message: "Password reset link sent to your email.", ok: true });
+    } else {
+      res.status(200).json({ message: "User not found", ok: false });
+    }
   } catch (e) {
     console.error("Failed to send reset link: ", e);
     res.status(400).send({ err: "Failed to send reset link" });
