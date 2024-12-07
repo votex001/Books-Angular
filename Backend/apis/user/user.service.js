@@ -124,21 +124,24 @@ async function savePasswordResetToken(email, token) {
 }
 
 async function getByResetToken(token) {
-  return await getCollection("users").findOne({
+  const users = await getCollection("users");
+  return users.findOne({
     resetPasswordToken: token,
     resetTokenExpiry: { $gt: Date.now() },
   });
 }
 
 async function updatePassword(email, newPassword) {
-  await getCollection("users").updateOne(
+  const users = await getCollection("users");
+  await users.updateOne(
     { email },
     { $set: { password: newPassword } }
   );
 }
 
 async function clearPasswordResetToken(email) {
-  await getCollection("users").updateOne(
+  const users = await getCollection("users");
+  await users.updateOne(
     { email },
     { $unset: { resetPasswordToken: "", resetTokenExpiry: "" } }
   );
