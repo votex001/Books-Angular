@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import { getRandomString } from "../../services/functions.js";
 import { loggerService } from "../../services/logger.service.js";
 dotenv.config();
 
@@ -53,7 +52,7 @@ async function bookToTxt(id) {
     // const response = await fetch(
     //   `https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`
     // );
-     const response = await fetch(
+    const response = await fetch(
       `https://www.gutenberg.org/cache/epub/${id}/pg${id}-images.html`
     );
     const data = await response.text();
