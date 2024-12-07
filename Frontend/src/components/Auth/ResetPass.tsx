@@ -1,66 +1,79 @@
-import React, { Component } from "react";
+import { Component, ReactNode } from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { httpService } from "../../services/http.service";
-interface ResetPasswordState {
+import { ResetForm } from "./ResetForm";
+
+interface Params {
+  token: string;
+}
+
+interface ResetPassProps extends RouteComponentProps<Params> {}
+interface ResetPassState {
+  loading: boolean;
   email: string;
   message: string;
 }
-export class ResetPassword extends Component<{}, ResetPasswordState> {
+
+class _resetPass extends Component<ResetPassProps, ResetPassState> {
   constructor(props: any) {
     super(props);
     this.state = {
+      loading: true,
       email: "",
       message: "",
     };
   }
+  componentDidMount(): void {
+    this.checkToken();
+  }
 
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ email: e.target.value });
-  };
-
-  handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { email } = this.state;
-    if (!email) {
-      this.setState({ message: "Please enter your email address." });
-    }
+  checkToken = async () => {
+    const { token } = this.props.match.params;
+    type VerifyResetTokenResponse =
+      | { success: true; email: string }
+      | { success: false; message: string };
     try {
-      const res = await httpService.post<any>("auth/request-password-reset", {
-        email,
-      });
-      if (res.ok) {
-        this.setState({
-          message: "A password reset link has been sent to your email.",
-          email: "",
-        });
+      const ans = await httpService.post<VerifyResetTokenResponse>(
+        "auth/verify-reset-token",
+        {
+          token,
+        }
+      );
+      if (ans.success) {
+        this.setState({ loading: false, email: ans.email });
       } else {
-        this.setState({
-          message: res.message || "Failed to send reset email.",
-        });
+        this.setState({ loading: false, message: ans.message });
       }
     } catch (err) {
       console.log(err);
-      this.setState({ message: "Network error. Please try again later." });
+      this.setState({ loading: false, message: "Network problem, try later." });
     }
   };
-  render() {
-    const { email, message } = this.state;
+  onSubmit = async ({ newPassword }: { newPassword: string }) => {
+    const ans: any = await httpService.post("auth/reset-password", {
+      token: this.props.match.params.token,
+      newPassword,
+    });
+    this.setState({ email: "", message: ans.message });
+  };
+
+  render(): ReactNode {
     return (
-      <section className="reset-password">
-        <h2>Reset Password</h2>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="email">Email Address:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={this.handleChange}
-            placeholder="Enter your email"
-            required
-          />
-          <button type="submit">Send Reset Link</button>
-        </form>
-        {message && <p className="message">{message}</p>}
+      <section>
+        {this.state.loading ? (
+          <>Loading...</>
+        ) : (
+          <div>
+            {this.state.email ? (
+              <ResetForm email={this.state.email} onSubmit={this.onSubmit} />
+            ) : (
+              this.state.message
+            )}
+          </div>
+        )}
       </section>
     );
   }
 }
+
+export const ResetPass = withRouter(_resetPass);

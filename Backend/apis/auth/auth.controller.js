@@ -1,3 +1,4 @@
+import { loggerService } from "../../services/logger.service.js";
 import { userService } from "../user/user.service.js";
 import { authService } from "./auth.service.js";
 
@@ -114,7 +115,12 @@ export async function resetPassword(req, res) {
 
   try {
     await authService.resetPassword(token, newPassword);
-    res.status(200).json({ message: "Password has been successfully reset." });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Password has been successfully reset.",
+      });
   } catch (e) {
     console.error("Failed to reset password: ", e);
     res.status(400).send({ err: "Failed to reset password" });
@@ -132,5 +138,19 @@ export async function logout(req, res) {
     res.send({ msg: "Logged out successfully" });
   } catch (err) {
     res.status(400).send({ err: "Failed to logout" });
+  }
+}
+
+export async function verifyResetToken(req, res) {
+  const { token } = req.body;
+  try {
+    const user = await authService.verifyResetToken(token);
+    if (user) {
+      res.send({ success: true, email: user.email });
+    } else {
+      res.send({ success: false, message: "Invalid or expired token." });
+    }
+  } catch (err) {
+    loggerService.info(err);
   }
 }

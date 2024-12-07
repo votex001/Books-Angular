@@ -3,6 +3,7 @@ import Cryptr from "cryptr";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import { userService } from "../user/user.service.js";
+import { getCollection } from "../../data/mongo.js";
 
 const cryptr = new Cryptr(process.env.CRYPTR_PASS);
 const saltRounds = 10;
@@ -25,6 +26,7 @@ export const authService = {
   resendCode,
   requestPasswordReset,
   resetPassword,
+  verifyResetToken,
 };
 
 // Verification code generation function
@@ -174,4 +176,22 @@ async function resetPassword(token, newPassword) {
 
   // delete token
   await userService.clearPasswordResetToken(user.email);
+}
+
+async function verifyResetToken(token) {
+  try {
+    const collection = await getCollection("users");
+    const user = await collection.findOne({
+      resetPasswordToken: token,
+      resetTokenExpiry: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return null;
+    } else {
+      return { email: user.email };
+    }
+  } catch (err) {
+    throw err;
+  }
 }
