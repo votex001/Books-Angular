@@ -1,8 +1,8 @@
 import { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Header } from "./components/Header";
-import { SearchPage } from "./components/SearchPage";
-import { BookDetails } from "./components/BooksDetails/BookDetails";
+import { SearchPage } from "./components/Pages/SearchPage";
+import { BookDetails } from "./components/Pages/BooksDetails/BookDetails";
 import { BookText } from "./components/BookText";
 import { Signup } from "./components/Auth/Signup";
 import { App } from "./App";

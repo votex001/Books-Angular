@@ -1,7 +1,7 @@
 import { Component, ReactNode } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Book } from "../../assets/models/favoriteBooks.models";
-import { useFetchBooksDetails } from "../../customHooks/useFetchBooksDetails";
+import { Book } from "../../../assets/models/favoriteBooks.models";
+import { useFetchBooksDetails } from "../../../customHooks/useFetchBooksDetails";
 import { ReadWindow } from "./ReadWindow";
 
 interface Params {

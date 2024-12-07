@@ -1,10 +1,10 @@
 // components/SearchPage.tsx
 import React, { Component, ReactNode } from "react";
-import { Books } from "./Books"; // Assuming you have this component for displaying books
-import { Book } from "../assets/models/favoriteBooks.models"; // Assuming you have a Book model
+import { Books } from ".././Books"; // Assuming you have this component for displaying books
+import { Book } from "../../assets/models/favoriteBooks.models"; // Assuming you have a Book model
 import { Pagination } from "antd";
-import UseFindPage from "../customHooks/useFindPage";
-import { useFetchBooks } from "../customHooks/useFetchBooks";
+import UseFindPage from "../../customHooks/useFindPage";
+import { useFetchBooks } from "../../customHooks/useFetchBooks";
 
 interface SearchPageState {
   data: {
