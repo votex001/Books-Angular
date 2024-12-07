@@ -9,10 +9,7 @@ export class App extends Component<AppProps> {
   }
 
   autoLogin = async () => {
-    const user = await login();
-    if (user) {
-      console.log(user);
-    }
+    await login();
   };
   render(): any {
     return <>{this.props.children}</>;
