@@ -9,6 +9,7 @@ import { App } from "./App";
 import { Login } from "./components/Auth/Login";
 import { ResetPassRequest } from "./components/Auth/ResetPassRequest";
 import { ResetPass } from "./components/Auth/ResetPass";
+import { ProfileDetails } from "./components/Pages/ProfileDetails";
 
 export class RootCmp extends Component {
   render() {
@@ -29,7 +30,7 @@ export class RootCmp extends Component {
               <Route path={"/login"} component={Login} />
               <Route path={"/resetPassword/:token"} component={ResetPass} />
               <Route path={"/resetPassword"} component={ResetPassRequest} />
-              <Route path={"/profile"} component={ResetPassRequest} />
+              <Route path={"/profile"} component={HeaderAnd(ProfileDetails)} />
               <Route path={"/:id/txt"} component={HeaderAnd(BookText)} />
               <Route path={"/:id"} component={HeaderAnd(BookDetails)} />
               <Route component={HeaderAnd(SearchPage)} />
