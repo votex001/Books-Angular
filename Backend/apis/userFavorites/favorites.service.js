@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { getCollection } from "../../data/mongo.js";
 import { loggerService } from "../../services/logger.service.js";
 
@@ -10,7 +11,10 @@ export const userFavService = {
 async function getUserBooks(userId) {
   try {
     const usersBooks = await getCollection("users-books");
-    const userFavBooks = await usersBooks.findOne({ userId });
+    const userFavBooks = await usersBooks.findOne({
+      userId: new ObjectId(String(userId)),
+    });
+    console.log(userId);
     return userFavBooks;
   } catch (e) {
     console.log(e);
@@ -22,8 +26,8 @@ async function deleteBook(userId, bookId) {
   try {
     const userBooks = await getCollection("users-books");
     const result = await userBooks.updateOne(
-      { userId: userId }, // Find document by userId
-      { $pull: { books: { id: bookId } } } // Remove book with matching bookId
+      { userId: new ObjectId(String(userId)) }, // Find document by userId
+      { $pull: { books: { id: +bookId } } } // Remove book with matching bookId
     );
     if (result.modifiedCount === 0) {
       throw "Cannot found this book";
@@ -51,7 +55,7 @@ async function save(userId, bookToSave) {
       if (match) return match;
       userBooks.books.push(bookToSave);
       const result = await favBooksCollection.updateOne(
-        { userId },
+        { userId: new ObjectId(String(userId)) },
         { $set: { books: userBooks.books } }
       );
       if (result.matchedCount === 0) {
