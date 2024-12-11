@@ -1,33 +1,66 @@
 import { Component, ReactNode } from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { Book } from "../../../assets/models/favoriteBooks.models";
-import { useFetchBooksDetails } from "../../../customHooks/useFetchBooksDetails";
-import { ReadWindow } from "./ReadWindow";
+import { BookQuotes } from "./BookQuotes";
+import { bookService } from "../../../services/book.service";
+import { connect } from "react-redux";
+import { RootState } from "../../../../store/store";
+import { User } from "../../../assets/models/user.model";
+import { favService } from "../../../services/fav.service";
+import { httpService } from "../../../services/http.service";
 
 interface Params {
   id: string;
 }
-interface BookDetailsProps extends RouteComponentProps<Params> {}
+interface BookDetailsProps extends RouteComponentProps<Params> {
+  user: User | null;
+}
 interface BookDetailsState {
   book?: Book | null;
+  isFavorite: boolean;
 }
 
 class _bookDetails extends Component<BookDetailsProps, BookDetailsState> {
-  private bookFetcher: useFetchBooksDetails;
-  constructor(props: any) {
-    super(props);
-    const { params } = this.props.match;
-    this.bookFetcher = new useFetchBooksDetails(params.id);
-  }
   componentDidMount(): void {
     this.fetchBook();
+    this.checkIfInFav();
   }
+
+  private id = this.props.match.params.id;
+
   async fetchBook() {
-    await this.bookFetcher.getBook();
+    const book = await bookService.getBookById(this.id);
     this.setState({
-      book: this.bookFetcher.data,
+      book,
     });
   }
+
+  onAddToFavorites = async () => {
+    if (!this.props.user) {
+      this.props.history.push("/login");
+    } else {
+      try {
+        if (this.state.isFavorite) {
+          await favService.deleteFromFavorite(this.id);
+          this.setState({ isFavorite: false });
+        } else {
+          const book = await favService.addToFavorite(
+            this.props.match.params.id
+          );
+          if (book) {
+            this.setState({ isFavorite: true });
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  checkIfInFav = async () => {
+    const boolean = await favService.ifBookInFav(this.id);
+    this.setState({ isFavorite: boolean });
+  };
 
   render(): ReactNode {
     var book;
@@ -50,7 +83,7 @@ class _bookDetails extends Component<BookDetailsProps, BookDetailsState> {
                     <h2 className="title"> Authors:</h2>
                     <div className="names">
                       {book?.authors.map((author) => (
-                        <p>{author.name}</p>
+                        <p key={author.name}>{author.name}</p>
                       ))}
                     </div>
                   </section>
@@ -79,9 +112,17 @@ class _bookDetails extends Component<BookDetailsProps, BookDetailsState> {
                   </section>
                 )}
               </section>
+              <section>
+                <button onClick={this.onAddToFavorites}>
+                  {this.state.isFavorite
+                    ? "Delete from favorite"
+                    : "Add to favorites"}
+                </button>{" "}
+                <Link to={`/${book.id}/txt`}>Read</Link>
+              </section>
             </header>
             <main>
-              <ReadWindow />
+              <BookQuotes />
             </main>
           </>
         ) : (
@@ -91,4 +132,7 @@ class _bookDetails extends Component<BookDetailsProps, BookDetailsState> {
     );
   }
 }
-export const BookDetails = withRouter(_bookDetails);
+const mapStateToProp = (state: RootState) => ({
+  user: state.userModule.user,
+});
+export const BookDetails = connect(mapStateToProp)(withRouter(_bookDetails));
