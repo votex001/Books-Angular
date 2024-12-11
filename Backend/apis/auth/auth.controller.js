@@ -1,3 +1,4 @@
+import { getCollection } from "../../data/mongo.js";
 import { loggerService } from "../../services/logger.service.js";
 import { userService } from "../user/user.service.js";
 import { authService } from "./auth.service.js";
@@ -64,12 +65,18 @@ export async function verifyEmail(req, res) {
     const user = await authService.verifyEmail(email, code);
     if (user) {
       const loginToken = authService.getLoginToken(user);
-
+      const favBooksCollection = await getCollection("users-books");
+      const newFavLib = {
+        userId: user.id,
+        books: [],
+      };
+      favBooksCollection.insertOne(newFavLib);
       res.cookie("loginToken", loginToken, {
         sameSite: "None",
         secure: true,
         maxAge: 86400000,
       });
+      delete user.id;
       res.status(200).json(user);
     } else {
       res.status(400).json({ err: "Invalid confirmation code." });
@@ -115,12 +122,10 @@ export async function resetPassword(req, res) {
 
   try {
     await authService.resetPassword(token, newPassword);
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Password has been successfully reset.",
-      });
+    res.status(200).json({
+      success: true,
+      message: "Password has been successfully reset.",
+    });
   } catch (e) {
     console.error("Failed to reset password: ", e);
     res.status(400).send({ err: "Failed to reset password" });

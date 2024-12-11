@@ -84,6 +84,7 @@ async function verifyEmail(email, code) {
       isVerified: true,
     });
     await userService.deleteUnverifiedUser(email);
+    user.id = user._id;
     delete user._id;
     delete user.password;
     return user;
