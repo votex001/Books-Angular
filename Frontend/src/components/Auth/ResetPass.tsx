@@ -1,7 +1,7 @@
 import { Component, ReactNode } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ResetForm } from "./ResetForm";
-import { userService } from "../../services/userService";
+import { userService } from "../../services/user.service";
 
 interface Params {
   token: string;

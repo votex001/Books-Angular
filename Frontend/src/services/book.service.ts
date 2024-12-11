@@ -51,8 +51,7 @@ async function getBookTxt(id: string) {
 
 async function getBookById(id: string) {
   try {
-    const res: Response = await httpService.get(`books/${id}`);
-    return (await res.json()) as Book;
+    return await httpService.get<Book>(`books/${id}`);
   } catch (err) {
     console.log(err);
     throw err;

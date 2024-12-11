@@ -5,7 +5,7 @@ import logo from "/imgs/logo.svg";
 import { connect } from "react-redux";
 import { RootState } from "../../store/store";
 import { User } from "../assets/models/user.model";
-import { userService } from "../services/userService";
+import { userService } from "../services/user.service";
 
 interface HeaderProps {
   user: User | null;

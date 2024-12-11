@@ -29,7 +29,7 @@ async function login(credentials: {
 }
 
 async function confirmEmail(email: string, code: string) {
-  const data = await httpService.post<any>("auth/verify-email", {
+  const data = await httpService.post<User>("auth/verify-email", {
     email,
     code,
   });

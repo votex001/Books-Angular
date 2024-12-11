@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { bookService } from "../services/bookService";
+import { bookService } from "../services/book.service";
 
 interface Params {
   id: string;
