@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from "react";
-import { userService } from "../../services/userService";
+import { userService } from "../../services/user.service";
+import { login } from "../../../store/actions/user.actions";
 
 interface signupState {
   form: {
@@ -66,11 +67,9 @@ export class Signup extends Component<{}, signupState> {
       form.querySelector<HTMLInputElement>('input[name="code"]');
     try {
       if (codeInput) {
-        const res = await userService.confirmEmail(
-          this.state.form.email,
-          codeInput.value
-        );
-        console.log(res);
+        await userService.confirmEmail(this.state.form.email, codeInput.value);
+        login();
+        window.location.href = "/";
       }
     } catch (err) {
       console.log(err);
@@ -103,7 +102,7 @@ export class Signup extends Component<{}, signupState> {
             <form onSubmit={this.onConfirm}>
               <h2>Confirm Your Email</h2>
               <p>We have sent a code to your email. Please enter it below:</p>
-              <input name="code" type="email" required />
+              <input name="code" required />
               <button>Confirm</button>
             </form>
           ) : (
