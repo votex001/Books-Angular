@@ -5,7 +5,7 @@ import logo from "/imgs/logo.svg";
 import { connect } from "react-redux";
 import { RootState } from "../../store/store";
 import { User } from "../assets/models/user.model";
-import { httpService } from "../services/http.service";
+import { userService } from "../services/userService";
 
 interface HeaderProps {
   user: User | null;
@@ -24,12 +24,7 @@ export class _Header extends Component<HeaderProps> {
         hidden: !user,
         onClick: async (e: React.MouseEvent<HTMLAnchorElement>) => {
           e.preventDefault();
-          try {
-            await httpService.post("auth/logout");
-            window.location.reload();
-          } catch (err) {
-            console.log(err);
-          }
+          userService.logout();
         },
       },
     ].map(

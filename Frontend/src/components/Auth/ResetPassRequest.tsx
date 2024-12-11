@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { httpService } from "../../services/http.service";
+import { userService } from "../../services/userService";
 interface ResetPassRequestState {
   email: string;
   message: string;
@@ -24,9 +24,7 @@ export class ResetPassRequest extends Component<{}, ResetPassRequestState> {
       this.setState({ message: "Please enter your email address." });
     }
     try {
-      const res = await httpService.post<any>("auth/request-password-reset", {
-        email,
-      });
+      const res = await userService.sendResetTokenToMail(email);
       if (res.ok) {
         this.setState({
           message: "A password reset link has been sent to your email.",

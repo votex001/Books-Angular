@@ -1,13 +1,11 @@
 class UseFindPage {
   private booksPerShortShelf: number;
   private booksPerLargeShelf: number;
-  private totalBooks: number;
   private shortShelfIndex: number;
 
-  constructor(totalBooks: number) {
+  constructor(private totalBooks: number) {
     this.booksPerShortShelf = 9; // Number of books per short shelf
     this.booksPerLargeShelf = 32; // Number of books per large shelf
-    this.totalBooks = totalBooks;
     this.shortShelfIndex = 1; // Initial short shelf index
   }
 
