@@ -34,11 +34,21 @@ async function getById(id) {
     if (!id) throw new Error("Book ID is required.");
 
     const url = `https://gutendex.com/books/${id}`;
-    const data = await fetchAndParse(url);
+    const book = await fetchAndParse(url);
 
-    if (!data) throw new Error("Book data not found.Query[data=null]");
-
-    return data;
+    if (!book) throw new Error("Book data not found.Query[data=null]");
+    delete book.translators;
+    delete book.bookshelves;
+    book.cover = book.formats["image/jpeg"];
+    book.authors = book.authors.map((author) => {
+      return {
+        name: author.name,
+      };
+    });
+    delete book.formats;
+    delete book["media_type"];
+    delete book.copyright;
+    return book;
   } catch (error) {
     console.error("Error in getById function:", error);
     loggerService.error(error);

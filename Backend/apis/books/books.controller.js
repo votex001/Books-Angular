@@ -54,17 +54,7 @@ export async function getById(req, res) {
       return res.status(404).send({ error: "Book not found" });
     }
 
-    delete book.translators;
-    delete book.bookshelves;
-    book.cover = book.formats["image/jpeg"];
-    book.authors = book.authors.map((author) => {
-      return {
-        name: author.name,
-      };
-    });
-    delete book.formats;
-    delete book["media_type"];
-    delete book.copyright;
+   
     res.send(book);
   } catch (error) {
     res
