@@ -68,6 +68,10 @@ export class Login extends Component<{}, LoginState> {
               {this.state.err && <span>Wrong email or password</span>}
               <Link to={"/resetPassword"}>Forgot Password?</Link>
               <button>Login</button>
+              <section>
+                <p>Dont has and account?</p>
+                <Link to={"/signup"}>Sign up</Link>
+              </section>
             </form>
           </div>
         </main>
