@@ -6,13 +6,14 @@ export const bookService = {
   getBookById,
 };
 
-async function getBookTxt(id: string) {
+async function getBookTxt(id: string): Promise<Document | string> {
   try {
     const response = await fetch(`http://127.0.0.1:2027/api/books/${id}/txt`);
     if (response.ok) {
       const textData = await response.text();
       const processedTxt = processHtml(textData);
-      return processedTxt;
+      const parser = new DOMParser();
+      return parser.parseFromString(processedTxt, "text/html");
     } else {
       console.error("Failed to fetch text:", response.statusText);
       return response.statusText;
