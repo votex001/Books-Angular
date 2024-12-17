@@ -10,6 +10,7 @@ export const userService = {
   verifyResetToken,
   resetPassword,
   sendResetTokenToMail,
+  updateUser,
 };
 
 async function signUp(credentials: object) {
@@ -102,6 +103,15 @@ async function resetPassword(token: string, newPassword: string) {
       }
     );
     return ans;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+async function updateUser(user: User) {
+  try {
+    return await httpService.put("user", user);
   } catch (err) {
     console.log(err);
     throw err;

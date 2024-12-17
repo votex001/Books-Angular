@@ -2,6 +2,7 @@ import { User } from "../../src/assets/models/user.model";
 import { UserActionsTypes } from "../interface/user.store";
 import { store } from "../store";
 import { userService } from "../../src/services/user.service";
+import { httpService } from "../../src/services/http.service";
 
 export async function login(credentials?: {
   email: string;
@@ -18,6 +19,16 @@ export async function login(credentials?: {
       store.dispatch({ type: UserActionsTypes.SET_USER, user });
     }
     return user;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function editUser(user: User) {
+  try {
+    store.dispatch({ type: UserActionsTypes.EDIT_USER, user });
+    await userService.updateUser(user);
   } catch (err) {
     console.log(err);
     throw err;
