@@ -133,10 +133,7 @@ async function getByResetToken(token) {
 
 async function updatePassword(email, newPassword) {
   const users = await getCollection("users");
-  await users.updateOne(
-    { email },
-    { $set: { password: newPassword } }
-  );
+  await users.updateOne({ email }, { $set: { password: newPassword } });
 }
 
 async function clearPasswordResetToken(email) {
@@ -146,3 +143,4 @@ async function clearPasswordResetToken(email) {
     { $unset: { resetPasswordToken: "", resetTokenExpiry: "" } }
   );
 }
+
