@@ -39,5 +39,5 @@ async function addToFavorite(id?: string | number) {
 
 async function deleteFromFavorite(id?: string | number) {
   if (!id) return;
-  const ans = await httpService.delete(`fav/${id}`);
+  await httpService.delete(`fav/${id}`);
 }
