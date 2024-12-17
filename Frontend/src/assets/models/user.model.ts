@@ -1,7 +1,7 @@
 export interface User {
   id: string;
   fullName: string;
-  login: string;
+  email: string;
   imgUrl?: string | null;
 }
 
