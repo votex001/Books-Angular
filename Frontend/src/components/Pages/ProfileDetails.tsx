@@ -3,7 +3,9 @@ import { User } from "../../assets/models/user.model";
 import { connect } from "react-redux";
 import { RootState } from "../../../store/store";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { login } from "../../../store/actions/user.actions";
+import { editUser, login } from "../../../store/actions/user.actions";
+import CloudinaryUpload, { CloudinaryAttachment } from "../CloudinaryUpload";
+import avatar from "/imgs/avatar.jpg";
 
 interface ProfileDetailsState extends RouteComponentProps {
   user: User | null;
@@ -20,8 +22,30 @@ class _ProfileDetails extends Component<ProfileDetailsState> {
   handleRedirect = () => {
     this.props.history.push("/");
   };
+
+  handleAttachment = (data: CloudinaryAttachment) => {
+    console.log(data);
+    if (!this.props.user) {
+      return;
+    }
+    editUser({ ...this.props.user, imgUrl: data.url });
+  };
+
   render(): ReactNode {
-    return <pre>{JSON.stringify(this.props.user, null, 2)}</pre>;
+    return (
+      <section>
+        <header>
+          <CloudinaryUpload
+            anchorEl={
+              <span>
+                <img src={this.props.user?.imgUrl || avatar} />
+              </span>
+            }
+            onAttachUrl={this.handleAttachment}
+          />
+        </header>
+      </section>
+    );
   }
 }
 const mapStateToProp = (state: RootState) => ({
