@@ -1,0 +1,16 @@
+<section>
+  <ul>
+    <li
+      *ngFor="
+        let item of collection | paginate : { itemsPerPage: 1, currentPage: p }
+      "
+    >
+      ...
+    </li>
+  </ul>
+
+  <pagination-controls
+    [maxSize]="10"
+    (pageChange)="p = $event"
+  ></pagination-controls>
+</section>
