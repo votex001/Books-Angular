@@ -2,7 +2,6 @@ import { User } from "../../src/assets/models/user.model";
 import { UserActionsTypes } from "../interface/user.store";
 import { store } from "../store";
 import { userService } from "../../src/services/user.service";
-import { httpService } from "../../src/services/http.service";
 
 export async function login(credentials?: {
   email: string;
