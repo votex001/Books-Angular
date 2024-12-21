@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import { RootState } from "../../../../store/store";
 import { User } from "../../../assets/models/user.model";
 import { favService } from "../../../services/fav.service";
-import { httpService } from "../../../services/http.service";
 
 interface Params {
   id: string;
