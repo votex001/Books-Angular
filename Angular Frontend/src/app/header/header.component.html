@@ -1,0 +1,21 @@
+<section class="header">
+  <main class="header-main">
+    <a routerLink="" class="logo">
+      <span>
+        <svg-icon src="img/logo.svg"></svg-icon>
+      </span>
+      <h1>MyBook</h1>
+    </a>
+    <nav class="navigation">
+      <ul class="list">
+        <a
+          *ngFor="let link of links"
+          [routerLink]="link.to"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >{{ link.title }}</a
+        >
+      </ul>
+    </nav>
+  </main>
+</section>
