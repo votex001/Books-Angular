@@ -7,6 +7,8 @@ export async function myFav(req, res) {
     const userId = req.loggedinUser.id;
     const userBooks = await userFavService.getUserBooks(userId);
     // if (!userBooks) return res.status(404).send({ error: "Books not found" });
+    delete userBooks._id
+    delete userBooks.userId
     res.send(userBooks);
   } catch (e) {
     console.log(e);
