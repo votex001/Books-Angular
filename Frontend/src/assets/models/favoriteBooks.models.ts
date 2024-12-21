@@ -1,5 +1,4 @@
 export interface UserFav {
-  userId: string;
   books: Book[];
 }
 
