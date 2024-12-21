@@ -28,8 +28,11 @@ class _bookText extends Component<BookTextProps, BookTextState> {
   getText = async (id: string) => {
     try {
       const bookTXT = await bookService.getBookTxt(id);
-      console.log(bookTXT);
-      this.setState({ loading: false, text: bookTXT });
+      const text =
+        bookTXT instanceof Document
+          ? bookTXT.documentElement.outerHTML
+          : bookTXT;
+      this.setState({ loading: false, text });
     } catch (err) {
       console.log(err);
       //TODO
