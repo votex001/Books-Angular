@@ -14,7 +14,6 @@ async function query(filter) {
       filter?.search ? `search=${filter.search}` : "",
       filter?.lang ? `languages=${filter.lang}` : "",
       filter?.page ? `page=${filter.page}` : "",
-      filter?.sort ? `sort=${filter.sort}` : "",
     ].filter(Boolean);
     const url = `https://gutendex.com/books?${baseParams.join("&")}`;
     let data = await fetchAndParse(url);
