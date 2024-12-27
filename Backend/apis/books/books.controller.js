@@ -6,9 +6,8 @@ export async function getBooks(req, res) {
     const { search, lang, page, sort } = req.query;
     const filter = {};
     if (search) filter.search = search;
-    if (lang) filter.lang = lang;
+    if (lang && lang !== "all") filter.lang = lang;
     if (page) filter.page = page;
-    if (sort) filter.sort = sort;
 
     const data = await booksService.query(filter);
     const filteredData = {
@@ -29,8 +28,8 @@ export async function getBooks(req, res) {
         return book;
       }),
     };
-    delete filteredData.next
-    delete filteredData.previous
+    delete filteredData.next;
+    delete filteredData.previous;
     res.send(filteredData);
   } catch (error) {
     res
@@ -54,7 +53,6 @@ export async function getById(req, res) {
       return res.status(404).send({ error: "Book not found" });
     }
 
-   
     res.send(book);
   } catch (error) {
     res
