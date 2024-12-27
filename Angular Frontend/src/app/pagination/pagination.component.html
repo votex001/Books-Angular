@@ -1,13 +1,15 @@
 <section>
-  <ul style="display: none;">
+  <ul style="display: none">
     <li
       *ngFor="
         let item of [1]
-          | paginate : { itemsPerPage: 1, totalItems: 1000, currentPage: page }
+          | paginate
+            : { itemsPerPage: 9, totalItems: totalItems, currentPage: page }
       "
     ></li>
   </ul>
-  <ul></ul>
-
-  <pagination-controls [maxSize]="10" (pageChange)="page = $event"></pagination-controls>
+  <pagination-controls
+    [maxSize]="10"
+    (pageChange)="onChangePage($event)"
+  ></pagination-controls>
 </section>

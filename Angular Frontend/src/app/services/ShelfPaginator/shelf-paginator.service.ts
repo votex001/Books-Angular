@@ -27,17 +27,29 @@ export class ShelfPaginatorService {
   }
 
   // Find the pages where books should be placed for the current short shelf
-  findPage() {
-    let startIndex = (this.shortShelfIndex - 1) * this.booksPerShortShelf;
+  findPage(page: number) {
+    let startIndex;
+    if (page) {
+      startIndex = (page - 1) * this.booksPerShortShelf;
+    } else {
+      startIndex = (this.shortShelfIndex - 1) * this.booksPerShortShelf;
+    }
     let endIndex = startIndex + this.booksPerShortShelf;
 
-    const firstLargeShelf = Math.floor(startIndex / this.booksPerLargeShelf) + 1;
+    const firstLargeShelf =
+      Math.floor(startIndex / this.booksPerLargeShelf) + 1;
     const lastLargeShelf = Math.floor(endIndex / this.booksPerLargeShelf) + 1;
 
-    const totalLargeShelves = Math.ceil(this.totalBooks / this.booksPerLargeShelf);
+    const totalLargeShelves = Math.ceil(
+      this.totalBooks / this.booksPerLargeShelf
+    );
     const validLastLargeShelf = Math.min(lastLargeShelf, totalLargeShelves);
 
-    const result: { firstIndex: number; lastIndex: number; shelfNumber: number[] } = {
+    const result: {
+      firstIndex: number;
+      lastIndex: number;
+      shelfNumber: number[];
+    } = {
       firstIndex: startIndex,
       lastIndex: endIndex,
       shelfNumber: [],

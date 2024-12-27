@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 
 @Component({
   selector: 'pagination',
@@ -7,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrl: './pagination.component.scss',
 })
 export class PaginationComponent {
-  public page = 0
+  public page = 1;
+  @Input() totalItems: number = 0;
+  @Input() onSetPage?: (page: number) => void;
+
+  onChangePage(page: number) {
+    if (this.onSetPage) {
+      this.onSetPage(page);
+    }
+    this.page = page;
+  }
 }

@@ -8,6 +8,9 @@
       </form>
     </header> -->
   <main>
-    <pagination />
+    <ul>
+      <li *ngFor="let book of viewBooks">{{ book | json }}</li>
+    </ul>
+    <pagination [totalItems]="totalItems" [onSetPage]="setPage" />
   </main>
 </section>
