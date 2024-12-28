@@ -162,4 +162,60 @@ export class BooksService {
       })
     );
   }
+
+  public getBookTxt(id: string | number) {
+    const finalUrl = `${this.url}/books/${id}/txt`;
+    return this.http
+      .get<any>(finalUrl, { responseType: 'text' as 'json' })
+      .pipe(
+        retry(1),
+        map((data) => {
+          return this.processHtml(data, id);
+        }),
+        catchError((err: HttpErrorResponse) => {
+          console.log(err);
+          return throwError(() => err);
+        })
+      );
+  }
+
+  private processHtml(html: string, id: string | number): string {
+    // Create a new DOMParser instance
+    const parser = new DOMParser();
+    // Parse the HTML string into a document
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Select all img elements and update their src attributes
+    const images = doc.querySelectorAll('img');
+    if (images) {
+      images.forEach((img) => {
+        const src = img.getAttribute('src');
+        // Check if the src is a relative URL
+        if (src && !src.startsWith('http')) {
+          // Modify the src to include the full URL
+          img.setAttribute(
+            'src',
+            `https://www.gutenberg.org/cache/epub/${id}/${src}`
+          );
+        }
+      });
+    }
+    const links = doc.querySelectorAll('a.pginternal');
+    if (links) {
+      links.forEach((link) => {
+        const href = link.getAttribute('href');
+        // Check if the href is a relative anchor link
+        if (href && href.startsWith('#')) {
+          // Modify the href to include the book's URL and ID
+          link.setAttribute(
+            'href',
+            `http://localhost:4200/book/${id}/txt${href}`
+          );
+        }
+      });
+    }
+
+    // Return the modified HTML as a string
+    return doc.body.innerHTML || '';
+  }
 }
