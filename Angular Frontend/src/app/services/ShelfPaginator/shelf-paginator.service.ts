@@ -10,7 +10,7 @@ export class ShelfPaginatorService {
   private totalBooks: number; // This will be set later
 
   constructor() {
-    this.booksPerShortShelf = 9; // Number of books per short shelf
+    this.booksPerShortShelf = 8; // Number of books per short shelf
     this.booksPerLargeShelf = 32; // Number of books per large shelf
     this.shortShelfIndex = 1; // Initial short shelf index
     this.totalBooks = 0; // Default value
