@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
 import {
   catchError,
   map,
@@ -9,6 +9,7 @@ import {
   concatMap,
   reduce,
   distinctUntilChanged,
+  retry,
 } from 'rxjs/operators';
 import { Book, booksFetch, SearchFilter } from '../../models/book/book.model';
 import { environment } from '../../../env/environment';
@@ -50,8 +51,8 @@ export class BooksService {
         }
 
         const url = queryParams.toString()
-          ? `${this.url}?${queryParams.toString()}`
-          : `${this.url}`;
+          ? `${this.url}/books?${queryParams.toString()}`
+          : `${this.url}/books`;
 
         // Fetch and set total books count
         return this.http.get<booksFetch>(url).pipe(
@@ -66,69 +67,65 @@ export class BooksService {
             return of(0); // Return fallback in case of error
           }),
           switchMap(() => {
-           
             const pages = this.shelfPaginatorService.findPage(
               filter.page
             ).shelfNumber;
             const pagesToFetch = Array.isArray(pages) ? pages : [pages];
 
-           
-           
-              const requests = pagesToFetch.map((page) => {
-                if (filter.lang && filter.lang !== 'all') {
-                  queryParams.append('lang', filter.lang);
-                }
-                queryParams.delete('page');
-                queryParams.append('page', page.toString());
-
-                const finalUrl = `${this.url}?${queryParams.toString()}`;
-
-                // Fetch data from the API
-                return this.http.get<booksFetch>(finalUrl).pipe(
-                  map((result) => {
-                    const resultsArray = Array.isArray(result.results)
-                      ? result.results
-                      : [];
-
-                    // If data is already cached, merge it
-                    if (this.cachedData[filter.page]) {
-                      this.cachedData[filter.page].results = [
-                        ...this.cachedData[filter.page].results,
-                        ...resultsArray,
-                      ];
-                    } else {
-                      // Store the fetched data in the cache
-                      this.cachedData[filter.page] = {
-                        ...result,
-                        results: resultsArray,
-                      };
-                    }
-
-                    return { ...result, results: resultsArray };
-                  }),
-                  catchError((error) => {
-                    console.error('Error fetching data:', error);
-                    return of({ count: 0, results: [] });
-                  })
-                );
-              });
-
-              if (this.cachedData[filter.page]) {
-                return this.cachedData[filter.page];
-              } else {
-                return forkJoin(requests).pipe(
-                  concatMap((request) => request),
-                  reduce(
-                    (acc: { count: number; results: Book[] }, result) => {
-                      acc.count = result.count;
-                      acc.results = [...acc.results, ...result.results];
-                      return acc;
-                    },
-                    { count: 0, results: [] as Book[] }
-                  )
-                );
+            const requests = pagesToFetch.map((page) => {
+              if (filter.lang && filter.lang !== 'all') {
+                queryParams.append('lang', filter.lang);
               }
-            
+              queryParams.delete('page');
+              queryParams.append('page', page.toString());
+
+              const finalUrl = `${this.url}/books?${queryParams.toString()}`;
+
+              // Fetch data from the API
+              return this.http.get<booksFetch>(finalUrl).pipe(
+                map((result) => {
+                  const resultsArray = Array.isArray(result.results)
+                    ? result.results
+                    : [];
+
+                  // If data is already cached, merge it
+                  if (this.cachedData[filter.page]) {
+                    this.cachedData[filter.page].results = [
+                      ...this.cachedData[filter.page].results,
+                      ...resultsArray,
+                    ];
+                  } else {
+                    // Store the fetched data in the cache
+                    this.cachedData[filter.page] = {
+                      ...result,
+                      results: resultsArray,
+                    };
+                  }
+
+                  return { ...result, results: resultsArray };
+                }),
+                catchError((error) => {
+                  console.error('Error fetching data:', error);
+                  return of({ count: 0, results: [] });
+                })
+              );
+            });
+
+            if (this.cachedData[filter.page]) {
+              return this.cachedData[filter.page];
+            } else {
+              return forkJoin(requests).pipe(
+                concatMap((request) => request),
+                reduce(
+                  (acc: { count: number; results: Book[] }, result) => {
+                    acc.count = result.count;
+                    acc.results = [...acc.results, ...result.results];
+                    return acc;
+                  },
+                  { count: 0, results: [] as Book[] }
+                )
+              );
+            }
           })
         );
       })
@@ -153,5 +150,16 @@ export class BooksService {
       lang: params?.lang ?? filter.lang,
       page: params?.page ?? filter.page,
     });
+  }
+
+  public getById(id: string | number) {
+    const finalUrl = `${this.url}/books/${id}`;
+    return this.http.get<Book>(finalUrl).pipe(
+      retry(1),
+      catchError((err: HttpErrorResponse) => {
+        console.log(err);
+        return throwError(() => err);
+      })
+    );
   }
 }
