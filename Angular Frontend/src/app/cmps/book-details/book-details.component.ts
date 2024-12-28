@@ -12,7 +12,6 @@ import { map } from 'rxjs';
   styleUrl: './book-details.component.scss',
 })
 export class BookDetailsComponent {
-  book: Book | null = null;
   private route = inject(ActivatedRoute);
   public langName = new Intl.DisplayNames(['en'], { type: 'language' });
   book_ = toSignal<Book>(this.route.data.pipe(map((data) => data['book'])));
