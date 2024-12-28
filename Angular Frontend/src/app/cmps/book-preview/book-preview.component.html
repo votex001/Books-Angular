@@ -1,0 +1,9 @@
+<section class="book-preview">
+  <a [routerLink]="['/book', book.id]">
+    <div class="img-place-holder">
+      <img class="image" [src]="book.cover" />
+    </div>
+    <h1 class="title">{{ book.title }}</h1>
+    <p *ngIf="book.authors.length">{{ book.authors[0].name }}</p>
+  </a>
+</section>

@@ -1,0 +1,26 @@
+.book-preview {
+  max-width: 200px;
+  min-width: 100px;
+//   text-align: center;
+margin-left: 10px;
+a{
+    text-decoration: none;
+    .img-place-holder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100px;
+        height: 210px;
+        max-height: 210px;
+        .image {
+            max-width: 150px;
+            max-height: 100%;
+            min-width: 100px;
+        }
+    }
+    p{
+        color: gray;
+        font-size: 10px;
+    }
+}
+}
