@@ -28,10 +28,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
       error: (e) => console.log(e),
     });
   }
-  onClick() {
-    this.BookService.setFilter({ page: 8 });
-    setTimeout(() => console.log(this.BookService.findPage()), 10000);
-  }
+ 
   setPage = (page: number) => {
     this.BookService.setFilter({ page });
   };
