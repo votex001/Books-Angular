@@ -3,11 +3,25 @@ import { RouterModule, Routes } from '@angular/router';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
+import { BookDetailsComponent } from './cmps/book-details/book-details.component';
+import { bookResolver } from './resolvers/book.resolver';
+import { BookTxtComponent } from './cmps/book-txt/book-txt.component';
 
 const routes: Routes = [
+  {
+    path: 'book/:id',
+    component: BookDetailsComponent,
+    resolve: { book: bookResolver },
+  },
+  { path: 'book/:id/txt', component: BookTxtComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'profile', component: ProfilePageComponent },
-  { path: '', pathMatch: 'full', component: SearchPageComponent },
+  {
+    path: '',
+    pathMatch: 'full',
+    component: SearchPageComponent,
+  },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

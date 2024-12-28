@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app-root/app.component';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './cmps/header/header.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { provideHttpClient } from '@angular/common/http';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
@@ -14,6 +14,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
+import { BooksComponent } from './cmps/books/books.component';
+import { BookPreviewComponent } from './cmps/book-preview/book-preview.component';
+import { BookDetailsComponent } from './cmps/book-details/book-details.component';
+import { BookTxtComponent } from './cmps/book-txt/book-txt.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +29,10 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
     SingInPageComponent,
     ResetPassPageComponent,
     PaginationComponent,
+    BooksComponent,
+    BookPreviewComponent,
+    BookDetailsComponent,
+    BookTxtComponent
   ],
   imports: [
     MatIconModule,
