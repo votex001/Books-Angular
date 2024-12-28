@@ -1,0 +1,11 @@
+.books {
+  max-width: 100%;
+  display: flex;
+  align-content: center;
+  .list {
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(100px, 150px));
+    gap: 40px;
+  }
+}
