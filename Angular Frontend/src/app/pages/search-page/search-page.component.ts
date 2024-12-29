@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BooksService } from '../../services/books/books.service';
-import { ShelfPaginatorService } from '../../services/ShelfPaginator/shelf-paginator.service';
 import { Subscription } from 'rxjs';
 import { Book } from '../../models/book/book.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-books',
@@ -14,7 +14,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   private booksSubscription: Subscription | null = null;
   public totalItems = 0;
   public viewBooks: Book[] = [];
-  constructor(public BookService: BooksService) {}
+  constructor(private BookService: BooksService, private router: Router) {}
   ngOnInit(): void {
     this.booksSubscription = this.BookService.query().subscribe({
       next: (books) => {
@@ -28,9 +28,10 @@ export class SearchPageComponent implements OnInit, OnDestroy {
       error: (e) => console.log(e),
     });
   }
- 
+
   setPage = (page: number) => {
     this.BookService.setFilter({ page });
+    this.router.navigate([], { queryParams: { q: page } });
   };
   ngOnDestroy(): void {
     if (this.booksSubscription) {

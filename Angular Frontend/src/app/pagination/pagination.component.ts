@@ -1,4 +1,6 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, Input, input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { delay, filter, map } from 'rxjs';
 
 @Component({
   selector: 'pagination',
@@ -6,10 +8,21 @@ import { Component, Input, input } from '@angular/core';
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.scss',
 })
-export class PaginationComponent {
+export class PaginationComponent implements OnInit {
   public page = 1;
   @Input() totalItems: number = 0;
   @Input() onSetPage?: (page: number) => void;
+  constructor(private route: ActivatedRoute) {}
+  ngOnInit(): void {
+    this.route.queryParams
+      .pipe(
+        filter((q) => q['q']), //filtering queryParams
+        map((q) => +q['q']) //getting only number
+      )
+      .subscribe((num) => {
+        this.onChangePage(num); // its gonna get number only if it has q=<**>
+      });
+  }
 
   onChangePage(page: number) {
     if (this.onSetPage) {
