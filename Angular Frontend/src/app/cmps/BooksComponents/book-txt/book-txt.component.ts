@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BooksService } from '../../services/books/books.service';
+import { BooksService } from '../../../services/books/books.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
@@ -26,9 +26,5 @@ export class BookTxtComponent implements OnInit {
     this.htmlContent = rawHtml
       ? this.sanitizer.bypassSecurityTrustHtml(rawHtml)
       : '';
-
-   
   }
-
-
 }

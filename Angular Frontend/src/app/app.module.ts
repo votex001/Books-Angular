@@ -14,10 +14,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
-import { BooksComponent } from './cmps/books/books.component';
-import { BookPreviewComponent } from './cmps/book-preview/book-preview.component';
-import { BookDetailsComponent } from './cmps/book-details/book-details.component';
-import { BookTxtComponent } from './cmps/book-txt/book-txt.component';
+import { BooksComponent } from './cmps/BooksComponents/books/books.component';
+import { BookPreviewComponent } from './cmps/BooksComponents/book-preview/book-preview.component';
+import { BookDetailsComponent } from './cmps/BooksComponents/book-details/book-details.component';
+import { BookTxtComponent } from './cmps/BooksComponents/book-txt/book-txt.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { BookTxtComponent } from './cmps/book-txt/book-txt.component';
     BooksComponent,
     BookPreviewComponent,
     BookDetailsComponent,
-    BookTxtComponent
+    BookTxtComponent,
   ],
   imports: [
     MatIconModule,
