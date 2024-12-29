@@ -10,6 +10,7 @@ import {
   reduce,
   distinctUntilChanged,
   retry,
+  filter,
 } from 'rxjs/operators';
 import { Book, booksFetch, SearchFilter } from '../../models/book/book.model';
 import { environment } from '../../../env/environment';
@@ -217,5 +218,33 @@ export class BooksService {
 
     // Return the modified HTML as a string
     return doc.body.innerHTML || '';
+  }
+
+  public qetBookQuotes(id: number) {
+    return this.getBookTxt(id).pipe(
+      map((data) => {
+        const parser = new DOMParser();
+        return parser.parseFromString(data, 'text/html');
+      }),
+      filter((data: any) => data instanceof Document),
+      map((html) => {
+        const paragraphs = Array.from(html.querySelectorAll('p'))
+          .slice(0,-10)
+          .map((p) => p.textContent?.trim() || '')
+          .filter((text) => {
+            return (
+              text.replace(/\s/g, '').length >= 50 &&
+              text.replace(/\s/g, '').length <= 70
+            );
+          });
+        return this.getRandomItems(paragraphs, 5).map((q) =>
+          q.replace(/[”“’‘]/g, '')
+        );
+      })
+    );
+  }
+  private getRandomItems<T>(array: T[], count: number): T[] {
+    const shuffled = array.sort(() => 0.5 - Math.random()); // Shuffle array
+    return shuffled.slice(0, count); // Take first `count` items
   }
 }
