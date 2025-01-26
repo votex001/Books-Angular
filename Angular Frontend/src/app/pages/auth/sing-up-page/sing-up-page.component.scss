@@ -27,7 +27,7 @@
   .signup-section {
     display: flex;
     flex-direction: column;
-    width: 50vw;
+    min-width: 50vw;
     height: 100vh;
     header {
       padding: 10px 10px 0 0;
