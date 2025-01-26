@@ -22,7 +22,7 @@ export const authService = {
   login,
   getLoginToken,
   validateToken,
-  verifyEmail,
+  verifyEmail: confirmEmail,
   resendCode,
   requestPasswordReset,
   resetPassword,
@@ -73,7 +73,7 @@ async function signup({ email, password, fullName }) {
   }
 }
 
-async function verifyEmail(email, code) {
+async function confirmEmail(email, code) {
   const unverifiedUser = await userService.getUnverifiedUserByEmail(email);
   if (!unverifiedUser) throw "User not found or already verified";
   if (unverifiedUser.verificationCode === code) {

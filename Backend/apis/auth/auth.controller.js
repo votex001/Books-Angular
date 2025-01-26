@@ -59,7 +59,7 @@ export async function login(req, res) {
   }
 }
 
-export async function verifyEmail(req, res) {
+export async function confirmEmail(req, res) {
   try {
     const { email, code } = req.body;
     const user = await authService.verifyEmail(email, code);
