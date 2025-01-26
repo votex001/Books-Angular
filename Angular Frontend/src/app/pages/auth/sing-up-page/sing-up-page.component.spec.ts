@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SingInPageComponent } from './sing-in-page.component';
+import { SingUpPageComponent } from './sing-up-page.component';
 
 describe('SingInPageComponent', () => {
-  let component: SingInPageComponent;
-  let fixture: ComponentFixture<SingInPageComponent>;
+  let component: SingUpPageComponent;
+  let fixture: ComponentFixture<SingUpPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SingInPageComponent]
-    })
-    .compileComponents();
+      declarations: [SingUpPageComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(SingInPageComponent);
+    fixture = TestBed.createComponent(SingUpPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
