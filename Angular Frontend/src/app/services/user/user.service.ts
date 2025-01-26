@@ -3,7 +3,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, of, switchMap } from 'rxjs';
 import { User } from '../../models/user/user.model';
 import { environment } from '../../../env/environment';
-
+interface credentials {
+  email: string;
+  password: string | number;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -31,9 +34,14 @@ export class UserService {
               { withCredentials: true }
             )
             .pipe(
-              catchError((error) => {
-                console.error('Login error:', error);
-                return of(null); // Or handle accordingly
+              catchError((msg) => {
+                console.error('Login error:', msg);
+                if (msg.status === 401) return of(null);
+                else
+                  throw {
+                    err: 'Connection problems please try again later',
+                    serverProblem: true,
+                  }; // Or handle accordingly
               })
             );
         } else {
@@ -54,10 +62,18 @@ export class UserService {
     );
   }
 
-  public setCredentials(credentials: {
-    email: string;
-    password: string | number;
-  }) {
-    this._credentials$.next(credentials);
+  public async logout() {
+    this.http
+      .post(`${this.url}/auth/logout`, {}, { withCredentials: true })
+      .subscribe((msg) => {
+        this._credentials$.next({ email: '', password: '' });
+      });
+  }
+
+  public setCredentials(credentials?: credentials) {
+    if (credentials) {
+      this._credentials$.next(credentials);
+    } else this.logout();
+    return this.login();
   }
 }
