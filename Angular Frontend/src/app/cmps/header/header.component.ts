@@ -47,6 +47,7 @@ export class HeaderComponent implements OnDestroy {
     this.links = [
       { title: 'Profile', to: '/profile', hidden: !this.user },
       { title: 'Login', to: '/login', hidden: !!this.user },
+      { title: 'Sign up', to: '/signup', hidden: !!this.user },
       {
         title: 'Sign out',
         hidden: !!this.user,
