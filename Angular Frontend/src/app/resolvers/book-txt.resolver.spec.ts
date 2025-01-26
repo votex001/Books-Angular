@@ -4,8 +4,8 @@ import { ResolveFn } from '@angular/router';
 import { bookTxtResolver } from './book-txt.resolver';
 
 describe('bookTxtResolver', () => {
-  const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 
-      TestBed.runInInjectionContext(() => bookTxtResolver(...resolverParameters));
+  const executeResolver: ResolveFn<string> = (...resolverParameters) =>
+    TestBed.runInInjectionContext(() => bookTxtResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

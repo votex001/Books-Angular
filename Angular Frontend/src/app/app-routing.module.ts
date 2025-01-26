@@ -9,6 +9,7 @@ import { BookTxtComponent } from './cmps/books-components/book-txt/book-txt.comp
 import { bookTxtResolver } from './resolvers/book-txt.resolver';
 import { SingUpPageComponent } from './pages/auth/sing-up-page/sing-up-page.component';
 import { ConfirmEmailComponent } from './pages/auth/confirm-email/confirm-email.component';
+import { emailStatusResolver } from './resolvers/email-status.resolver';
 
 const routes: Routes = [
   {
@@ -23,7 +24,11 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginPageComponent },
   { path: 'signup', component: SingUpPageComponent },
-  { path: 'confirm/:email', component: ConfirmEmailComponent },
+  {
+    path: 'confirm/:email',
+    component: ConfirmEmailComponent,
+    resolve: { emailStatus: emailStatusResolver },
+  },
   { path: 'profile', component: ProfilePageComponent },
   {
     path: '',

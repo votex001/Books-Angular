@@ -5,5 +5,5 @@ import { BooksService } from '../services/books/books.service';
 export const bookTxtResolver: ResolveFn<string> = (route, state) => {
   const id = route.params['id'];
 
-  return inject(BooksService).getBookTxt(id).pipe()
+  return inject(BooksService).getBookTxt(id);
 };

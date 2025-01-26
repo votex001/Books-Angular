@@ -6,29 +6,34 @@
     </div>
   </section>
   <section class="confirm-section">
-    <h1>Confirm Email</h1>
-    <form>
-      <section class="email-info">
-        <p>
-          We sent a code to <strong>email</strong>. Please check your email.
-        </p>
-        <div class="resend">
-          <p>Didn't get a code?</p>
-          <button type="button">Send Again</button>
-        </div>
-      </section>
-      <label>
-        <p>Code</p>
-        <input
-          type="text"
-          placeholder="Enter the code"
-          required
-        />
-      </label>
-      <button type="submit">Confirm</button>
-      <div class="back">
-        <a routerLink="/signup">Back</a>
+    <ng-container>
+      <div *ngIf="showForm; else errorMsg">
+        <h1>Confirm Email</h1>
+        <form>
+          <section class="email-info">
+            <p>
+              We sent a code to <strong>email</strong>. Please check your email.
+            </p>
+            <div class="resend">
+              <p>Didn't get a code?</p>
+              <button type="button">Send Again</button>
+            </div>
+          </section>
+          <label>
+            <p>Code</p>
+            <input type="text" placeholder="Enter the code" required />
+          </label>
+          <button type="submit">Confirm</button>
+          <div class="back">
+            <a routerLink="/signup">Back</a>
+          </div>
+        </form>
       </div>
-    </form>
+      <ng-template #errorMsg>
+        <h1>Something is wrong...</h1>
+        <p>This email already verified or doesn't exist in our system.</p>
+        <a routerLink="/signup">Go back</a>
+      </ng-template>
+    </ng-container>
   </section>
 </section>

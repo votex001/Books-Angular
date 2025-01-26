@@ -1,11 +1,22 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, of, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  of,
+  retry,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { User } from '../../models/user/user.model';
 import { environment } from '../../../env/environment';
 interface credentials {
   email: string;
   password: string | number;
+}
+export interface emailStatus {
+  exist: boolean;
+  isVerified?: boolean;
 }
 @Injectable({
   providedIn: 'root',
@@ -74,6 +85,18 @@ export class UserService {
       .subscribe((msg) => {
         this._credentials$.next({ email: '', password: '' });
       });
+  }
+
+  public emailStatus(email: string) {
+    return this.http
+      .post<emailStatus>(`${this.url}/auth/email-status`, { email })
+      .pipe(
+        retry(1),
+        catchError((err: HttpErrorResponse) => {
+          console.log(err);
+          return throwError(() => err);
+        })
+      );
   }
 
   public setCredentials(credentials?: credentials) {
