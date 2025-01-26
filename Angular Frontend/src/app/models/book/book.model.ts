@@ -17,7 +17,7 @@ export interface Book {
 export interface FavBooksState {
   favBooks: UserFav | null;
 }
-type lang =
+export type Lang =
   | 'all' // all
   | 'en' // English
   | 'ru' // Russian
@@ -27,7 +27,7 @@ type lang =
   | 'he'; // Hebrew
 
 export interface SearchFilter {
-  lang: lang;
+  lang: Lang;
   page: number;
   search: string;
 }
