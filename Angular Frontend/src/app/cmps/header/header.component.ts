@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../models/user/user.model';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-header',
   standalone: false,
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
-  // Define links as a class property
+export class HeaderComponent implements OnDestroy {
+  private subscription: Subscription | null = null;
+
   public user: User | null = null;
   public links: Array<{
     title: string;
@@ -30,7 +32,7 @@ export class HeaderComponent {
       'logo',
       this.domSanitizer.bypassSecurityTrustResourceUrl('assets/logo.svg')
     );
-    this.userService.login().subscribe({
+    this.subscription = this.userService.login().subscribe({
       next: (user) => {
         this.user = user;
         this.updateLinks();
@@ -56,5 +58,11 @@ export class HeaderComponent {
         },
       },
     ];
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
