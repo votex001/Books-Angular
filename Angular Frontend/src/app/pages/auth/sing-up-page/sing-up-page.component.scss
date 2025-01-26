@@ -1,0 +1,47 @@
+.signup-main {
+  display: flex;
+  .left-bg {
+    width: 50vw;
+    height: 100vh;
+    background-image: url("../../../../assets/books-bg.jpg");
+    background-position: center;
+    background-size: cover;
+    text-align: left;
+    color: white;
+    .text {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      max-width: max-content;
+      h1 {
+        margin-top: 35vh;
+        font-size: 2rem;
+        text-shadow: 1px 1px 1px black;
+      }
+      p {
+        font-size: 1.125rem;
+        text-shadow: 1px 1px 1px black;
+      }
+    }
+  }
+  .signup-section {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    height: 100vh;
+    header {
+      padding: 10px 10px 0 0;
+      display: flex;
+      justify-content: end;
+      width: 100%;
+      font-size: 0.875rem;
+      gap: 10px;
+      line-height: 1.5;
+    }
+    main{
+        display: grid;
+        place-content: center;
+        flex-grow: 1
+    }
+  }
+}

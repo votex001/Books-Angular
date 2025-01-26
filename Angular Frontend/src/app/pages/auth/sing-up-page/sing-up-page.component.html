@@ -1,1 +1,51 @@
-<p>sing-in-page works!</p>
+<section class="signup-main">
+  <section class="left-bg">
+    <div class="text">
+      <h1>Create your free account</h1>
+      <p>A thousand books are waiting for you</p>
+    </div>
+  </section>
+  <section class="signup-section">
+    <header>
+      <h1>Already have an account?</h1>
+      <a routerLink="/login"> Sign in →</a>
+    </header>
+    <main>
+      <h1>Sign up to MyBooks</h1>
+      <form
+        [formGroup]="signUpForm"
+        (ngSubmit)="onSubmit()"
+        (input)="resetErrors()"
+      >
+        <div>
+          <label>
+            <p>Email</p>
+            <input formControlName="email" />
+          </label>
+          <label>
+            <p>Full name</p>
+            <input formControlName="fullName" />
+          </label>
+          <label>
+            <p>Password</p>
+            <input #pass formControlName="password" />
+          </label>
+          <label>
+            <p>Confirm password</p>
+            <input #confPass formControlName="confirmPass" />
+            <p
+              *ngIf="
+                pass.value !== confPass.value &&
+                isErr &&
+                (pass.value || confPass.value)
+              "
+            >
+              lol
+            </p>
+          </label>
+        </div>
+        <button>Continue</button>
+      </form>
+    </main>
+  </section>
+</section>
