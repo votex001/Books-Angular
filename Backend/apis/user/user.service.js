@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 
 export const userService = {
   save,
+  getByVerifiedEmail,
   getByEmail,
   saveUnverifiedUser,
   getUnverifiedUserByEmail,
@@ -39,13 +40,30 @@ async function save(userToSave) {
   }
 }
 
-async function getByEmail(email) {
+async function getByVerifiedEmail(email) {
   try {
     const users = await getCollection("users");
     const user = await users.findOne({ email });
     return user;
   } catch (err) {
-    console.error("userService[getByEmail] : ", err);
+    console.error("userService[getByVerifiedEmail] : ", err);
+    loggerService.error(err);
+    throw err;
+  }
+}
+
+async function getByEmail(email) {
+  try {
+    const users = await getCollection("users");
+    const user = await users.findOne({ email });
+    if (!user) {
+      const unverifiedUsers = await getCollection("unverifiedUsers");
+      const user = await unverifiedUsers.findOne({ email });
+      return user;
+    }
+    return user;
+  } catch (err) {
+    console.error("userService[getByVerifiedEmail] : ", err);
     loggerService.error(err);
     throw err;
   }
@@ -143,4 +161,3 @@ async function clearPasswordResetToken(email) {
     { $unset: { resetPasswordToken: "", resetTokenExpiry: "" } }
   );
 }
-

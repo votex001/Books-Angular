@@ -21,7 +21,7 @@ export async function signup(req, res) {
       });
     }
   } catch (e) {
-    console.error("Failed to signup " + e);
+    loggerService.error("Failed to signup " + e);
     if (e === "login already exist") {
       return res.status(409).send({ err: "This username already exists" });
     }
@@ -54,7 +54,7 @@ export async function login(req, res) {
     });
     res.json(user);
   } catch (err) {
-    console.error("Failed to Login " + err);
+    loggerService.error("Failed to Login " + err);
     res.status(401).send({ err: "Failed to Login" });
   }
 }
@@ -62,7 +62,7 @@ export async function login(req, res) {
 export async function confirmEmail(req, res) {
   try {
     const { email, code } = req.body;
-    const user = await authService.verifyEmail(email, code);
+    const user = await authService.confirmEmail(email, code);
     if (user) {
       const loginToken = authService.getLoginToken(user);
       const favBooksCollection = await getCollection("users-books");
@@ -82,8 +82,26 @@ export async function confirmEmail(req, res) {
       res.status(400).json({ err: "Invalid confirmation code." });
     }
   } catch (error) {
-    console.error("Failed to verify email: " + error);
-    res.status(400).json({ err: "Failed to verify email." });
+    loggerService.error("Failed to confirm email: " + error);
+    res.status(400).json({ err: "Failed to confirm email." });
+  }
+}
+
+export async function emailStatus(req, res) {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ err: "Failed to verify email" });
+    }
+    const user = await authService.emailStatus(email);
+    if (user) {
+      res.status(200).json({ exist: true, isVerified: user.isVerified });
+    } else {
+      res.status(200).json({ exist: false });
+    }
+  } catch (err) {
+    loggerService.error("[emailStatus]: " + err);
+    res.status(400).json({ err: "Failed to verify email" });
   }
 }
 
@@ -95,7 +113,7 @@ export async function resendCode(req, res) {
       message: "A new confirmation code has been sent to your email.",
     });
   } catch (error) {
-    console.error("Failed to resend code: " + error);
+    loggerService.error("Failed to resend code: " + error);
     res.status(400).json({ err: "Failed to resend code." });
   }
 }
@@ -112,7 +130,7 @@ export async function requestPasswordReset(req, res) {
       res.status(200).json({ message: "User not found", ok: false });
     }
   } catch (e) {
-    console.error("Failed to send reset link: ", e);
+    loggerService.error("Failed to send reset link: ", e);
     res.status(400).send({ err: "Failed to send reset link" });
   }
 }
@@ -127,7 +145,7 @@ export async function resetPassword(req, res) {
       message: "Password has been successfully reset.",
     });
   } catch (e) {
-    console.error("Failed to reset password: ", e);
+    loggerService.error("Failed to reset password: ", e);
     res.status(400).send({ err: "Failed to reset password" });
   }
 }

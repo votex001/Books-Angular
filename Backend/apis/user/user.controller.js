@@ -5,7 +5,9 @@ import { userService } from "./user.service.js";
 export async function verifyToken(req, res) {
   try {
     const user = authService.validateToken(req.cookies.loginToken);
-    const existUser = user ? await userService.getByEmail(user.email) : null;
+    const existUser = user
+      ? await userService.getByVerifiedEmail(user.email)
+      : null;
 
     if (!existUser) {
       if (user || req.cookies?.loginToken) {
