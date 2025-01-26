@@ -1,11 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   standalone: false,
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'my-books';
+  showHeader: boolean = true;
+  constructor(private router: Router) {}
+  ngOnInit(): void {
+    // Listen for route changes
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Hide the header on specific routes
+        const hiddenRoutes = ['/login', '/signup']; // Add routes where header should be hidden
+        this.showHeader = !hiddenRoutes.includes(event.urlAfterRedirects);
+      }
+    });
+  }
 }
