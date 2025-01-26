@@ -21,6 +21,7 @@ import { BooksQuotesComponent } from './cmps/books-components/books-quotes/books
 import { SearchPanelComponent } from './cmps/search-panel/search-panel.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SingUpPageComponent } from './pages/auth/sing-up-page/sing-up-page.component';
+import { ConfirmEmailComponent } from './pages/auth/confirm-email/confirm-email.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { SingUpPageComponent } from './pages/auth/sing-up-page/sing-up-page.comp
     BookTxtComponent,
     BooksQuotesComponent,
     SearchPanelComponent,
+    ConfirmEmailComponent,
   ],
   imports: [
     MatIconModule,
