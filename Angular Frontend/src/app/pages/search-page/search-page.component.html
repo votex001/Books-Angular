@@ -1,14 +1,9 @@
 <section className="search-page">
-  <!-- <header>
-      <form onSubmit={this.onSubmit}>
-        <label>
-          <input type="text" name="search" />
-        </label>
-        <button type="submit">Search</button>
-      </form>
-    </header> -->
+  <header>
+    <search-panel />
+  </header>
   <main>
-  <books [books]="viewBooks"/>
+    <books [books]="viewBooks" />
     <pagination [totalItems]="totalItems" [onSetPage]="setPage" />
   </main>
 </section>
