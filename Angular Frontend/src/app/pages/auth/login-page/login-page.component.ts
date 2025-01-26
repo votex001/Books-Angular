@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user/user.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'login-page',
@@ -12,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent {
+  private subscription: Subscription | null = null;
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
@@ -52,6 +54,11 @@ export class LoginPageComponent {
           this.errMsg = err;
           if (serverProblem) {
             this.networkErr = true;
+          }
+        },
+        complete: () => {
+          if (this.subscription) {
+            this.subscription.unsubscribe();
           }
         },
       });
