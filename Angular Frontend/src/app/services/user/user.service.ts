@@ -62,6 +62,12 @@ export class UserService {
     );
   }
 
+  public signUp(credentials: credentials & { fullName: string }) {
+    return this.http.post(`${this.url}/auth/signup`, credentials, {
+      withCredentials: true,
+    });
+  }
+
   public async logout() {
     this.http
       .post(`${this.url}/auth/logout`, {}, { withCredentials: true })
