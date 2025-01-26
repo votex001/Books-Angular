@@ -229,7 +229,7 @@ export class BooksService {
       filter((data: any) => data instanceof Document),
       map((html) => {
         const paragraphs = Array.from(html.querySelectorAll('p'))
-          .slice(0,-10)
+          .slice(0, -10)
           .map((p) => p.textContent?.trim() || '')
           .filter((text) => {
             return (
