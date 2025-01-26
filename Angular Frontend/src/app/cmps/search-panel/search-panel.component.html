@@ -1,0 +1,18 @@
+<section class="search">
+  <form [formGroup]="searchFrom" (ngSubmit)="onSubmit()" class="search-form">
+    <div class="custom-search">
+      <label>
+        <span>
+          <mat-icon svgIcon="search" />
+        </span>
+        <input formControlName="search" />
+      </label>
+    </div>
+    <select formControlName="lang">
+      <option *ngFor="let lang of searchOptions" [value]="lang.value">
+        {{ lang.label }}
+      </option>
+    </select>
+    <button>Search</button>
+  </form>
+</section>
