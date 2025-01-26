@@ -1,4 +1,10 @@
-<section>
+<header>
+  <a routerLink="" class="logo">
+    <mat-icon svgIcon="logo" />
+  </a>
+  <h1>Sign in to MyBooks</h1>
+</header>
+<main>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="!networkErr">
     <div>
       <p>Email:</p>
@@ -15,7 +21,11 @@
       </p>
     </div>
     <button>Submit</button>
+    <section>
+      <p>New to MyBooks?</p>
+      <a routerLink="/signup">Create an account</a>
+    </section>
   </form>
   <p *ngIf="errMsg">{{ errMsg }}</p>
   <button *ngIf="networkErr" routerLink="/">Go to Search</button>
-</section>
+</main>
