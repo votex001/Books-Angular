@@ -8,7 +8,6 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'my-books';
   showHeader: boolean = true;
   constructor(private router: Router) {}
   ngOnInit(): void {
@@ -16,8 +15,11 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         // Hide the header on specific routes
-        const hiddenRoutes = ['/login', '/signup']; // Add routes where header should be hidden
-        this.showHeader = !hiddenRoutes.includes(event.urlAfterRedirects);
+        const hiddenRoutes = ['/login', '/signup'];
+        const confirmRoutePattern = /^\/confirm\/.+$/;
+        this.showHeader =
+          !hiddenRoutes.includes(event.urlAfterRedirects) &&
+          !confirmRoutePattern.test(event.urlAfterRedirects);
       }
     });
   }
