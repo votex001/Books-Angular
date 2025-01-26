@@ -18,9 +18,10 @@
       align-self: center;
       margin-right: 20px;
       .list {
-        display: flex ;
+        display: flex;
         gap: 20px;
         a {
+          cursor: pointer;
           text-decoration: none;
           color: var(--ds-text);
         }

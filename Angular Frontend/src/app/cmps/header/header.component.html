@@ -1,19 +1,31 @@
 <section class="header">
   <main class="header-main">
     <a routerLink="" class="logo">
-      <!-- <svg-icon src="img/logo.svg"></svg-icon> -->
-      <mat-icon svgIcon="logo" />
+      <mat-icon svgIcon="logo"></mat-icon>
       <h1>MyBook</h1>
     </a>
     <nav class="navigation">
       <ul class="list">
-        <a
-          *ngFor="let link of links"
-          [routerLink]="link.to"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          >{{ link.title }}</a
-        >
+        <ng-container *ngFor="let link of links">
+          <!-- Render as a router link if "to" is defined -->
+          <a
+            *ngIf="link.to && link.hidden !== true; else clickLink"
+            [routerLink]="link.to"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            {{ link.title }}
+          </a>
+          <!-- Render as a button if "onClick" is defined -->
+          <ng-template #clickLink>
+            <a
+              *ngIf="link.onClick && link.hidden"
+              (click)="link.onClick($event)"
+            >
+              {{ link.title }}
+            </a>
+          </ng-template>
+        </ng-container>
       </ul>
     </nav>
   </main>
