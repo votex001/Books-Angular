@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user/user.service';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'login-page',
@@ -17,7 +19,16 @@ export class LoginPageComponent {
   public isErr: boolean = false;
   errMsg: string = '';
   networkErr: boolean = false;
-  constructor(public useService: UserService) {}
+  constructor(
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer,
+    public useService: UserService
+  ) {
+    this.matIconRegistry.addSvgIcon(
+      'logo',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/logo.svg')
+    );
+  }
 
   onSubmit = () => {
     this.isErr = false;
