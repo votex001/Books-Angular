@@ -1,1 +1,21 @@
-<p>login-page works!</p>
+<section>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="!networkErr">
+    <div>
+      <p>Email:</p>
+      <input formControlName="email" type="email" required />
+      <p *ngIf="!loginForm.value.email && loginForm.invalid && isErr">
+        Please enter a valid email.
+      </p>
+    </div>
+    <div>
+      <p>Password:</p>
+      <input formControlName="password" required />
+      <p *ngIf="!loginForm.value.password && loginForm.invalid && isErr">
+        Password is required.
+      </p>
+    </div>
+    <button>Submit</button>
+  </form>
+  <p *ngIf="errMsg">{{ errMsg }}</p>
+  <button *ngIf="networkErr" routerLink="/">Go to Search</button>
+</section>
