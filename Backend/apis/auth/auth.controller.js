@@ -121,17 +121,20 @@ export async function resendCode(req, res) {
 export async function requestPasswordReset(req, res) {
   const { email } = req.body;
   try {
+    if (!email) {
+      return res.status(400).send({ err: "Failed to send reset link" });
+    }
     const booleanAns = await authService.requestPasswordReset(email);
     if (booleanAns) {
-      res
+      return res
         .status(200)
         .json({ message: "Password reset link sent to your email.", ok: true });
     } else {
-      res.status(200).json({ message: "User not found", ok: false });
+      return res.status(200).json({ message: "User not found", ok: false });
     }
   } catch (e) {
     loggerService.error("Failed to send reset link: ", e);
-    res.status(400).send({ err: "Failed to send reset link" });
+    return res.status(400).send({ err: "Failed to send reset link" });
   }
 }
 
