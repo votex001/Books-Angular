@@ -17,9 +17,11 @@ export class AppComponent implements OnInit {
         // Hide the header on specific routes
         const hiddenRoutes = ['/login', '/signup'];
         const confirmRoutePattern = /^\/confirm\/.+$/;
+        const resetRoutePattern = /^\/resetPassword\/.+$/;
         this.showHeader =
           !hiddenRoutes.includes(event.urlAfterRedirects) &&
-          !confirmRoutePattern.test(event.urlAfterRedirects);
+          !confirmRoutePattern.test(event.urlAfterRedirects) &&
+          !resetRoutePattern.test(event.urlAfterRedirects);
       }
     });
   }
