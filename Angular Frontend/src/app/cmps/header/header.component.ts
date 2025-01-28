@@ -53,7 +53,7 @@ export class HeaderComponent implements OnDestroy {
         hidden: !!this.user,
         onClick: async (e: Event) => {
           e.preventDefault();
-          await this.userService.logout();
+          this.userService.logout();
           this.user = null;
           this.updateLinks();
         },
