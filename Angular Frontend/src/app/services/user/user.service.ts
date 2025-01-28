@@ -27,6 +27,11 @@ interface confirmCredentials {
   code: string | number;
 }
 
+interface resetPassCred {
+  token: string;
+  newPassword: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -145,6 +150,12 @@ export class UserService {
   public verifyResetToken(token: string) {
     return this.http
       .post(`${this.url}/auth/verify-reset-token`, { token })
+      .pipe(first());
+  }
+
+  public resetPassword(resetCredentials: resetPassCred) {
+    return this.http
+      .post(`${this.url}/auth/reset-password`, resetCredentials)
       .pipe(first());
   }
 }
