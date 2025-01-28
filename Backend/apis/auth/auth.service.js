@@ -57,7 +57,7 @@ async function signup({ email, password, fullName }) {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Email confirmation",
-      text: `Your confirmation code: ${verificationCode}`,
+      text: `Welcome to our website. Your confirmation code: ${verificationCode}. Please confirm your email here ${process.env.url}/confirm/${email}.`,
     });
 
     return userService.saveUnverifiedUser({
@@ -77,6 +77,7 @@ async function signup({ email, password, fullName }) {
 async function confirmEmail(email, code) {
   try {
     const unverifiedUser = await userService.getUnverifiedUserByEmail(email);
+    console.log(unverifiedUser)
     if (!unverifiedUser) throw "User not found or already verified";
     if (unverifiedUser.verificationCode === code) {
       const user = await userService.save({
@@ -120,7 +121,7 @@ async function resendCode(email) {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Email confirmation",
-      text: `Your confirmation code: ${newCode}`,
+      text: `Welcome to our website. Your confirmation code: ${newCode}. Please confirm your email here ${process.env.url}/confirm/${email}.`,
     });
 
     return { message: "A new confirmation code has been sent to your email." };
@@ -183,7 +184,7 @@ async function requestPasswordReset(email) {
       to: email,
       subject: "Password Reset",
       text: `You are receiving this email because you requested a password reset. Please click the following link, or paste it into your browser to complete the process: 
-   http://localhost:5173/resetPassword/${token}`,
+   ${process.env.url}/resetPassword/${token}`,
     });
     return true;
   } catch (err) {
