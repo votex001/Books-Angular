@@ -1,10 +1,10 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Lang } from '../../models/book/book.model';
 import { BooksService } from '../../services/books/books.service';
-import { style } from '@angular/animations';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'search-panel',
@@ -13,7 +13,7 @@ import { style } from '@angular/animations';
   styleUrl: './search-panel.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class SearchPanelComponent {
+export class SearchPanelComponent implements OnInit {
   searchFrom = new FormGroup({
     search: new FormControl(''),
     lang: new FormControl<Lang>('all'),
@@ -32,7 +32,9 @@ export class SearchPanelComponent {
   constructor(
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
-    private books: BooksService
+    private books: BooksService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.matIconRegistry.addSvgIcon(
       'search',
@@ -40,12 +42,31 @@ export class SearchPanelComponent {
     );
   }
 
-  public onSubmit() {
-    const { search, lang } = this.searchFrom.value;
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      if (params['search']) {
+        this.searchFrom.get('search')?.setValue(params['search']);
+      }
+      if (params['lang']) {
+        this.searchFrom.get('lang')?.setValue(params['lang']);
+      }
 
-    this.books.setFilter({
-      search: search ?? undefined,
-      lang: lang ?? undefined,
+      this.books.setFilter(params);
     });
+  }
+
+  public onSubmit() {
+    const queryParams = Object.entries(this.searchFrom.value).reduce(
+      (params, [key, value]) => (value ? { ...params, [key]: value } : params),
+      {}
+    );
+
+    // Set query params in the URL
+    this.router.navigate([], {
+      queryParams: queryParams,
+      queryParamsHandling: 'merge', // This ensures other query params are preserved
+    });
+    // If needed, pass the params to setFilter
+    this.books.setFilter(queryParams);
   }
 }
