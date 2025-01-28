@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user/user.service';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnDestroy {
   private subscription: Subscription | null = null;
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -45,28 +45,30 @@ export class LoginPageComponent {
       return;
     }
     if (email && password) {
-      this.useService.setCredentials({ email, password }).subscribe({
-        next: (user) => {
-          console.log(user);
-          if (!user) {
-            this.errMsg = 'Invalid password or login';
-            return;
-          }
-          this.router.navigate(['/']);
-        },
-        error: ({ err, serverProblem }) => {
-          console.log(err);
-          this.errMsg = err;
-          if (serverProblem) {
-            this.networkErr = true;
-          }
-        },
-        complete: () => {
-          if (this.subscription) {
-            this.subscription.unsubscribe();
-          }
-        },
-      });
+      this.subscription = this.useService
+        .setCredentials({ email, password })
+        .subscribe({
+          next: (user) => {
+            if (!user) {
+              this.errMsg = 'Invalid password or login';
+              return;
+            }
+            this.router.navigate(['/']);
+          },
+          error: ({ err, serverProblem }) => {
+            console.log(err);
+            this.errMsg = err;
+            if (serverProblem) {
+              this.networkErr = true;
+            }
+          },
+        });
     }
   };
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 }

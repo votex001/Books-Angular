@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
+  first,
   of,
   retry,
   switchMap,
@@ -82,16 +83,22 @@ export class UserService {
   }
 
   public signUp(credentials: credentials & { fullName: string }) {
-    return this.http.post(`${this.url}/auth/signup`, credentials, {
-      withCredentials: true,
-    });
+    return this.http
+      .post(`${this.url}/auth/signup`, credentials, {
+        withCredentials: true,
+      })
+      .pipe(first());
   }
 
   public logout() {
     return this.http
       .post(`${this.url}/auth/logout`, {}, { withCredentials: true })
-      .subscribe((msg) => {
-        // this._credentials$.next({ email: '', password: '' });
+      .pipe(first())
+      .subscribe({
+        next: (msg) => {
+          this._credentials$.next({ email: '', password: '' });
+        },
+        error: (err) => console.error('Logout failed:', err),
       });
   }
 
@@ -99,6 +106,7 @@ export class UserService {
     return this.http
       .post<emailStatus>(`${this.url}/auth/email-status`, { email })
       .pipe(
+        first(),
         retry(1),
         catchError((err: HttpErrorResponse) => {
           console.log(err);
@@ -109,22 +117,28 @@ export class UserService {
 
   public setCredentials(credentials?: credentials) {
     if (credentials) {
-      this.logout();
       this._credentials$.next(credentials);
     }
     return this.login();
   }
 
   public confirmNewEmail(confirmCredentials: confirmCredentials) {
-    console.log(confirmCredentials);
-    return this.http.post(
-      `${this.url}/auth/confirm-email`,
-      confirmCredentials,
-      { withCredentials: true }
-    );
+    return this.http
+      .post(`${this.url}/auth/confirm-email`, confirmCredentials, {
+        withCredentials: true,
+      })
+      .pipe(first());
   }
 
   public resendConfirmCode(email: string) {
-    return this.http.post(`${this.url}/auth/resend-code`, { email });
+    return this.http
+      .post(`${this.url}/auth/resend-code`, { email })
+      .pipe(first());
+  }
+
+  public sendResetPassword(email: string) {
+    return this.http
+      .post(`${this.url}/auth/request-password-reset`, { email })
+      .pipe(first());
   }
 }

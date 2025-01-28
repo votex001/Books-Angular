@@ -1,8 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { emailStatus, UserService } from '../../../services/user/user.service';
-import { interval, map, Subscription, take } from 'rxjs';
+import { first, interval, map, Subscription, take } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -12,12 +12,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './confirm-email.component.html',
   styleUrl: './confirm-email.component.scss',
 })
-export class ConfirmEmailComponent implements OnInit {
+export class ConfirmEmailComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private emailStatus = toSignal<emailStatus>(
     this.route.data.pipe(map((data) => data['emailStatus']))
   );
   private timerSubscription: Subscription | null = null;
+  private confirmSubscription: Subscription | null = null;
 
   public countdown: number = 0;
   public showForm: boolean = true;
@@ -48,12 +49,16 @@ export class ConfirmEmailComponent implements OnInit {
     }
 
     this.timerSubscription = interval(1000)
-      .pipe(take(59)) // Ограничиваем до 60 секунд
+      .pipe(take(59))
       .subscribe({
         next: () => {
           this.countdown = this.countdown - 1;
         },
-        complete: () => {},
+        complete: () => {
+          if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+          }
+        },
       });
   }
 
@@ -64,7 +69,7 @@ export class ConfirmEmailComponent implements OnInit {
       return;
     }
     if (this.email && this.confirmForm.value.code) {
-      this.userService
+      this.confirmSubscription = this.userService
         .confirmNewEmail({
           email: this.email,
           code: this.confirmForm.value.code,
@@ -75,7 +80,7 @@ export class ConfirmEmailComponent implements OnInit {
               this.router.navigate(['/']);
             }
           },
-          error: (err) => {
+          error: () => {
             this.isErr = true;
           },
         });
@@ -83,14 +88,15 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   onSendAgain() {
-    if (this.countdown > 0) {
-      return;
-    }
+    if (this.countdown > 0 || !this.email) return;
+
     this.startTimer();
-    if (this.email) {
-      this.userService
-        .resendConfirmCode(this.email)
-        .subscribe((ans) => console.log(ans));
+    this.userService.resendConfirmCode(this.email).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    if (this.confirmSubscription) {
+      this.confirmSubscription.unsubscribe();
     }
   }
 }
