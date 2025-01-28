@@ -15,7 +15,7 @@
     </div>
     <div>
       <p>Password:</p>
-      <input formControlName="password" required />
+      <input formControlName="password" required type="password" />
       <p *ngIf="!loginForm.value.password && loginForm.invalid && isErr">
         Password is required.
       </p>
