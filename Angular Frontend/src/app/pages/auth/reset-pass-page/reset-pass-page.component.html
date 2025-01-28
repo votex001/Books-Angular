@@ -1,1 +1,28 @@
-<p>reset-pass-page works!</p>
+<section>
+  <div *ngIf="!success; else successMsg">
+    <form
+      [formGroup]="resetForm"
+      *ngIf="!incorrectToken; else incorrectTokenMsg"
+      (ngSubmit)="onSubmit()"
+    >
+      <h1 class="email">
+        {{ email }}
+      </h1>
+
+      <input [value]="email" disabled style="display: none" />
+      <p>Password:</p>
+      <input formControlName="password" type="password" />
+      <p>Confirm password:</p>
+      <input formControlName="confPass" type="password" />
+      <button>Reset password</button>
+    </form>
+    <ng-template #incorrectTokenMsg>
+      <h2>Invalid or expired url.</h2>
+    </ng-template>
+  </div>
+  <ng-template #successMsg>
+    <h1>Success!</h1>
+    <p>We changed your password.</p>
+    <button routerLink="/login">Login</button>
+  </ng-template>
+</section>
