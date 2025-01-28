@@ -10,6 +10,8 @@ import { bookTxtResolver } from './resolvers/book-txt.resolver';
 import { SingUpPageComponent } from './pages/auth/sing-up-page/sing-up-page.component';
 import { ConfirmEmailComponent } from './pages/auth/confirm-email/confirm-email.component';
 import { emailStatusResolver } from './resolvers/email-status.resolver';
+import { RequestResetPassPageComponent } from './pages/auth/request-reset-pass-page/request-reset-pass-page.component';
+import { tokenResolver } from './resolvers/token.resolver';
 import { ResetPassPageComponent } from './pages/auth/reset-pass-page/reset-pass-page.component';
 
 const routes: Routes = [
@@ -24,8 +26,12 @@ const routes: Routes = [
     resolve: { book: bookTxtResolver },
   },
   { path: 'login', component: LoginPageComponent },
-  { path: 'resetPassword', component: ResetPassPageComponent },
-  { path: 'resetPassword/:token', component: ResetPassPageComponent },
+  { path: 'resetPassword', component: RequestResetPassPageComponent },
+  {
+    path: 'resetPassword/:token',
+    component: ResetPassPageComponent,
+    resolve: { tokenStatus: tokenResolver },
+  },
   { path: 'signup', component: SingUpPageComponent },
   {
     path: 'confirm/:email',

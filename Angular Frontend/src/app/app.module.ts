@@ -8,7 +8,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { provideHttpClient } from '@angular/common/http';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
-import { ResetPassPageComponent } from './pages/auth/reset-pass-page/reset-pass-page.component';
+import { RequestResetPassPageComponent } from './pages/auth/request-reset-pass-page/request-reset-pass-page.component';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PaginationComponent } from './pagination/pagination.component';
@@ -22,6 +22,7 @@ import { SearchPanelComponent } from './cmps/search-panel/search-panel.component
 import { ReactiveFormsModule } from '@angular/forms';
 import { SingUpPageComponent } from './pages/auth/sing-up-page/sing-up-page.component';
 import { ConfirmEmailComponent } from './pages/auth/confirm-email/confirm-email.component';
+import { ResetPassPageComponent } from './pages/auth/reset-pass-page/reset-pass-page.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { ConfirmEmailComponent } from './pages/auth/confirm-email/confirm-email.
     ProfilePageComponent,
     LoginPageComponent,
     SingUpPageComponent,
-    ResetPassPageComponent,
+    RequestResetPassPageComponent,
     PaginationComponent,
     BooksComponent,
     BookPreviewComponent,
@@ -40,6 +41,7 @@ import { ConfirmEmailComponent } from './pages/auth/confirm-email/confirm-email.
     BooksQuotesComponent,
     SearchPanelComponent,
     ConfirmEmailComponent,
+    ResetPassPageComponent,
   ],
   imports: [
     MatIconModule,
