@@ -141,4 +141,10 @@ export class UserService {
       .post(`${this.url}/auth/request-password-reset`, { email })
       .pipe(first());
   }
+
+  public verifyResetToken(token: string) {
+    return this.http
+      .post(`${this.url}/auth/verify-reset-token`, { token })
+      .pipe(first());
+  }
 }
