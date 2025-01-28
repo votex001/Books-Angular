@@ -9,23 +9,45 @@
     <ng-container>
       <div *ngIf="showForm; else errorMsg">
         <h1>Confirm Email</h1>
-        <form>
+        <form
+          [formGroup]="confirmForm"
+          (submit)="onSubmitForm()"
+          (input)="isErr = false"
+        >
           <section class="email-info">
             <p>
-              We sent a code to <strong>email</strong>. Please check your email.
+              We sent a code to <strong>{{ email }}</strong
+              >. Please check your email.
             </p>
-            <div class="resend">
-              <p>Didn't get a code?</p>
-              <button type="button">Send Again</button>
-            </div>
           </section>
           <label>
             <p>Code</p>
-            <input type="text" placeholder="Enter the code" required />
+            <input
+              type="text"
+              placeholder="Enter the code"
+              formControlName="code"
+            />
+            <p *ngIf="!confirmForm.value.code && isErr" class="alert">
+              This input cant be empty.
+            </p>
+            <p *ngIf="confirmForm.value.code && isErr" class="alert">
+              Incorrect code.
+            </p>
           </label>
           <button type="submit">Confirm</button>
           <div class="back">
             <a routerLink="/signup">Back</a>
+          </div>
+          <div class="resend">
+            <p>Didn't get a code?</p>
+            <p *ngIf="countdown > 0">{{ countdown }}</p>
+            <button
+              (click)="onSendAgain()"
+              type="button"
+              [disabled]="countdown > 0"
+            >
+              Send Again
+            </button>
           </div>
         </form>
       </div>

@@ -10,14 +10,22 @@ import {
 } from 'rxjs';
 import { User } from '../../models/user/user.model';
 import { environment } from '../../../env/environment';
+
 interface credentials {
   email: string;
   password: string | number;
 }
+
 export interface emailStatus {
   exist: boolean;
   isVerified?: boolean;
 }
+
+interface confirmCredentials {
+  email: string;
+  code: string | number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -79,11 +87,11 @@ export class UserService {
     });
   }
 
-  public async logout() {
-    this.http
+  public logout() {
+    return this.http
       .post(`${this.url}/auth/logout`, {}, { withCredentials: true })
       .subscribe((msg) => {
-        this._credentials$.next({ email: '', password: '' });
+        // this._credentials$.next({ email: '', password: '' });
       });
   }
 
@@ -101,8 +109,22 @@ export class UserService {
 
   public setCredentials(credentials?: credentials) {
     if (credentials) {
+      this.logout();
       this._credentials$.next(credentials);
-    } else this.logout();
+    }
     return this.login();
+  }
+
+  public confirmNewEmail(confirmCredentials: confirmCredentials) {
+    console.log(confirmCredentials);
+    return this.http.post(
+      `${this.url}/auth/confirm-email`,
+      confirmCredentials,
+      { withCredentials: true }
+    );
+  }
+
+  public resendConfirmCode(email: string) {
+    return this.http.post(`${this.url}/auth/resend-code`, { email });
   }
 }

@@ -4,6 +4,7 @@ import { UserService } from '../../../services/user/user.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login-page',
@@ -24,7 +25,8 @@ export class LoginPageComponent {
   constructor(
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
-    public useService: UserService
+    public useService: UserService,
+    private router: Router
   ) {
     this.matIconRegistry.addSvgIcon(
       'logo',
@@ -45,9 +47,12 @@ export class LoginPageComponent {
     if (email && password) {
       this.useService.setCredentials({ email, password }).subscribe({
         next: (user) => {
+          console.log(user);
           if (!user) {
             this.errMsg = 'Invalid password or login';
+            return;
           }
+          this.router.navigate(['/']);
         },
         error: ({ err, serverProblem }) => {
           console.log(err);

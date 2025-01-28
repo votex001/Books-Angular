@@ -21,26 +21,39 @@
           <label>
             <p>Email</p>
             <input formControlName="email" />
+            <p *ngIf="isErr && !signUpForm.value.email" class="alert">
+              Enter your email.
+            </p>
           </label>
           <label>
             <p>Full name</p>
             <input formControlName="fullName" />
+            <p *ngIf="isErr && !signUpForm.value.fullName" class="alert">
+              Enter your full name.
+            </p>
           </label>
           <label>
             <p>Password</p>
             <input #pass formControlName="password" />
+            <p *ngIf="!pass.value && isErr" class="alert">
+              Password can't be empty.
+            </p>
           </label>
           <label>
             <p>Confirm password</p>
             <input #confPass formControlName="confirmPass" />
+            <p *ngIf="!confPass.value && isErr" class="alert">
+              Confirm your password.
+            </p>
             <p
               *ngIf="
                 pass.value !== confPass.value &&
                 isErr &&
                 (pass.value || confPass.value)
               "
+              class="alert"
             >
-              lol
+              Passwords do not match.
             </p>
           </label>
         </div>
