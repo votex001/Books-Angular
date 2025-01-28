@@ -99,7 +99,7 @@ async function updateUnverifiedUser(userToUpdate) {
     const unverifiedUsers = await getCollection("unverifiedUsers");
     const { _id, ...updateFields } = userToUpdate;
     const result = await unverifiedUsers.updateOne(
-      { _id: ObjectId.createFromHexString(_id) },
+      { _id: _id },
       { $set: updateFields }
     );
     if (result.matchedCount === 0) {
