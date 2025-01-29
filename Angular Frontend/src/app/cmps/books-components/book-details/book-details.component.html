@@ -18,7 +18,9 @@
         <p>{{ downloads }}</p>
       </section>
       <section class="btns">
-        <button (click)="onAddToFavorites()">Add to favorites</button>
+        <button *ngIf="user" (click)="onAddToFavorites()">
+          {{isAdded?"Remove from":'Add to'}} favorites
+        </button>
         <a [routerLink]="['/book', book.id, 'txt']">Read</a>
       </section>
     </section>

@@ -11,6 +11,7 @@ import {
   distinctUntilChanged,
   retry,
   filter,
+  first,
 } from 'rxjs/operators';
 import { Book, booksFetch, SearchFilter } from '../../models/book/book.model';
 import { environment } from '../../../env/environment';
@@ -243,8 +244,27 @@ export class BooksService {
       })
     );
   }
+
   private getRandomItems<T>(array: T[], count: number): T[] {
     const shuffled = array.sort(() => 0.5 - Math.random()); // Shuffle array
     return shuffled.slice(0, count); // Take first `count` items
+  }
+
+  public getMyFavBooks() {
+    return this.http.get(`${this.url}/fav`, { withCredentials: true }).pipe(first());
+  }
+
+  public addBookToFav(bookId: string | number) {
+    return this.http.post(
+      `${this.url}/fav`,
+      { bookId },
+      { withCredentials: true }
+    ).pipe(first());
+  }
+
+  public removeFromFav(bookId: string | number) {
+    return this.http.delete(`${this.url}/fav/${bookId}`, {
+      withCredentials: true,
+    }).pipe(first());
   }
 }
