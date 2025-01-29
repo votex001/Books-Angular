@@ -5,7 +5,7 @@
       <div
         [ngStyle]="{
           'background-image': user?.imgUrl
-            ? user?.imgUrl
+            ? 'url(' + user?.imgUrl + ')'
             : 'url(../../../assets/avatar.jpg)'
         }"
         class="img"

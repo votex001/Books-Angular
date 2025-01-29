@@ -26,12 +26,17 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit(event: any) {
-    if (!event.target.files) return;
-    const file = event.target.files[0];
+  onSubmit(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0];
     if (!file) return;
-
-    console.log(file);
+    if (this.user) {
+      this.userService
+        .updateUserPhoto(this.user, file)
+        .subscribe((user: any) => {
+          this.user = user;
+        });
+    }
   }
 
   ngOnDestroy(): void {

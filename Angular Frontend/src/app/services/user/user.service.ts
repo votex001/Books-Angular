@@ -4,6 +4,7 @@ import {
   BehaviorSubject,
   catchError,
   first,
+  map,
   of,
   retry,
   switchMap,
@@ -38,7 +39,7 @@ interface resetPassCred {
 export class UserService {
   constructor(private http: HttpClient) {}
   private url = environment.apiUrl;
-  
+
   private _user$ = new BehaviorSubject<User | null>(null);
   public user$ = this._user$.asObservable();
 
@@ -157,5 +158,30 @@ export class UserService {
     return this.http
       .post(`${this.url}/auth/reset-password`, resetCredentials)
       .pipe(first());
+  }
+
+  public updateUserPhoto(user: User, file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', environment.cloudinary.uploadPreset);
+
+    return this.http
+      .post(
+        `https://api.cloudinary.com/v1_1/${environment.cloudinary.cloudName}/image/upload`,
+        formData
+      )
+      .pipe(
+        first(),
+        switchMap((ans: any) => {
+          return this.http.put(
+            `${this.url}/user`,
+            {
+              ...user,
+              imgUrl: ans.url,
+            },
+            { withCredentials: true }
+          );
+        })
+      );
   }
 }
