@@ -38,7 +38,7 @@ interface resetPassCred {
 export class UserService {
   constructor(private http: HttpClient) {}
   private url = environment.apiUrl;
-
+  
   private _user$ = new BehaviorSubject<User | null>(null);
   public user$ = this._user$.asObservable();
 

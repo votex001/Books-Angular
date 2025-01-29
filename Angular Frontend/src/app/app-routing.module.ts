@@ -13,6 +13,7 @@ import { emailStatusResolver } from './resolvers/email-status.resolver';
 import { RequestResetPassPageComponent } from './pages/auth/request-reset-pass-page/request-reset-pass-page.component';
 import { tokenResolver } from './resolvers/token.resolver';
 import { ResetPassPageComponent } from './pages/auth/reset-pass-page/reset-pass-page.component';
+import { userResolver } from './resolvers/user.resolver';
 
 const routes: Routes = [
   {
@@ -38,7 +39,11 @@ const routes: Routes = [
     component: ConfirmEmailComponent,
     resolve: { emailStatus: emailStatusResolver },
   },
-  { path: 'profile', component: ProfilePageComponent },
+  {
+    path: 'profile',
+    component: ProfilePageComponent,
+    resolve: { user: userResolver },
+  },
   {
     path: '',
     pathMatch: 'full',
