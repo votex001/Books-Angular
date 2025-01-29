@@ -7,8 +7,8 @@ export async function myFav(req, res) {
     const userId = req.loggedinUser.id;
     const userBooks = await userFavService.getUserBooks(userId);
     // if (!userBooks) return res.status(404).send({ error: "Books not found" });
-    delete userBooks._id
-    delete userBooks.userId
+    delete userBooks._id;
+    delete userBooks.userId;
     res.send(userBooks);
   } catch (e) {
     console.log(e);
@@ -22,9 +22,8 @@ export async function postMyFovBook(req, res) {
     const userId = req.loggedinUser.id;
     const { bookId } = req.body;
     const book = await booksService.getById(bookId);
-    const ans = await userFavService.save(userId, book);
-    console.log(userId);
-    res.send(ans);
+    const savedBook = await userFavService.save(userId, book);
+    res.send(savedBook);
   } catch (e) {
     console.log(e);
     loggerService.error(e);
@@ -37,7 +36,7 @@ export async function deleteBookFromFav(req, res) {
     const userId = req.loggedinUser.id;
     const { bookId } = req.params;
     await userFavService.deleteBook(userId, bookId);
-    res.send("Book deleted");
+    res.status(200).json({ success: true });
   } catch (e) {
     console.log(e);
     loggerService.error(e);
