@@ -9,13 +9,9 @@ export interface Book {
   authors: { name: string }[];
   download_count: number;
   cover: string;
-  languages: string[];
+  languages: Lang[];
   title: string;
   subjects: string[];
-}
-
-export interface FavBooksState {
-  favBooks: UserFav | null;
 }
 export type Lang =
   | 'all' // all
@@ -25,6 +21,10 @@ export type Lang =
   | 'zh' // Chinese
   | 'hi' // Hindi
   | 'he'; // Hebrew
+
+export interface FavBooksState {
+  favBooks: UserFav | null;
+}
 
 export interface SearchFilter {
   lang: Lang;
