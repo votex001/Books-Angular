@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Lang } from '../../models/book/book.model';
+import { Lang, SearchFilter } from '../../models/book/book.model';
 import { BooksService } from '../../services/books/books.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
 })
 export class SearchPanelComponent implements OnInit {
+  @Input() onSetFilter?: (params: Partial<SearchFilter>) => void;
   searchFrom = new FormGroup({
     search: new FormControl(''),
     lang: new FormControl<Lang>('all'),
@@ -51,13 +52,18 @@ export class SearchPanelComponent implements OnInit {
         this.searchFrom.get('lang')?.setValue(params['lang']);
       }
 
-      this.books.setFilter(params);
+      if (this.onSetFilter) {
+        this.onSetFilter(params);
+      } else {
+        this.books.setFilter(params);
+      }
     });
   }
 
-  public onSubmit() {
+  public onSubmit = () => {
     const queryParams = Object.entries(this.searchFrom.value).reduce(
-      (params, [key, value]) => (value ? { ...params, [key]: value } : params),
+      (params, [key, value]) =>
+        key === 'search' || value ? { ...params, [key]: value } : params,
       {}
     );
 
@@ -67,6 +73,10 @@ export class SearchPanelComponent implements OnInit {
       queryParamsHandling: 'merge', // This ensures other query params are preserved
     });
     // If needed, pass the params to setFilter
-    this.books.setFilter(queryParams);
-  }
+    if (this.onSetFilter) {
+      this.onSetFilter(queryParams);
+    } else {
+      this.books.setFilter(queryParams);
+    }
+  };
 }
