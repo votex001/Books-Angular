@@ -12,6 +12,7 @@ export class PaginationComponent implements OnInit {
   public page = 1;
   @Input() totalItems: number = 0;
   @Input() onSetPage?: (page: number) => void;
+  @Input() itemsPerPage?: number = 8;
   constructor(private route: ActivatedRoute) {}
   ngOnInit(): void {
     this.route.queryParams

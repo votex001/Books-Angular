@@ -4,7 +4,11 @@
       *ngFor="
         let item of [1]
           | paginate
-            : { itemsPerPage: 8, totalItems: totalItems, currentPage: page }
+            : {
+                itemsPerPage: itemsPerPage,
+                totalItems: totalItems,
+                currentPage: page
+              }
       "
     ></li>
   </ul>
