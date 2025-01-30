@@ -16,5 +16,13 @@
       <p>{{ user?.email }}</p>
     </div>
   </header>
-  <main></main>
+  <main class="favorite-books">
+    <search-panel [onSetFilter]="onSearch" />
+    <books [books]="favBooksInfo.books" />
+    <pagination
+      [totalItems]="favBooksInfo.results"
+      [itemsPerPage]="5"
+      [onSetPage]="onSetPage"
+    />
+  </main>
 </section>
