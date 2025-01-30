@@ -15,7 +15,15 @@ async function getUserBooks(filter, userId) {
     const userFavBooks = await usersBooks.findOne({
       userId: new ObjectId(String(userId)),
     });
-    //search filter
+
+    // Guard for booksPerPage
+    const maxBooksPerPage = 50;
+    const validBooksPerPage =
+      typeof booksPerPage === "number" && booksPerPage > 0
+        ? Math.min(booksPerPage, maxBooksPerPage)
+        : 6; // default pages
+
+    // Filter books
     let filteredBooks = userFavBooks.books.filter((book) => {
       const matchesSearch = search
         ? book.title.toLowerCase().includes(search.toLowerCase())
@@ -26,12 +34,12 @@ async function getUserBooks(filter, userId) {
       return matchesSearch && matchesLang;
     });
 
-    //pagination
+    // Pagination
     const totalBooks = filteredBooks.length;
-    const totalPages = Math.ceil(totalBooks / booksPerPage);
+    const totalPages = Math.ceil(totalBooks / validBooksPerPage);
     const pageNumber = Math.max(1, Math.min(page, totalPages));
-    const firstIndex = booksPerPage * (pageNumber - 1);
-    const lastIndex = firstIndex + booksPerPage;
+    const firstIndex = validBooksPerPage * (pageNumber - 1);
+    const lastIndex = firstIndex + validBooksPerPage;
     const paginatedBooks = filteredBooks.slice(firstIndex, lastIndex);
     return {
       books: paginatedBooks,
@@ -44,6 +52,7 @@ async function getUserBooks(filter, userId) {
     return res.status(500).send({ err: "Failed to find users books" });
   }
 }
+
 
 async function deleteBook(userId, bookId) {
   try {

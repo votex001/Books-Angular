@@ -39,6 +39,15 @@ export class BooksService {
     .asObservable()
     .pipe(distinctUntilChanged());
 
+  private _favorFilter$ = new BehaviorSubject<SearchFilter>({
+    lang: 'all',
+    page: 1,
+    search: '',
+  });
+  public favorFilter$ = this._favorFilter$
+    .asObservable()
+    .pipe(distinctUntilChanged());
+
   private cachedData: { [key: string]: any } = {}; // Cache for API responses
 
   public query(): Observable<any> {
@@ -251,20 +260,46 @@ export class BooksService {
   }
 
   public getMyFavBooks() {
-    return this.http.get(`${this.url}/fav`, { withCredentials: true }).pipe(first());
+    // return this.http
+    //   .get(`${this.url}/fav`, { withCredentials: true })
+    //   .pipe(first());
+    return this.favorFilter$.pipe(
+      switchMap((filter) => {
+        const queryParams = new URLSearchParams();
+        queryParams.append('booksPerPage', '5');
+        if (filter.search) {
+          queryParams.append('search', filter.search);
+        }
+        if (filter.lang !== 'all') {
+          queryParams.append('lang', filter.lang);
+        }
+        queryParams.append('page', String(filter.page));
+        const url = `${this.url}/fav?${queryParams.toString()}`;
+        return this.http.get(url, { withCredentials: true });
+      })
+    );
+  }
+
+  public setFavorFilter(params: Partial<SearchFilter>) {
+    const { value: filter } = this._favorFilter$;
+    this._favorFilter$.next({
+      search: params?.search ?? filter.search,
+      lang: params?.lang ?? filter.lang,
+      page: params?.page ?? filter.page,
+    });
   }
 
   public addBookToFav(bookId: string | number) {
-    return this.http.post(
-      `${this.url}/fav`,
-      { bookId },
-      { withCredentials: true }
-    ).pipe(first());
+    return this.http
+      .post(`${this.url}/fav`, { bookId }, { withCredentials: true })
+      .pipe(first());
   }
 
   public removeFromFav(bookId: string | number) {
-    return this.http.delete(`${this.url}/fav/${bookId}`, {
-      withCredentials: true,
-    }).pipe(first());
+    return this.http
+      .delete(`${this.url}/fav/${bookId}`, {
+        withCredentials: true,
+      })
+      .pipe(first());
   }
 }
