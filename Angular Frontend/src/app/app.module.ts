@@ -23,6 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SingUpPageComponent } from './pages/auth/sing-up-page/sing-up-page.component';
 import { ConfirmEmailComponent } from './pages/auth/confirm-email/confirm-email.component';
 import { ResetPassPageComponent } from './pages/auth/reset-pass-page/reset-pass-page.component';
+import { LoadingComponent } from './cmps/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ResetPassPageComponent } from './pages/auth/reset-pass-page/reset-pass-
     SearchPanelComponent,
     ConfirmEmailComponent,
     ResetPassPageComponent,
+    LoadingComponent,
   ],
   imports: [
     MatIconModule,
