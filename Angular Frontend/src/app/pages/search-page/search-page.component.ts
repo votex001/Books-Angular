@@ -31,7 +31,10 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   setPage = (page: number) => {
     this.BookService.setFilter({ page });
-    this.router.navigate([], { queryParams: { q: page } });
+    this.router.navigate([], {
+      queryParams: { q: page },
+      queryParamsHandling: 'merge',
+    });
   };
   ngOnDestroy(): void {
     if (this.booksSubscription) {
