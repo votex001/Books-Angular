@@ -3,7 +3,7 @@ import { booksService } from "./books.service.js";
 
 export async function getBooks(req, res) {
   try {
-    const { search, lang, page, sort } = req.query;
+    const { search, lang, page } = req.query;
     const filter = {};
     if (search) filter.search = search;
     if (lang && lang !== "all") filter.lang = lang;

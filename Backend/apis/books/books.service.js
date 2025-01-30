@@ -30,8 +30,9 @@ async function query(filter) {
 
 async function getById(id) {
   try {
-    if (!id) throw new Error("Book ID is required.");
-
+    if (!id) {
+      throw "Book ID is required.";
+    }
     const url = `https://gutendex.com/books/${id}`;
     const book = await fetchAndParse(url);
 

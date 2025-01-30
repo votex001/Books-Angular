@@ -8,14 +8,37 @@ export const userFavService = {
   deleteBook,
 };
 
-async function getUserBooks(userId) {
+async function getUserBooks(filter, userId) {
   try {
+    const { search, lang, page, booksPerPage } = filter;
     const usersBooks = await getCollection("users-books");
     const userFavBooks = await usersBooks.findOne({
       userId: new ObjectId(String(userId)),
     });
-    console.log(userId);
-    return userFavBooks;
+    //search filter
+    let filteredBooks = userFavBooks.books.filter((book) => {
+      const matchesSearch = search
+        ? book.title.toLowerCase().includes(search.toLowerCase())
+        : true;
+      const matchesLang = lang
+        ? lang === "all" || book.languages.includes(lang)
+        : true;
+      return matchesSearch && matchesLang;
+    });
+
+    //pagination
+    const totalBooks = filteredBooks.length;
+    const totalPages = Math.ceil(totalBooks / booksPerPage);
+    const pageNumber = Math.max(1, Math.min(page, totalPages));
+    const firstIndex = booksPerPage * (pageNumber - 1);
+    const lastIndex = firstIndex + booksPerPage;
+    const paginatedBooks = filteredBooks.slice(firstIndex, lastIndex);
+    return {
+      books: paginatedBooks,
+      results: totalBooks,
+      totalPages,
+      currentPage: pageNumber,
+    };
   } catch (e) {
     console.log(e);
     return res.status(500).send({ err: "Failed to find users books" });
@@ -40,9 +63,12 @@ async function deleteBook(userId, bookId) {
 
 async function save(userId, bookToSave) {
   try {
-    const userBooks = await getUserBooks(userId);
+    const usersBooks = await getCollection("users-books");
+    const userFavBooks = await usersBooks.findOne({
+      userId: new ObjectId(String(userId)),
+    });
     const favBooksCollection = await getCollection("users-books");
-    if (!userBooks) {
+    if (!userFavBooks) {
       const newFavLib = {
         userId,
         books: [bookToSave],
@@ -53,10 +79,10 @@ async function save(userId, bookToSave) {
         "books.id": bookToSave.id,
       });
       if (match) return match;
-      userBooks.books.push(bookToSave);
+      userFavBooks.books.push(bookToSave);
       const result = await favBooksCollection.updateOne(
         { userId: new ObjectId(String(userId)) },
-        { $set: { books: userBooks.books } }
+        { $set: { books: userFavBooks.books } }
       );
       if (result.matchedCount === 0) {
         throw `Couldn't save books to library of user with id ${userId}`;
