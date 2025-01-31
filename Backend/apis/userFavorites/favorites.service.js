@@ -48,11 +48,10 @@ async function getUserBooks(filter, userId) {
       currentPage: pageNumber,
     };
   } catch (e) {
-    console.log(e);
-    return res.status(500).send({ err: "Failed to find users books" });
+    console.log("[getUserBooks]", e);
+    loggerService.error("[getUserBooks]", e);
   }
 }
-
 
 async function deleteBook(userId, bookId) {
   try {
