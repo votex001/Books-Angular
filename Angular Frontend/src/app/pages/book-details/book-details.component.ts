@@ -1,11 +1,11 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Book } from '../../../models/book/book.model';
+import { Book } from '../../models/book/book.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { map, Subscription } from 'rxjs';
-import { UserService } from '../../../services/user/user.service';
-import { User } from '../../../models/user/user.model';
-import { BooksService } from '../../../services/books/books.service';
+import { UserService } from '../../services/user/user.service';
+import { User } from '../../models/user/user.model';
+import { BooksService } from '../../services/books/books.service';
 
 @Component({
   selector: 'book-details',

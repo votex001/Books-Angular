@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { LoginPageComponent } from './pages/auth/login-page/login-page.component';
-import { BookDetailsComponent } from './cmps/books-components/book-details/book-details.component';
+import { BookDetailsComponent } from './pages/book-details/book-details.component';
 import { bookResolver } from './resolvers/book.resolver';
 import { BookTxtComponent } from './cmps/books-components/book-txt/book-txt.component';
 import { bookTxtResolver } from './resolvers/book-txt.resolver';
