@@ -274,9 +274,9 @@ export class BooksService {
     // return this.http
     //   .get(`${this.url}/fav`, { withCredentials: true })
     //   .pipe(first());
-    this.loadingService.setLoading(true);
     return this.favorFilter$.pipe(
       switchMap((filter) => {
+        this.loadingService.setLoading(true);
         const queryParams = new URLSearchParams();
         queryParams.append('booksPerPage', '5');
         if (filter.search) {
