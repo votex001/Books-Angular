@@ -37,17 +37,11 @@ export class BookDetailsComponent implements OnInit, OnDestroy {
   onAddToFavorites = async () => {
     const book = this.book_();
     if (book && !this.isAdded) {
-      this.bookService.addBookToFav(book.id).subscribe((ans: any) => {
-        if (ans.id) {
-          this.isAdded = true;
-        }
-      });
+      this.isAdded = true;
+      this.bookService.addBookToFav(book.id).subscribe();
     } else if (book && this.isAdded) {
-      this.bookService.removeFromFav(book.id).subscribe((ans: any) => {
-        if (ans.success) {
-          this.isAdded = false;
-        }
-      });
+      this.isAdded = false;
+      this.bookService.removeFromFav(book.id).subscribe();
     }
   };
 
