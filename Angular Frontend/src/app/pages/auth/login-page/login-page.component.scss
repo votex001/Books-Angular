@@ -10,12 +10,12 @@
     margin-bottom: 20px;
     margin-top: 30px;
     .logo {
-      font-size: 48px;
+      font-size: 80px;
       border-radius: 50%;
       display: grid;
       place-content: center;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2),
+        0 6px 16px 0 rgba(0, 0, 0, 0.19);
       margin-bottom: 10px;
     }
     .label {
@@ -45,12 +45,11 @@
         justify-content: space-between;
       }
       input {
-        margin-bottom: 16px;
         width: 254px;
-        line-height: 20px;
-        padding: 5px 12px;
-        border: 1px solid rgb(46, 51, 58);
-        border-radius: 6px;
+        margin-bottom: 16px;
+      }
+      input + p {
+        margin-bottom: 0;
       }
       .btn {
         background-color: rgb(29, 151, 54);
