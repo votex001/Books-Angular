@@ -7,12 +7,25 @@
     display: flex;
     .img-cover {
       cursor: pointer;
+      margin: 10px 30px ;
       .img {
-        width: 250px;
-        height: 300px;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+      }
+    }
+    .txt{
+      align-content: center;
+      .name{
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .email{
+        opacity: .8;
       }
     }
   }

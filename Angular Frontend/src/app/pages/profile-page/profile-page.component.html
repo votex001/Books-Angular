@@ -11,9 +11,9 @@
         class="img"
       ></div>
     </label>
-    <div>
-      <h3>{{ user?.fullName }}</h3>
-      <p>{{ user?.email }}</p>
+    <div class="txt">
+      <h3 class="name">{{ user?.fullName }}</h3>
+      <p class="email">{{ user?.email }}</p>
     </div>
   </header>
   <main class="favorite-books">
@@ -24,7 +24,7 @@
       [totalItems]="favBooksInfo.results"
       [itemsPerPage]="5"
       [onSetPage]="onSetPage"
-      *ngIf="!isLoading && favBooksInfo.results > 5"
+      *ngIf="!isLoading && favBooksInfo.results > BooksPerPage"
     />
   </main>
 </section>

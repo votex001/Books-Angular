@@ -4,7 +4,11 @@ import { Subscription } from 'rxjs';
 import { User } from '../../models/user/user.model';
 import { Router } from '@angular/router';
 import { BooksService } from '../../services/books/books.service';
-import { Book, SearchFilter } from '../../models/book/book.model';
+import {
+  Book,
+  BooksPerFavoritePage,
+  SearchFilter,
+} from '../../models/book/book.model';
 import { LoadingService } from '../../services/loading/loading.service';
 
 @Component({
@@ -19,6 +23,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   private favoriteBooksSubscription: Subscription | null = null;
   private loadingSubscription: Subscription | null = null;
 
+  public BooksPerPage = BooksPerFavoritePage;
   public isLoading: boolean = false;
   public user: User | null = null;
   public favBooksInfo: {
