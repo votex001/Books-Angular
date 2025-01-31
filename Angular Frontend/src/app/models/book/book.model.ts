@@ -1,4 +1,6 @@
 import { count } from 'rxjs';
+//default params
+export const BooksPerFavoritePage = 10;
 
 export interface UserFav {
   books: Book[];
