@@ -13,10 +13,23 @@ import {
   filter,
   first,
 } from 'rxjs/operators';
-import { Book, booksFetch, SearchFilter } from '../../models/book/book.model';
+import {
+  Book,
+  booksFetch,
+  BooksPerFavoritePage,
+  Lang,
+  SearchFilter,
+} from '../../models/book/book.model';
 import { environment } from '../../../env/environment';
 import { ShelfPaginatorService } from '../ShelfPaginator/shelf-paginator.service';
 import { LoadingService } from '../loading/loading.service';
+
+export interface FavSearchFilter {
+  lang: Lang;
+  page: number;
+  search: string;
+  booksPerPage: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -41,10 +54,11 @@ export class BooksService {
     .asObservable()
     .pipe(distinctUntilChanged());
 
-  private _favorFilter$ = new BehaviorSubject<SearchFilter>({
+  private _favorFilter$ = new BehaviorSubject<FavSearchFilter>({
     lang: 'all',
     page: 1,
     search: '',
+    booksPerPage: BooksPerFavoritePage,
   });
   public favorFilter$ = this._favorFilter$
     .asObservable()
@@ -274,11 +288,13 @@ export class BooksService {
     // return this.http
     //   .get(`${this.url}/fav`, { withCredentials: true })
     //   .pipe(first());
-    this.loadingService.setLoading(true);
     return this.favorFilter$.pipe(
       switchMap((filter) => {
+        this.loadingService.setLoading(true);
         const queryParams = new URLSearchParams();
-        queryParams.append('booksPerPage', '5');
+        if (filter.booksPerPage) {
+          queryParams.append('booksPerPage', String(filter.booksPerPage));
+        }
         if (filter.search) {
           queryParams.append('search', filter.search);
         }
@@ -298,12 +314,13 @@ export class BooksService {
     );
   }
 
-  public setFavorFilter(params: Partial<SearchFilter>) {
+  public setFavorFilter(params: Partial<FavSearchFilter>) {
     const { value: filter } = this._favorFilter$;
     this._favorFilter$.next({
       search: params?.search ?? filter.search,
       lang: params?.lang ?? filter.lang,
       page: params?.page ?? filter.page,
+      booksPerPage: params?.booksPerPage ?? filter.booksPerPage,
     });
   }
 
