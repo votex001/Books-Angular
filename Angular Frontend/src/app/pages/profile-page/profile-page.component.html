@@ -18,11 +18,13 @@
   </header>
   <main class="favorite-books">
     <search-panel [onSetFilter]="onSearch" />
-    <books [books]="favBooksInfo.books" />
+    <loading *ngIf="isLoading" />
+    <books [books]="favBooksInfo.books" *ngIf="!isLoading" />
     <pagination
       [totalItems]="favBooksInfo.results"
       [itemsPerPage]="5"
       [onSetPage]="onSetPage"
+      *ngIf="!isLoading && favBooksInfo.results > 5"
     />
   </main>
 </section>

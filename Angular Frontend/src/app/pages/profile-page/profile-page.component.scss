@@ -1,4 +1,8 @@
 .profile {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
   .details {
     display: flex;
     .img-cover {
@@ -13,6 +17,9 @@
     }
   }
   .favorite-books {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    height: 100%;
     ::ng-deep .books {
       .list {
         grid-template-columns: repeat(5, minmax(100px, 150px)) !important;

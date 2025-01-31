@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Lang, SearchFilter } from '../../models/book/book.model';
 import { BooksService } from '../../services/books/books.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingService } from '../../services/loading/loading.service';
 
 @Component({
   selector: 'search-panel',
@@ -35,7 +36,8 @@ export class SearchPanelComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private books: BooksService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private loadingService: LoadingService
   ) {
     this.matIconRegistry.addSvgIcon(
       'search',

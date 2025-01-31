@@ -5,6 +5,7 @@ import { User } from '../../models/user/user.model';
 import { Router } from '@angular/router';
 import { BooksService } from '../../services/books/books.service';
 import { Book, SearchFilter } from '../../models/book/book.model';
+import { LoadingService } from '../../services/loading/loading.service';
 
 @Component({
   selector: 'profile-page',
@@ -14,11 +15,11 @@ import { Book, SearchFilter } from '../../models/book/book.model';
   styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
-  private userService = inject(UserService);
-  private booksService = inject(BooksService);
-  private router = inject(Router);
   private userSubscription: Subscription | null = null;
   private favoriteBooksSubscription: Subscription | null = null;
+  private loadingSubscription: Subscription | null = null;
+
+  public isLoading: boolean = false;
   public user: User | null = null;
   public favBooksInfo: {
     books: Book[];
@@ -31,8 +32,17 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     totalPages: 0,
     currentPage: 1,
   };
+  constructor(
+    private userService: UserService,
+    private booksService: BooksService,
+    private router: Router,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
+    this.loadingSubscription = this.loadingService.loadingStatus$.subscribe(
+      (boolean) => (this.isLoading = boolean)
+    );
     this.userSubscription = this.userService.login().subscribe((ans) => {
       if (!ans) {
         this.router.navigate(['/login']);
@@ -72,6 +82,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
     if (this.favoriteBooksSubscription) {
       this.favoriteBooksSubscription.unsubscribe();
+    }
+    if (this.loadingSubscription) {
+      this.loadingSubscription.unsubscribe();
     }
   }
 }

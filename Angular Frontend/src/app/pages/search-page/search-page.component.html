@@ -1,9 +1,14 @@
-<section className="search-page">
+<section class="search-page">
   <header>
     <search-panel />
   </header>
-  <main>
-    <books [books]="viewBooks" />
-    <pagination [totalItems]="totalItems" [onSetPage]="setPage" />
+  <main class="books">
+    <loading *ngIf="isLoading" />
+    <books [books]="viewBooks" *ngIf="!isLoading" />
+    <pagination
+      [totalItems]="totalItems"
+      [onSetPage]="setPage"
+      *ngIf="!isLoading && totalItems > 8"
+    />
   </main>
 </section>

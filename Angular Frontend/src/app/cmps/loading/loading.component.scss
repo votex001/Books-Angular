@@ -1,0 +1,12 @@
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: 100%;
+  background-image: url("/assets/loading.gif");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: hue-rotate(60deg) brightness(1.3);
+}

@@ -16,6 +16,7 @@ import {
 import { Book, booksFetch, SearchFilter } from '../../models/book/book.model';
 import { environment } from '../../../env/environment';
 import { ShelfPaginatorService } from '../ShelfPaginator/shelf-paginator.service';
+import { LoadingService } from '../loading/loading.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,8 @@ import { ShelfPaginatorService } from '../ShelfPaginator/shelf-paginator.service
 export class BooksService {
   constructor(
     private http: HttpClient,
-    private shelfPaginatorService: ShelfPaginatorService
+    private shelfPaginatorService: ShelfPaginatorService,
+    private loadingService: LoadingService
   ) {}
 
   private url = environment.apiUrl;
@@ -51,6 +53,8 @@ export class BooksService {
   private cachedData: { [key: string]: any } = {}; // Cache for API responses
 
   public query(): Observable<any> {
+    this.loadingService.setLoading(true);
+
     return this.filterBy$.pipe(
       switchMap((filter) => {
         if (this.cachedData[filter.page]) {
@@ -68,10 +72,12 @@ export class BooksService {
         // Fetch and set total books count
         return this.http.get<booksFetch>(url).pipe(
           map((res) => res.count),
-          tap((count) => {
-            if (this.shelfPaginatorService) {
-              this.shelfPaginatorService.setTotalBooks(count); // Update paginator with total books
-            }
+          tap({
+            next: (count) => {
+              if (this.shelfPaginatorService) {
+                this.shelfPaginatorService.setTotalBooks(count); // Update paginator with total books
+              }
+            },
           }),
           catchError((error) => {
             console.error('Error fetching total books:', error);
@@ -114,6 +120,11 @@ export class BooksService {
                   }
 
                   return { ...result, results: resultsArray };
+                }),
+                tap({
+                  complete: () => {
+                    this.loadingService.setLoading(false);
+                  },
                 }),
                 catchError((error) => {
                   console.error('Error fetching data:', error);
@@ -263,6 +274,7 @@ export class BooksService {
     // return this.http
     //   .get(`${this.url}/fav`, { withCredentials: true })
     //   .pipe(first());
+    this.loadingService.setLoading(true);
     return this.favorFilter$.pipe(
       switchMap((filter) => {
         const queryParams = new URLSearchParams();
@@ -275,7 +287,13 @@ export class BooksService {
         }
         queryParams.append('page', String(filter.page));
         const url = `${this.url}/fav?${queryParams.toString()}`;
-        return this.http.get(url, { withCredentials: true });
+        return this.http.get(url, { withCredentials: true }).pipe(
+          tap({
+            complete: () => {
+              this.loadingService.setLoading(false);
+            },
+          })
+        );
       })
     );
   }
