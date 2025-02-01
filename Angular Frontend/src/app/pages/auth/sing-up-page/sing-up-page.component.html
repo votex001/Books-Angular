@@ -23,21 +23,35 @@
           <div class="inputs">
             <label>
               <p>Email</p>
-              <input formControlName="email" placeholder="Email" class="input"/>
+              <input
+                formControlName="email"
+                placeholder="Email"
+                class="input"
+              />
               <p *ngIf="isErr && !signUpForm.value.email" class="alert">
                 Enter your email.
               </p>
             </label>
             <label>
               <p>Full name</p>
-              <input formControlName="fullName" placeholder="Full name" class="input"/>
+              <input
+                formControlName="fullName"
+                placeholder="Full name"
+                class="input"
+              />
               <p *ngIf="isErr && !signUpForm.value.fullName" class="alert">
                 Enter your full name.
               </p>
             </label>
             <label>
               <p>Password</p>
-              <input #pass formControlName="password" placeholder="Password" class="input"/>
+              <input
+                #pass
+                formControlName="password"
+                placeholder="Password"
+                class="input"
+                type="password"
+              />
               <p *ngIf="!pass.value && isErr" class="alert">
                 Password can't be empty.
               </p>
@@ -49,6 +63,7 @@
                 formControlName="confirmPass"
                 placeholder="Confirm password"
                 class="input"
+                type="password"
               />
               <p *ngIf="!confPass.value && isErr" class="alert">
                 Confirm your password.
