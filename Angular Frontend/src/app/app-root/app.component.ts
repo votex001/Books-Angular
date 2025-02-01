@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
           !hiddenRoutes.includes(event.urlAfterRedirects) &&
           !confirmRoutePattern.test(event.urlAfterRedirects) &&
           !resetRoutePattern.test(event.urlAfterRedirects);
-        console.log(confirmRoutePattern.test(event.urlAfterRedirects));
       }
     });
   }

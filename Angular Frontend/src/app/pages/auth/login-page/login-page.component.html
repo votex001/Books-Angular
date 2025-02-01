@@ -11,7 +11,7 @@
         <div>
           <p class="label">Email:</p>
           <input formControlName="email" type="email" required class="input" placeholder="Email"/>
-          <p *ngIf="!loginForm.value.email && loginForm.invalid && isErr">
+          <p *ngIf="!loginForm.value.email && loginForm.invalid && isErr" class="alert">
             Please enter a valid email.
           </p>
         </div>
@@ -21,7 +21,7 @@
             <a routerLink="/resetPassword">Forgot password?</a>
           </div>
           <input formControlName="password" required type="password" class="input" placeholder="Password"/>
-          <p *ngIf="!loginForm.value.password && loginForm.invalid && isErr">
+          <p *ngIf="!loginForm.value.password && loginForm.invalid && isErr" class="alert">
             Password is required.
           </p>
         </div>
