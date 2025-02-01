@@ -36,8 +36,7 @@ export class SearchPanelComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private books: BooksService,
     private router: Router,
-    private route: ActivatedRoute,
-    private loadingService: LoadingService
+    private route: ActivatedRoute
   ) {
     this.matIconRegistry.addSvgIcon(
       'search',
@@ -64,21 +63,28 @@ export class SearchPanelComponent implements OnInit {
 
   public onSubmit = () => {
     const queryParams = Object.entries(this.searchFrom.value).reduce(
-      (params, [key, value]) =>
-        key === 'search' || value ? { ...params, [key]: value } : params,
+      (params, [key, value]) => {
+        if ((key === 'search' && value === '') || (key === 'lang' && value === 'all')) {
+          return params; // Skip adding these to queryParams
+        }
+        return { ...params, [key]: value };
+      },
       {}
     );
-
-    // Set query params in the URL
+  
+    // Navigate without the unwanted query parameters
     this.router.navigate([], {
-      queryParams: queryParams,
-      queryParamsHandling: 'merge', // This ensures other query params are preserved
+      queryParams: Object.keys(queryParams).length ? queryParams : null,
+      queryParamsHandling: '', // Replace completely to remove unwanted params
+      replaceUrl: true, // Keep the browser history clean
     });
-    // If needed, pass the params to setFilter
-    if (this.onSetFilter) {
-      this.onSetFilter(queryParams);
-    } else {
-      this.books.setFilter(queryParams);
-    }
   };
+  
+  
+  
+  
+ onClear = () => {
+  this.searchFrom.patchValue({ search: '' });
+  this.onSubmit()
+};
 }

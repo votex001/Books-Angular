@@ -1,31 +1,52 @@
 <section *ngIf="book_() as book" class="book-preview">
-  <header>
-    <img [src]="book.cover" />
-    <section class="details">
-      <h1>{{ book.title }}</h1>
-      <section *ngIf="!!book.authors.length">
-        <h2 class="title">Authors:</h2>
-        <div class="names">
-          <p *ngFor="let author of book.authors">{{ author.name }}</p>
-        </div>
+  <div class="bg">
+    <header class="book-header">
+      <img [src]="book.cover" class="cover" />
+      <section class="details">
+        <h1 class="book-title">{{ book.title }}</h1>
+        <section *ngIf="!!book.authors.length" class="Authors info">
+          <h2 class="title">Authors:</h2>
+          <div class="names">
+            <p *ngFor="let author of book.authors">{{ author.name }}</p>
+          </div>
+        </section>
+        <section *ngIf="!!book.languages.length" class="languages info">
+          <h2 class="title">Languages:</h2>
+          <p>{{ langName.of(book.languages[0]) }}</p>
+        </section>
+        <section
+          class="downloads info"
+          *ngIf="book.download_count as downloads"
+        >
+          <h2 class="title">Downloads:</h2>
+          <p>{{ downloads }}</p>
+        </section>
+        <section class="btns">
+          <a [routerLink]="['/book', book.id, 'txt']" class="read">Read</a>
+          <button
+            *ngIf="user"
+            class="favorites-btn"
+            (click)="onAddToFavorites()"
+            (mouseover)="isHovered = true"
+            (mouseout)="isHovered = false"
+          >
+            <i
+              class="{{
+                !isHovered && isAdded
+                  ? 'fa-solid fa-heart'
+                  : 'fa-regular fa-heart'
+              }} {{
+                isHovered && !isAdded
+                  ? 'fa-solid fa-heart'
+                  : 'fa-regular fa-heart'
+              }} icon"
+            ></i>
+          </button>
+        </section>
       </section>
-      <section *ngIf="!!book.languages.length" class="languages">
-        <h2 class="title">Languages:</h2>
-        <p>{{ langName.of(book.languages[0]) }}</p>
-      </section>
-      <section class="downloads" *ngIf="book.download_count as downloads">
-        <h2 class="title">Downloads:</h2>
-        <p>{{ downloads }}</p>
-      </section>
-      <section class="btns">
-        <button *ngIf="user" (click)="onAddToFavorites()">
-          {{isAdded?"Remove from":'Add to'}} favorites
-        </button>
-        <a [routerLink]="['/book', book.id, 'txt']">Read</a>
-      </section>
-    </section>
-  </header>
-  <main>
-    <books-quotes [bookId]="book.id" />
-  </main>
+    </header>
+    <main>
+      <books-quotes [bookId]="book.id" />
+    </main>
+  </div>
 </section>

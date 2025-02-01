@@ -1,10 +1,12 @@
-<section>
-  <h2>Quotes</h2>
-  <section>
-    <div *ngFor="let quote of bookQuotes">
-      <i class="fa-solid fa-quote-left"></i>
-      <p>{{ quote }}</p>
-      <i class="fa-solid fa-quote-right"></i>
-    </div>
-  </section>
+<section *ngIf="bookQuotes.length" class="quotes-section">
+  <h2 class="title">Quotes</h2>
+  <div class="scroll">
+    <section class="quote-list" *ngFor="let quote of bookQuotes">
+      <div class="cover">
+        <i class="fa-solid fa-quote-left"></i>
+        <p class="text">{{ quote }}</p>
+        <i class="fa-solid fa-quote-right"></i>
+      </div>
+    </section>
+  </div>
 </section>
