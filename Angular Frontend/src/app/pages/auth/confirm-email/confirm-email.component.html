@@ -56,9 +56,13 @@
         </form>
       </div>
       <ng-template #errorMsg>
-        <h1>Something is wrong...</h1>
-        <p>This email already verified or doesn't exist in our system.</p>
-        <a routerLink="/signup">Go back</a>
+        <div class="err">
+          <h1 class="title">Something is wrong...</h1>
+          <p class="text">
+            This email already verified or doesn't exist in our system.
+          </p>
+          <a routerLink="/signup" class="btn">Go back</a>
+        </div>
       </ng-template>
     </ng-container>
   </section>

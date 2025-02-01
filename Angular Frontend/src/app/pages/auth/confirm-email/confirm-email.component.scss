@@ -29,11 +29,33 @@
     place-content: center;
     width: 50vw;
     height: 100vh;
+
     .title {
       font-size: 2rem;
       font-weight: 600;
       text-align: center;
       margin-bottom: 10px;
+    }
+    .err {
+      .title {
+        text-align: left !important;
+        margin-bottom: 0;
+      }
+      .text {
+        margin-bottom: 10px;
+      }
+      .btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 10px 20px;
+        border-radius: 6px;
+        background-color: var(--button-blue-bg);
+        color: var(--button-text-white);
+        &:hover {
+          background-color: var(--button-blue-bg-hover);
+        }
+      }
     }
     .txt {
       margin-bottom: 5px;
@@ -83,8 +105,8 @@
             background-color: rgb(22, 128, 22);
           }
         }
-        .back{
-          &:hover{
+        .back {
+          &:hover {
             text-decoration: underline;
           }
         }

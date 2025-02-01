@@ -3,6 +3,9 @@
   grid-template-rows: auto 1fr;
   position: relative;
   padding-top: 44px;
+  &.hide{
+    padding-top: 0;
+  }
   .header {
     position: absolute;
     background-color: white;
