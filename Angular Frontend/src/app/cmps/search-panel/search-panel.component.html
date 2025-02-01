@@ -5,14 +5,22 @@
         <span>
           <mat-icon svgIcon="search" />
         </span>
-        <input formControlName="search" />
+        <input formControlName="search" #search />
       </label>
     </div>
-    <select formControlName="lang">
+    <button
+      class="clear-btn"
+      [disabled]="!search.value"
+      type="button"
+      (click)="onClear()"
+    >
+      <i class="fa-solid fa-x icon" *ngIf="search.value"></i>
+    </button>
+    <select formControlName="lang" class="lang-select">
       <option *ngFor="let lang of searchOptions" [value]="lang.value">
         {{ lang.label }}
       </option>
     </select>
-    <button>Search</button>
+    <button class="search-btn">Search</button>
   </form>
 </section>
