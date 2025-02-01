@@ -8,36 +8,18 @@
   <section class="confirm-section">
     <ng-container>
       <div *ngIf="showForm; else errorMsg">
-        <h1>Confirm Email</h1>
+        <h1 class="title">Confirm Email</h1>
         <form
           [formGroup]="confirmForm"
           (submit)="onSubmitForm()"
           (input)="isErr = false"
         >
           <section class="email-info">
-            <p>
+            <p class="txt">
               We sent a code to <strong>{{ email }}</strong
               >. Please check your email.
             </p>
           </section>
-          <label>
-            <p>Code</p>
-            <input
-              type="text"
-              placeholder="Enter the code"
-              formControlName="code"
-            />
-            <p *ngIf="!confirmForm.value.code && isErr" class="alert">
-              This input cant be empty.
-            </p>
-            <p *ngIf="confirmForm.value.code && isErr" class="alert">
-              Incorrect code.
-            </p>
-          </label>
-          <button type="submit">Confirm</button>
-          <div class="back">
-            <a routerLink="/signup">Back</a>
-          </div>
           <div class="resend">
             <p>Didn't get a code?</p>
             <p *ngIf="countdown > 0">{{ countdown }}</p>
@@ -45,9 +27,31 @@
               (click)="onSendAgain()"
               type="button"
               [disabled]="countdown > 0"
+              class="btn"
             >
               Send Again
             </button>
+          </div>
+          <div class="code-submit">
+            <label class="input-holder">
+              <p class="label">Code:</p>
+              <input
+                type="text"
+                placeholder="Enter the code"
+                formControlName="code"
+                class="input"
+              />
+              <p *ngIf="!confirmForm.value.code && isErr" class="alert">
+                This input cant be empty.
+              </p>
+              <p *ngIf="confirmForm.value.code && isErr" class="alert">
+                Incorrect code.
+              </p>
+            </label>
+            <div class="btns">
+              <button type="submit" class="confirm">Confirm</button>
+              <a routerLink="/signup" class="back">Back</a>
+            </div>
           </div>
         </form>
       </div>
