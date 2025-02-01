@@ -1,9 +1,8 @@
 .app {
-  max-height: 100vh;
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: min-content 1fr;
+  height: 100vh;
+overflow: hidden;
   .main-app {
-    height: 100%;
+    overflow: scroll;
+    max-height: 100%;
   }
 }
