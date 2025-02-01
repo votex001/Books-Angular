@@ -102,7 +102,10 @@ table {
 }
 
 input {
-  border-radius: 0;
+  line-height: 20px;
+  padding: 5px 12px;
+  border: 1px solid rgb(46, 51, 58);
+  border-radius: 6px;
 }
 
 .mat-icon {
@@ -110,8 +113,14 @@ input {
   height: 1em !important;
 }
 
-:root {
+app-root {
   --background-color: #4d9aff;
+  --link-color: #0062e2;
+  --outline-focus: #0857be;
+}
+a {
+  text-decoration: none;
+  color: var(--link-color);
 }
 
 .alert {

@@ -1,64 +1,72 @@
-<section class="signup-main">
+<section class="signup">
   <section class="left-bg">
-    <div class="text">
-      <h1>Create your free account</h1>
-      <p>A thousand books are waiting for you</p>
+    <div class="blur">
+      <div class="text">
+        <h1>Create your free account</h1>
+        <p>A thousand books are waiting for you</p>
+      </div>
     </div>
   </section>
   <section class="signup-section">
-    <header>
+    <header class="signup-header">
       <h1>Already have an account?</h1>
       <a routerLink="/login"> Sign in →</a>
     </header>
-    <main>
-      <h1>Sign up to MyBooks</h1>
-      <form
-        [formGroup]="signUpForm"
-        (ngSubmit)="onSubmit()"
-        (input)="resetErrors()"
-      >
-        <div>
-          <label>
-            <p>Email</p>
-            <input formControlName="email" />
-            <p *ngIf="isErr && !signUpForm.value.email" class="alert">
-              Enter your email.
-            </p>
-          </label>
-          <label>
-            <p>Full name</p>
-            <input formControlName="fullName" />
-            <p *ngIf="isErr && !signUpForm.value.fullName" class="alert">
-              Enter your full name.
-            </p>
-          </label>
-          <label>
-            <p>Password</p>
-            <input #pass formControlName="password" />
-            <p *ngIf="!pass.value && isErr" class="alert">
-              Password can't be empty.
-            </p>
-          </label>
-          <label>
-            <p>Confirm password</p>
-            <input #confPass formControlName="confirmPass" />
-            <p *ngIf="!confPass.value && isErr" class="alert">
-              Confirm your password.
-            </p>
-            <p
-              *ngIf="
-                pass.value !== confPass.value &&
-                isErr &&
-                (pass.value || confPass.value)
-              "
-              class="alert"
-            >
-              Passwords do not match.
-            </p>
-          </label>
-        </div>
-        <button>Continue</button>
-      </form>
+    <main class="signup-main">
+      <div class="cover">
+        <h1 class="label">Sign up to MyBooks</h1>
+        <form
+          [formGroup]="signUpForm"
+          (ngSubmit)="onSubmit()"
+          (input)="resetErrors()"
+        >
+          <div class="inputs">
+            <label>
+              <p>Email</p>
+              <input formControlName="email" placeholder="Email" />
+              <p *ngIf="isErr && !signUpForm.value.email" class="alert">
+                Enter your email.
+              </p>
+            </label>
+            <label>
+              <p>Full name</p>
+              <input formControlName="fullName" placeholder="Full name" />
+              <p *ngIf="isErr && !signUpForm.value.fullName" class="alert">
+                Enter your full name.
+              </p>
+            </label>
+            <label>
+              <p>Password</p>
+              <input #pass formControlName="password" placeholder="Password" />
+              <p *ngIf="!pass.value && isErr" class="alert">
+                Password can't be empty.
+              </p>
+            </label>
+            <label>
+              <p>Confirm password</p>
+              <input
+                #confPass
+                formControlName="confirmPass"
+                placeholder="Confirm password"
+              />
+              <p *ngIf="!confPass.value && isErr" class="alert">
+                Confirm your password.
+              </p>
+              <p
+                *ngIf="
+                  pass.value !== confPass.value &&
+                  isErr &&
+                  (pass.value || confPass.value)
+                "
+                class="alert"
+              >
+                Passwords do not match.
+              </p>
+            </label>
+          </div>
+          <button class="btn">Continue</button>
+        </form>
+      </div>
     </main>
   </section>
 </section>

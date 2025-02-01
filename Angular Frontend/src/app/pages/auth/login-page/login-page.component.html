@@ -1,33 +1,39 @@
-<header>
-  <a routerLink="" class="logo">
-    <mat-icon svgIcon="logo" />
-  </a>
-  <h1>Sign in to MyBooks</h1>
-</header>
-<main>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="!networkErr">
-    <div>
-      <p>Email:</p>
-      <input formControlName="email" type="email" required />
-      <p *ngIf="!loginForm.value.email && loginForm.invalid && isErr">
-        Please enter a valid email.
-      </p>
-    </div>
-    <div>
-      <p>Password:</p>
-      <input formControlName="password" required type="password" />
-      <p *ngIf="!loginForm.value.password && loginForm.invalid && isErr">
-        Password is required.
-      </p>
-    </div>
-    <button>Submit</button>
-    <p>Forgot your password?</p>
-    <a routerLink="/resetPassword">Reset password</a>
-    <section>
-      <p>New to MyBooks?</p>
-      <a routerLink="/signup">Create an account</a>
-    </section>
-  </form>
-  <p *ngIf="errMsg">{{ errMsg }}</p>
-  <button *ngIf="networkErr" routerLink="/">Go to Search</button>
-</main>
+<section class="login-page">
+  <header class="login-header">
+    <a routerLink="" class="logo">
+      <mat-icon svgIcon="logo" />
+    </a>
+    <h1 class="label">Sign in to MyBooks</h1>
+  </header>
+  <main class="login-main">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="!networkErr">
+      <section class="sign-in">
+        <div>
+          <p class="label">Email:</p>
+          <input formControlName="email" type="email" required />
+          <p *ngIf="!loginForm.value.email && loginForm.invalid && isErr">
+            Please enter a valid email.
+          </p>
+        </div>
+        <div>
+          <div class="password-label">
+            <p>Password:</p>
+            <a routerLink="/resetPassword">Forgot password?</a>
+          </div>
+          <input formControlName="password" required type="password" />
+          <p *ngIf="!loginForm.value.password && loginForm.invalid && isErr">
+            Password is required.
+          </p>
+        </div>
+        <button class="btn">Sign in</button>
+      </section>
+
+      <section class="other-option">
+        <p>New to MyBooks?</p>
+        <a routerLink="/signup">Create an account</a>
+      </section>
+    </form>
+    <p *ngIf="errMsg">{{ errMsg }}</p>
+    <button *ngIf="networkErr" routerLink="/">Go to Search</button>
+  </main>
+</section>
