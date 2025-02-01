@@ -23,6 +23,7 @@ export class BookDetailsComponent implements OnInit, OnDestroy {
   private bookService = inject(BooksService);
   public user: User | null = null;
   public isAdded: boolean = false;
+  public isHovered: boolean = false;
   ngOnInit(): void {
     this.subscription = this.userService.login().subscribe((user) => {
       this.user = user;

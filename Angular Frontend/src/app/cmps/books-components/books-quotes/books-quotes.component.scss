@@ -1,0 +1,44 @@
+.quotes-section {
+  padding: 20px;
+  max-height: 100%;
+  .title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .quote-list {
+    display: flex;
+    padding: 10px;
+    font-size: 16px;
+    padding-bottom: 10px;
+    height: 100%;
+    overflow-y: auto;
+    .scroll {
+      overflow-y: auto;
+    }
+    &:nth-child(odd) {
+      justify-content: flex-start;
+      padding-right: 100px;
+    }
+    &:nth-child(even) {
+      justify-content: flex-end;
+      padding-left: 100px;
+    }
+    .cover {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: min-content auto min-content;
+      margin-bottom: 30px;
+      .fa-quote-left {
+        grid-column: 1;
+      }
+      .text {
+        grid-column: 2;
+      }
+      .fa-quote-right {
+        grid-column: 3;
+        align-self: flex-end;
+      }
+    }
+  }
+}

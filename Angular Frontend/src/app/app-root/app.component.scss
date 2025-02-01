@@ -1,8 +1,19 @@
 .app {
   height: 100vh;
-overflow: hidden;
+  grid-template-rows: auto 1fr;
+  position: relative;
+  padding-top: 44px;
+  .header {
+    position: absolute;
+    background-color: white;
+    top:0;
+    width:100vw;
+  }
   .main-app {
-    overflow: scroll;
-    max-height: 100%;
+    overflow-y: auto;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-color: var(#a6c5e229, rgba(9, 30, 66, .1411764706)) var(#a1bdd914, rgba(9, 30, 66, .0588235294));
+    scrollbar-width: thin;
   }
 }
