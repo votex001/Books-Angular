@@ -100,7 +100,12 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
+input {
+  &:focus {
+    border-color: var(--outline-focus);
+    outline-color: var(--outline-focus);
+  }
+}
 .input {
   line-height: 20px;
   padding: 5px 12px;
@@ -113,6 +118,11 @@ table {
   height: 1em !important;
 }
 
+button {
+  cursor: pointer;
+  border: none;
+}
+
 app-root {
   --background-color: #4d9aff;
   --link-color: #0062e2;
@@ -120,6 +130,8 @@ app-root {
   --button-blue-bg: #3100e7;
   --button-blue-bg-hover: #270996;
   --button-text-white: whitesmoke;
+  --button-green-bg: rgb(29, 151, 54);
+  --button-green-bg-hover: rgb(30, 177, 59);
 }
 a {
   text-decoration: none;

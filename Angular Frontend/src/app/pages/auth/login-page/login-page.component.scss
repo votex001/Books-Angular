@@ -52,10 +52,10 @@
         margin-bottom: 0;
       }
       .btn {
-        background-color: rgb(29, 151, 54);
+        background-color: var(--button-green-bg);
         border: none;
         width: 100%;
-        color: white;
+        color: var(--button-text-white);
         border-radius: 6px;
         font-weight: 500;
         font-size: 14px;
@@ -63,7 +63,7 @@
         padding: 5px 16px;
         cursor: pointer;
         &:hover {
-          background-color: rgb(30, 177, 59);
+          background-color: var(--button-green-bg-hover);
         }
       }
     }
