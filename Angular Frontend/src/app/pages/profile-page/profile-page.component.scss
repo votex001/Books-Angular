@@ -38,5 +38,32 @@
         grid-template-columns: repeat(5, minmax(100px, 150px)) !important;
       }
     }
+    .disable{
+      pointer-events: none;
+    }
+    .empty-fav{
+      justify-self: center;
+      margin-top: 20vh;
+      .title{
+        font-size: 2rem;
+        font-weight: 600;
+      }
+      .text{
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+      .btn{
+        background-color: var(--button-blue-bg);
+        color: var(--button-text-white);
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 6px;
+        padding: 10px 20px;
+        width: 100%;
+        &:hover{
+          background-color: var(--button-blue-bg-hover);
+        }
+      }
+    }
   }
 }

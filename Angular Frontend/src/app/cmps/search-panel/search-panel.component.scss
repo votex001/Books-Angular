@@ -67,12 +67,14 @@
     cursor: pointer;
     border: none;
     border-radius: 6px;
-    background-color: var(--button-blue-bg);
-    color: var(--button-text-white);
+    background-color: #3100e7;
+    color: whitesmoke;
     padding: 5px 10px;
     &:hover {
       text-shadow: 1px 1px 1px black;
-      background-color: var(--button-blue-bg-hover);
+
+      background-color: #270996;
+
     }
   }
 }
