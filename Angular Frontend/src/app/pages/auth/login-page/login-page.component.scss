@@ -35,7 +35,6 @@
       border: 1px solid rgba(61, 68, 77, 0.7);
       .label,
       .password-label {
-        margin-bottom: 8px;
         font-size: 14px;
         font-weight: 400;
         line-height: 21px;
@@ -46,16 +45,17 @@
       }
       input {
         width: 254px;
-        margin-bottom: 16px;
+        margin-bottom: 10px;
       }
-      input + p {
-        margin-bottom: 0;
+
+      .alert {
+        margin-top: -5px;
       }
       .btn {
-        background-color: rgb(29, 151, 54);
+        background-color: var(--button-green-bg);
         border: none;
         width: 100%;
-        color: white;
+        color: var(--button-text-white);
         border-radius: 6px;
         font-weight: 500;
         font-size: 14px;
@@ -63,7 +63,7 @@
         padding: 5px 16px;
         cursor: pointer;
         &:hover {
-          background-color: rgb(30, 177, 59);
+          background-color: var(--button-green-bg-hover);
         }
       }
     }

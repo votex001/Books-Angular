@@ -9,3 +9,12 @@
     gap: 40px;
   }
 }
+
+@media (max-width: 800px) {
+  .books {
+    margin-bottom: 100px;
+    .list {
+      grid-template-columns: repeat(2, minmax(100px, 150px));
+    }
+  }
+}

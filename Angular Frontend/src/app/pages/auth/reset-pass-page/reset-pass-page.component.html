@@ -1,28 +1,54 @@
-<section>
+<section class="reset-section">
   <div *ngIf="!success; else successMsg">
     <form
       [formGroup]="resetForm"
       *ngIf="!incorrectToken; else incorrectTokenMsg"
       (ngSubmit)="onSubmit()"
+      class="form"
     >
       <h1 class="email">
         {{ email }}
       </h1>
 
       <input [value]="email" disabled style="display: none" />
-      <p>Password:</p>
-      <input formControlName="password" type="password" />
-      <p>Confirm password:</p>
-      <input formControlName="confPass" type="password" />
-      <button>Reset password</button>
+      <p class="title">Password:</p>
+      <input
+        formControlName="password"
+        type="password"
+        placeholder="Password"
+        class="input"
+      />
+      <p
+        *ngIf="!resetForm.value.password && resetForm.invalid && isErr"
+        class="alert"
+      >
+        Password is required.
+      </p>
+      <p class="title">Confirm password:</p>
+      <input
+        formControlName="confPass"
+        type="password"
+        placeholder="Confirm password"
+        class="input"
+      />
+      <p *ngIf="!resetForm.value.confPass && isErr" class="alert">
+        Confirm your password.
+      </p>
+      <button class="btn">Reset password</button>
     </form>
     <ng-template #incorrectTokenMsg>
-      <h2>Invalid or expired url.</h2>
+      <div class="cover">
+        <h1 class="title">Error!</h1>
+        <p class="text">Invalid or expired url.</p>
+        <button routerLink="/resetPassword" class="btn">Back</button>
+      </div>
     </ng-template>
   </div>
   <ng-template #successMsg>
-    <h1>Success!</h1>
-    <p>We changed your password.</p>
-    <button routerLink="/login">Login</button>
+    <div class="cover">
+      <h1 class="title">Success!</h1>
+      <p class="text">We changed your password.</p>
+      <button routerLink="/login" class="btn">Login</button>
+    </div>
   </ng-template>
 </section>

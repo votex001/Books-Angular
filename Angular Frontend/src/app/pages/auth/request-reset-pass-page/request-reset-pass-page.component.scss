@@ -1,0 +1,43 @@
+.request-reset {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10vh;
+  .form {
+    border: 1px solid rgba(61, 68, 77, 0.7);
+    border-radius: 6px;
+    padding: 30px;
+    width: 400px;
+    .title {
+      font-size: 2rem;
+      font-weight: 600;
+    }
+    .text {
+      margin-bottom: 10px;
+    }
+    .label-cover {
+      .label-title {
+        margin-bottom: 5px;
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+      .input {
+        margin-right: 10px;
+      }
+      .btn {
+        background-color: var(--button-green-bg);
+        color: var(--button-text-white);
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        &:hover {
+          background-color: var(--button-green-bg-hover);
+        }
+      }
+    }
+  }
+}

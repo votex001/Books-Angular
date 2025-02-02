@@ -17,14 +17,25 @@
     </div>
   </header>
   <main class="favorite-books">
-    <search-panel [onSetFilter]="onSearch" />
+    <search-panel
+      [onSetFilter]="onSearch"
+      class="{{ !isLoading && !favBooksInfo.books.length ? 'disable' : '' }}"
+    />
     <loading *ngIf="isLoading" />
-    <books [books]="favBooksInfo.books" *ngIf="!isLoading" />
+    <books
+      [books]="favBooksInfo.books"
+      *ngIf="!isLoading && favBooksInfo.books.length"
+    />
     <pagination
       [totalItems]="favBooksInfo.results"
       [itemsPerPage]="5"
       [onSetPage]="onSetPage"
       *ngIf="!isLoading && favBooksInfo.results > BooksPerPage"
     />
+    <div *ngIf="!isLoading &&!favBooksInfo.books.length" class="empty-fav">
+      <h1 class="title">There is no books already!</h1>
+      <p class="text">Want to add some?</p>
+      <button class="btn" routerLink="/">Search books</button>
+    </div>
   </main>
 </section>
