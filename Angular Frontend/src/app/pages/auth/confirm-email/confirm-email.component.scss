@@ -114,3 +114,40 @@
     }
   }
 }
+@media (max-width: 950px) {
+  .confirm-main {
+    .left-bg {
+      display: none;
+    }
+    .confirm-section {
+      width: 100vw;
+    }
+  }
+}
+@media (max-width: 550px) {
+  .confirm-main {
+    .confirm-section {
+      width: 100vw;
+      .container {
+        max-width: 350px;
+        .title {
+          text-align: left;
+        }
+        .code-submit {
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          .btns {
+            padding: 0;
+          }
+        }
+      }
+      .err{
+        max-width: 300px;
+        .title{
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
