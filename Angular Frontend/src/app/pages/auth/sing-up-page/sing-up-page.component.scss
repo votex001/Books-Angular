@@ -100,3 +100,14 @@
     }
   }
 }
+@media (max-width: 750px) {
+  .signup{
+    .left-bg{
+      display: none;
+    }
+    .signup-section{
+      width: 100vw;
+      min-width: 350px;
+    }
+  }
+}
