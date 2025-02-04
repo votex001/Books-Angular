@@ -13,13 +13,6 @@ import { userFavorites } from "./apis/userFavorites/favorites.routes.js";
 import path from "path";
 
 const corsOptions = {
-  origin: [
-    "http://127.0.0.1:5173",
-    "http://localhost:5173",
-    "http://127.0.0.1:5174",
-    "http://localhost:5174",
-    "http://localhost:4200",
-  ],
   credentials: true,
 };
 app.use(express.static("public/browser"));
