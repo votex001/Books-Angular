@@ -78,3 +78,12 @@
     }
   }
 }
+@media (max-width:400px) {
+  .search{
+    .custom-search{
+      input{
+        width: 100px;
+      }
+    }
+  }
+}
