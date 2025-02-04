@@ -5,6 +5,22 @@
   flex-direction: column;
   align-items: center;
   padding-top: 10vh;
+  .success {
+    max-width: 300px;
+    text-align: center;
+    .title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .text{
+      font-size: 1.125rem;
+    }
+    strong{
+      font-weight: 600;
+    }
+
+  }
   .form {
     border: 1px solid rgba(61, 68, 77, 0.7);
     border-radius: 6px;
@@ -40,4 +56,6 @@
       }
     }
   }
+}
+@media (max-width: 550px) {
 }

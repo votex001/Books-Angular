@@ -27,10 +27,12 @@
   </form>
 
   <ng-template #success>
-    <h1>Success!</h1>
-    <p>
-      We sent a confirmation message to {{ resetFrom.value.email }}. Please
-      check your inbox.
-    </p>
+    <div class="success">
+      <h1 class="title">Success!</h1>
+      <p>
+        We sent a confirmation message to <strong>{{ resetFrom.value.email }}</strong>. Please
+        check your inbox.
+      </p>
+    </div>
   </ng-template>
 </section>
