@@ -285,9 +285,6 @@ export class BooksService {
   }
 
   public getMyFavBooks() {
-    // return this.http
-    //   .get(`${this.url}/fav`, { withCredentials: true })
-    //   .pipe(first());
     return this.favorFilter$.pipe(
       switchMap((filter) => {
         this.loadingService.setLoading(true);

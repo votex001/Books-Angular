@@ -6,6 +6,10 @@
   min-width: 500px;
 }
 @media (max-width: 800px) {
+  :host {
+    min-width: max-content !important;
+    bottom: 10vh;
+  }
   ::ng-deep {
     .ngx-pagination {
       display: flex;
@@ -18,15 +22,19 @@
         background-color: var(--button-blue-bg) !important;
         border-radius: 6px !important;
         box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
-        rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
-        rgba(255, 255, 255, 0.199) 0px 1px 0px inset;
+          rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+          rgba(255, 255, 255, 0.199) 0px 1px 0px inset;
+        font-size: 20px;
+        display: grid;
+        place-content: center;
+        padding: 10px 20px !important;
         * {
           color: var(--button-text-white) !important;
           text-decoration-color: var(--button-text-white) !important;
         }
         &:hover {
           background-color: var(--button-blue-bg-hover) !important;
-          a{
+          a {
             background: none;
           }
         }

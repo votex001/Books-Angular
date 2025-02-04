@@ -7,7 +7,7 @@
   </section>
   <section class="confirm-section">
     <ng-container>
-      <div *ngIf="showForm; else errorMsg">
+      <div *ngIf="showForm; else errorMsg" class="container">
         <h1 class="title">Confirm Email</h1>
         <form
           [formGroup]="confirmForm"
