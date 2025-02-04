@@ -46,12 +46,16 @@ export class UserService {
   private _credentials$ = new BehaviorSubject<{
     email: string;
     password: string | number;
+    logout?: true;
   }>({ email: '', password: '' });
   public credentials$ = this._credentials$.asObservable();
 
   public login() {
     return this.credentials$.pipe(
-      switchMap(({ email, password }) => {
+      switchMap(({ email, password, logout }) => {
+        if (logout) {
+          return of(null);
+        }
         if (email && password) {
           return this.http
             .post<User>(
@@ -97,12 +101,12 @@ export class UserService {
   }
 
   public logout() {
+    this._credentials$.next({ logout: true, email: '', password: '' });
     return this.http
       .post(`${this.url}/auth/logout`, {}, { withCredentials: true })
       .pipe(first())
       .subscribe({
         next: (msg) => {
-          this._credentials$.next({ email: '', password: '' });
         },
         error: (err) => console.error('Logout failed:', err),
       });
