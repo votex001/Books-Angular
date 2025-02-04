@@ -7,7 +7,7 @@
     display: flex;
     .img-cover {
       cursor: pointer;
-      margin: 10px 30px ;
+      margin: 10px 30px;
       .img {
         border-radius: 50%;
         width: 100px;
@@ -17,15 +17,15 @@
         background-size: cover;
       }
     }
-    .txt{
+    .txt {
       align-content: center;
-      .name{
+      .name {
         font-size: 2rem;
         font-weight: 600;
         margin-bottom: 5px;
       }
-      .email{
-        opacity: .8;
+      .email {
+        opacity: 0.8;
       }
     }
   }
@@ -38,21 +38,21 @@
         grid-template-columns: repeat(5, minmax(100px, 150px)) !important;
       }
     }
-    .disable{
+    .disable {
       pointer-events: none;
     }
-    .empty-fav{
+    .empty-fav {
       justify-self: center;
       margin-top: 20vh;
-      .title{
+      .title {
         font-size: 2rem;
         font-weight: 600;
       }
-      .text{
+      .text {
         font-size: 20px;
         margin-bottom: 10px;
       }
-      .btn{
+      .btn {
         background-color: var(--button-blue-bg);
         color: var(--button-text-white);
         font-size: 16px;
@@ -60,8 +60,19 @@
         border-radius: 6px;
         padding: 10px 20px;
         width: 100%;
-        &:hover{
+        &:hover {
           background-color: var(--button-blue-bg-hover);
+        }
+      }
+    }
+  }
+}
+@media (max-width: 550px) {
+  .profile {
+    .favorite-books {
+      .empty-fav {
+        .title {
+          font-size: 1.5rem;
         }
       }
     }
