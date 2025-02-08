@@ -28,6 +28,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     );
     this.booksSubscription = this.BookService.query().subscribe({
       next: (books) => {
+        console.log(books)
         this.totalItems = books.count;
         const sliceParams = this.BookService.findPage();
         this.viewBooks = books.results.slice(

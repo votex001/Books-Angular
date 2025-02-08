@@ -152,6 +152,11 @@ export class BooksService {
             } else {
               return forkJoin(requests).pipe(
                 concatMap((request) => request),
+                tap({
+                  complete: () => {
+                    this.loadingService.setLoading(false);
+                  },
+                }),
                 reduce(
                   (acc: { count: number; results: Book[] }, result) => {
                     acc.count = result.count;
@@ -173,6 +178,7 @@ export class BooksService {
   };
 
   public setFilter(params: Partial<SearchFilter>) {
+    this.loadingService.setLoading(true);
     const { value: filter } = this._filterBy$;
     if (
       (params?.search && filter.search !== params.search) ||

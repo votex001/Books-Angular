@@ -1,5 +1,8 @@
 <section class="books">
-  <ul class="list">
+  <section *ngIf="!books.length">
+
+  </section>
+  <ul class="list" *ngIf="books.length">
     <li class="item" *ngFor="let book of books"><book-preview [book]="book" /></li>
   </ul>
 </section>
