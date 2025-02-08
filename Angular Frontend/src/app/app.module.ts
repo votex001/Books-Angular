@@ -11,7 +11,7 @@ import { LoginPageComponent } from './pages/auth/login-page/login-page.component
 import { RequestResetPassPageComponent } from './pages/auth/request-reset-pass-page/request-reset-pass-page.component';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { PaginationComponent } from './pagination/pagination.component';
+import { PaginationComponent } from './cmps/pagination/pagination.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { BooksComponent } from './cmps/books-components/books/books.component';
 import { BookPreviewComponent } from './cmps/books-components/book-preview/book-preview.component';
