@@ -1,7 +1,22 @@
+.books:has(.empty) {
+  display: grid;
+  place-items: center;
+}
+
 .books {
   max-width: 100%;
   display: flex;
   align-content: center;
+  .empty {
+    margin-top: 20vh;
+    display: flex;
+    flex-direction: column;
+    .icon{
+      color: var(--background-color);
+      align-self: center;
+      font-size: 200px;
+    }
+  }
   .list {
     margin: 30px auto;
     display: grid;

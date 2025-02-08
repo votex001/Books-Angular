@@ -1,6 +1,8 @@
 <section class="books">
-  <section *ngIf="!books.length">
-
+  <section *ngIf="!books.length" class="empty">
+    <i class="fa-regular fa-face-sad-tear icon"></i>
+    <h2>Oops! No books found!</h2>
+    <p>Try searching for something else.</p>
   </section>
   <ul class="list" *ngIf="books.length">
     <li class="item" *ngFor="let book of books"><book-preview [book]="book" /></li>
