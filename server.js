@@ -16,7 +16,7 @@ const corsOptions = {
   credentials: true,
 };
 // corse for development
-if (process.env.NODE_ENV) {
+if (process.env.NODE_ENV === 'development') {
   corsOptions.origin = "http://localhost:4200";
 }
 app.use(express.static("public/browser"));
@@ -35,6 +35,6 @@ app.get("/**", (req, res) => {
 });
 
 const port = process.env.PORT || 2027;
-server.listen(port, () => {
-  console.log(`Server listening on port http://127.0.0.1:${port}`);
+server.listen(port, '0.0.0.0', () => {
+  console.log(`Server listening on port http://localhost:${port}/`);
 });
