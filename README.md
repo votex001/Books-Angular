@@ -14,6 +14,66 @@ MyBooks is a book search and reading platform built with Angular version 19.0.0.
 
 ## Installation and Setup
 
+### Dev Container Setup
+
+The easiest way to begin developing this project is to use a dev container. An introduction to dev containers in VSCode can be found [here](https://code.visualstudio.com/docs/devcontainers/containers).
+
+Required Software:
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [VSCode](https://code.visualstudio.com/download)
+
+_Note, it is possible to use other container software than Docker and IDEs other than VSCode. However, this setup is more complicated and not covered here._
+
+<div>
+<details>
+<summary>Install the required software on Windows with <a href=(https://docs.microsoft.com/en-us/windows/package-manager/winget/#production-recommended)>winget</a></summary>
+
+<p>
+Note: This requires a PowerShell prompt with winget installed.  You should be able to copy and paste the code block to install.  If you use an elevated PowerShell prompt, UAC will not pop up during the installs.
+
+```PowerShell
+winget install -e --id Docker.DockerDesktop; `
+winget install -e --id Microsoft.VisualStudioCode
+```
+
+</p>
+</details>
+</div>
+
+<div>
+<details>
+<summary>Install the required software on MacOS with <a href=(https://snapcraft.io/)>homebrew</a></summary>
+
+<p>
+
+```sh
+brew install --cask docker visual-studio-code
+```
+
+</p>
+</details>
+</div>
+
+<div style="padding-bottom: 1em">
+<details>
+<summary>Install the required software on Linux with <a href=(https://brew.sh/)>snap</a></summary>
+
+<p>
+
+```sh
+sudo snap install docker; \
+sudo snap install code --classic
+```
+
+</p>
+</details>
+</div>
+
+After installing these packages, you can now install the [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension for VSCode. After installing this extension open the command pallet (`ctrl+shift+p` or `cmd+shift+p`) and select the command `>Dev Containers: Rebuild and Reopen in Container`. This will cause the development environment container to be built and launched.
+
+You are now ready to start development!
+
 ### Server Setup
 
 1. Create a `.env` file with the following variables:
