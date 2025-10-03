@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev":  "set NODE_ENV=development&& nodemon --ignore \"./data\" server.js"
+    "dev":  "set NODE_ENV=development&& nodemon --ignore \"./data\" server.js",
+    "dev-linux": "NODE_ENV=development nodemon --ignore './data' server.js"
   },
   "author": "votex001",
   "license": "ISC",
