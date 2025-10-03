@@ -14,6 +14,58 @@ MyBooks is a book search and reading platform built with Angular version 19.0.0.
 
 ## Installation and Setup
 
+### Server Setup
+
+1. Create a `.env` file with the following variables:
+   ```env
+   PORT=<your-port>
+   MONGO_URL=<your-mongo-url>
+   MONGO_DB_NAME=<your-database-name>
+   CRYPTR_PASS=<your-cryptr-password>
+   EMAIL_USER=<your-email-user>
+   EMAIL_PASS=<your-email-password>
+   ```
+2. Open a terminal and run:
+   ```bash
+   npm i
+   npm start
+   ```
+
+### Client Setup
+
+1. Create the following two files:
+
+#### `/client/env/environment.prod.ts`
+
+```typescript
+export const environment = {
+  production: true,
+  apiUrl: '/api',
+  cloudinary: {
+    cloudName: 'cloudName',
+    uploadPreset: 'uploadPresetName',
+    apiKey: 'Cloudinary-key',
+    apiSecret: 'Cloudinary-secret',
+    apiVar: 'cloudinary://<apiKey>:<apiSecret>-c@<cloudName>'
+  }
+};
+```
+
+#### `/client/env/environment.ts`
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://127.0.0.1:2027/api',
+  cloudinary: {
+    cloudName: 'cloudName',
+    uploadPreset: 'uploadPresetName',
+    apiKey: 'Cloudinary-key',
+    apiSecret: 'Cloudinary-secret',
+    apiVar: 'cloudinary://<apiKey>:<apiSecret>-c@<cloudName>'
+  }
+};
+```
 ### Dev Container Setup
 
 The easiest way to begin developing this project is to use a dev container. An introduction to dev containers in VSCode can be found [here](https://code.visualstudio.com/docs/devcontainers/containers).
@@ -74,64 +126,14 @@ After installing these packages, you can now install the [Remote Development](ht
 
 You are now ready to start development!
 
-### Server Setup
+### Development Commands
 
-1. Create a `.env` file with the following variables:
-   ```env
-   PORT=<your-port>
-   MONGO_URL=<your-mongo-url>
-   MONGO_DB_NAME=<your-database-name>
-   CRYPTR_PASS=<your-cryptr-password>
-   EMAIL_USER=<your-email-user>
-   EMAIL_PASS=<your-email-password>
-   ```
-2. Open a terminal and run:
-   ```bash
-   npm i
-   npm start
-   ```
+After setting up your development environment, either using the dev container or using your own custom environment, the following commands will help you run the server and client.
 
-### Client Setup
+To run the server, you can use the command `npm run dev` or `npm run dev-linux` if you working on linux/Docker . This will use the client that was built when you ran `npm run build` in the client directory or when you started the dev container. If you make changes to the server, you will need to restart the server. If you make changes to the client, you will need to run the command `(cd client; npm run build)` and then restart the server. By default the client runs at `localhost:2027`, though the port can be configured in `.env`.
 
-1. Create the following two files:
+You can also build a version of the client that supports live reloading. To do this, start the server, then run the command `(cd client; npm run dev)`. This will run a separate instance of the client at `localhost:4200` that will be automatically updated as you make changes to the client.
 
-#### `/client/env/environment.prod.ts`
-
-```typescript
-export const environment = {
-  production: true,
-  apiUrl: '/api',
-  cloudinary: {
-    cloudName: 'cloudName',
-    uploadPreset: 'uploadPresetName',
-    apiKey: 'Cloudinary-key',
-    apiSecret: 'Cloudinary-secret',
-    apiVar: 'cloudinary://<apiKey>:<apiSecret>-c@<cloudName>'
-  }
-};
-```
-
-#### `/client/env/environment.ts`
-
-```typescript
-export const environment = {
-  production: false,
-  apiUrl: 'http://127.0.0.1:2027/api',
-  cloudinary: {
-    cloudName: 'cloudName',
-    uploadPreset: 'uploadPresetName',
-    apiKey: 'Cloudinary-key',
-    apiSecret: 'Cloudinary-secret',
-    apiVar: 'cloudinary://<apiKey>:<apiSecret>-c@<cloudName>'
-  }
-};
-```
-
-2. Open a terminal and run:
-   ```bash
-   npm i
-   ng start
-   ```
 
 ## Project Structure
 
@@ -160,7 +162,7 @@ export const environment = {
 
 ## Demo
 
-A free demo is available at [Render](https://render.com/). Please note that the site may load slowly, taking up to 1 minute.
+A free demo is available at [Render](https://mybooks-w2ls.onrender.com). Please note that the site may load slowly, taking up to 1 minute.
 
 ## Backend Routes
 
