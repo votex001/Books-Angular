@@ -15,6 +15,10 @@ import path from "path";
 const corsOptions = {
   credentials: true,
 };
+// corse for development
+if (process.env.NODE_ENV) {
+  corsOptions.origin = "http://localhost:4200";
+}
 app.use(express.static("public/browser"));
 app.use(cors(corsOptions));
 app.use(cookieParser());
