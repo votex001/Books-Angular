@@ -14,7 +14,7 @@ MyBooks is a book search and reading platform built with Angular version 19.0.0.
 
 ## Installation and Setup
 
-### Backend Setup
+### Server Setup
 
 1. Create a `.env` file with the following variables:
    ```env
@@ -31,11 +31,11 @@ MyBooks is a book search and reading platform built with Angular version 19.0.0.
    npm start
    ```
 
-### Frontend Setup
+### Client Setup
 
 1. Create the following two files:
 
-#### `/env/environment.prod.ts`
+#### `/client/env/environment.prod.ts`
 
 ```typescript
 export const environment = {
@@ -51,7 +51,7 @@ export const environment = {
 };
 ```
 
-#### `/env/environment.ts`
+#### `/client/env/environment.ts`
 
 ```typescript
 export const environment = {
