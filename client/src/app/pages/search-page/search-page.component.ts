@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Book } from '../../models/book/book.model';
 import { Router } from '@angular/router';
 import { LoadingService } from '../../services/loading/loading.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-books',
@@ -20,15 +21,18 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   constructor(
     private BookService: BooksService,
     private router: Router,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.loadingSubscription = this.loadingService.loadingStatus$.subscribe(
-      (boolean) => (this.isLoading = boolean)
+      (boolean) => {
+        this.isLoading = boolean;
+        this.cdr.detectChanges();
+      }
     );
     this.booksSubscription = this.BookService.query().subscribe({
       next: (books) => {
-        console.log(books)
         this.totalItems = books.count;
         const sliceParams = this.BookService.findPage();
         this.viewBooks = books.results.slice(

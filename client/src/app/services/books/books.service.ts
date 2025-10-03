@@ -12,6 +12,7 @@ import {
   retry,
   filter,
   first,
+  finalize,
 } from 'rxjs/operators';
 import {
   Book,
@@ -52,7 +53,12 @@ export class BooksService {
   });
   public filterBy$ = this._filterBy$
     .asObservable()
-    .pipe(distinctUntilChanged());
+    .pipe(
+      distinctUntilChanged(
+        (a, b) =>
+          a.page === b.page && a.search === b.search && a.lang === b.lang
+      )
+    );
 
   private _favorFilter$ = new BehaviorSubject<FavSearchFilter>({
     lang: 'all',
@@ -67,11 +73,11 @@ export class BooksService {
   private cachedData: { [key: string]: any } = {}; // Cache for API responses
 
   public query(): Observable<any> {
-    this.loadingService.setLoading(true);
-
     return this.filterBy$.pipe(
       switchMap((filter) => {
+        this.loadingService.setLoading(true);
         if (this.cachedData[filter.page]) {
+          this.loadingService.setLoading(false);
           return of(this.cachedData[filter.page]); // Return cached data if available
         }
         const queryParams = new URLSearchParams();
@@ -135,11 +141,6 @@ export class BooksService {
 
                   return { ...result, results: resultsArray };
                 }),
-                tap({
-                  complete: () => {
-                    this.loadingService.setLoading(false);
-                  },
-                }),
                 catchError((error) => {
                   console.error('Error fetching data:', error);
                   return of({ count: 0, results: [] });
@@ -152,11 +153,6 @@ export class BooksService {
             } else {
               return forkJoin(requests).pipe(
                 concatMap((request) => request),
-                tap({
-                  complete: () => {
-                    this.loadingService.setLoading(false);
-                  },
-                }),
                 reduce(
                   (acc: { count: number; results: Book[] }, result) => {
                     acc.count = result.count;
@@ -167,6 +163,9 @@ export class BooksService {
                 )
               );
             }
+          }),
+          finalize(() => {
+            this.loadingService.setLoading(false);
           })
         );
       })
@@ -178,7 +177,6 @@ export class BooksService {
   };
 
   public setFilter(params: Partial<SearchFilter>) {
-    this.loadingService.setLoading(true);
     const { value: filter } = this._filterBy$;
     if (
       (params?.search && filter.search !== params.search) ||
@@ -306,13 +304,7 @@ export class BooksService {
         }
         queryParams.append('page', String(filter.page));
         const url = `${this.url}/fav?${queryParams.toString()}`;
-        return this.http.get(url, { withCredentials: true }).pipe(
-          tap({
-            complete: () => {
-              this.loadingService.setLoading(false);
-            },
-          })
-        );
+        return this.http.get(url, { withCredentials: true });
       })
     );
   }
