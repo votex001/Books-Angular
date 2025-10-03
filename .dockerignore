@@ -1,0 +1,22 @@
+# Node & Angular
+node_modules
+dist
+dist-ssr
+*.log
+
+# Environment files
+.env
+env
+
+# Editor
+.vscode
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Angular cache
+*/.angular
