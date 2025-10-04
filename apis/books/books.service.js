@@ -80,7 +80,6 @@ async function fetchAndParse(url) {
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`[fetchAndParse]Failed to fetch: ${res.statusText}`);
-    console.log(res)
     return await res.json();
   } catch (error) {
     console.error("Error in fetchAndParse:", error);
