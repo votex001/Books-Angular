@@ -15,7 +15,7 @@ async function query(filter) {
       filter?.lang ? `languages=${filter.lang}` : "",
       filter?.page ? `page=${filter.page}` : "",
     ].filter(Boolean);
-    const url = `https://gutendex.com/books?${baseParams.join("&")}`;
+    const url = baseParams.toString()?`https://gutendex.com/books?${baseParams.join("&")}`:`https://gutendex.com/books`;
     let data = await fetchAndParse(url);
     if (!data) {
       throw new Error("Failed to fetch books data. Query[data=null]");
@@ -79,7 +79,8 @@ async function bookToTxt(id) {
 async function fetchAndParse(url) {
   try {
     const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to fetch: ${res.statusText}`);
+    if (!res.ok) throw new Error(`[fetchAndParse]Failed to fetch: ${res.statusText}`);
+    console.log(res)
     return await res.json();
   } catch (error) {
     console.error("Error in fetchAndParse:", error);
