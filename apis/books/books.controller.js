@@ -12,7 +12,7 @@ export async function getBooks(req, res) {
     const data = await booksService.query(filter);
     const filteredData = {
       ...data,
-      results: data.results.map((book) => {
+      results: data?.results?.map((book) => {
         delete book.translators;
         delete book.bookshelves;
         delete book.subjects;
