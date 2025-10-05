@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import Cryptr from "cryptr";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
@@ -50,7 +50,7 @@ async function signup({ email, password, fullName }) {
       throw "Login already exists";
     }
 
-    const hash = await bcrypt.hash(String(password), saltRounds);
+    const hash = await bcryptjs.hash(String(password), saltRounds);
 
     const verificationCode = generateVerificationCode();
     await transporter.sendMail({
@@ -137,7 +137,7 @@ async function login(email, password) {
 
     if (!user.isVerified) throw "Email not verified";
 
-    const match = await bcrypt.compare(String(password), user.password);
+    const match = await bcryptjs.compare(String(password), user.password);
     if (!match) throw "Invalid password or login";
 
     delete user.password;
@@ -200,7 +200,7 @@ async function resetPassword(token, newPassword) {
       throw "Invalid or expired token";
     }
 
-    const hashedPassword = await bcrypt.hash(String(newPassword), saltRounds);
+    const hashedPassword = await bcryptjs.hash(String(newPassword), saltRounds);
     await userService.updatePassword(user.email, hashedPassword);
 
     // delete token
