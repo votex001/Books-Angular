@@ -13,7 +13,7 @@ import { userFavorites } from "./apis/userFavorites/favorites.routes.js";
 import path from "path";
 
 const corsOptions = {
-  origin: ["http://localhost:4200", "http://books-client:80"],
+  origin: "http://localhost:4200",
   credentials: true,
 };
 
