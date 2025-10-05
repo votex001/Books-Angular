@@ -4,7 +4,6 @@ import { userService } from "./user.service.js";
 
 export async function verifyToken(req, res) {
   try {
-    console.log("kik")
     const user = authService.validateToken(req.cookies.loginToken);
     const existUser = user
       ? await userService.getByVerifiedEmail(user.email)
