@@ -2,7 +2,44 @@
 
 ## Description
 
-MyBooks is a book search and reading platform built with Angular version 19.0.0. Registered users can add books to their favorites and enjoy a seamless reading experience.
+This project was created to practice Angular functionality after self-learning.
+The main goal was to build a Book Searching Application with authentication, favorites, and profile management features.
+
+## Features:
+
+ - Search books by title or author
+ - User authentication (login / logout)
+ - Favorite books — add, view, and remove
+ - profile page — change profile image
+ - Pagination — 32 books split into pages of 9 with cached navigation
+ - Global state management for user and book data using custom pipes
+ - Reusable components created for multiple use cases
+ - Routing & Resolvers — practiced route handling and data fetching
+
+
+## Docker Practice
+
+- This project is also used to learn and practice Docker:
+- Building and running containers
+- Creating a docker-compose.yml file
+- Working with Dev Containers (Rebuild and Reopen in Container in VS Code)
+
+This setup allows coding in an isolated environment without installing many dependencies locally, and helps avoid cross-system compatibility issues.
+
+## Frontend Tech Stack:
+
+ - Framework: Angular
+ - State Management: Custom service with pipes
+
+##Backend:
+ - Framework: Express
+ - libraries: bcrypt, nodemailer, cookie-parser,nodemon.
+
+## Docker use
+ - Containerization: Docker, Docker Compose
+ - IDE Integration: VS Code Dev Containers
+
+
 
 ## Technologies Used
 
@@ -11,6 +48,10 @@ MyBooks is a book search and reading platform built with Angular version 19.0.0.
 - Node.js
 - MongoDB
 - Angular Routes
+- Express
+- bcrypt
+- cookie-parser
+- cors
 
 ## Installation and Setup
 
