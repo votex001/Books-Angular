@@ -13,12 +13,10 @@ import { userFavorites } from "./apis/userFavorites/favorites.routes.js";
 import path from "path";
 
 const corsOptions = {
+  origin: "http://localhost:4200",
   credentials: true,
 };
-// corse for development
-if (process.env.NODE_ENV === 'development') {
-  corsOptions.origin = "http://localhost:4200";
-}
+
 app.use(express.static("public/browser"));
 app.use(cors(corsOptions));
 app.use(cookieParser());
@@ -35,6 +33,6 @@ app.get("/**", (req, res) => {
 });
 
 const port = process.env.PORT || 2027;
-server.listen(port, '0.0.0.0', () => {
-  console.log(`Server listening on port http://localhost:${port}/`);
+server.listen(port, "0.0.0.0", () => {
+  console.log(`Server listening on port http://127.0.0.1:${port}/`);
 });
