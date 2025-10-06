@@ -110,6 +110,6 @@
     "cache": {
       "enabled": false
     },
-    "analytics": "3ec80f98-1253-4b04-9d0b-bc4c0dcdf3ee"
+    "analytics": false
   }
 }
