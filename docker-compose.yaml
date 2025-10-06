@@ -2,20 +2,16 @@ version: "3.8"
 
 services:
   client:
-    build:
-      context: /client
-      dockerfile: Dockerfile
+    image: votex001/books-client:latest
     container_name: books-client
     restart: always
     ports:
-      - "4200:80"
+      - "4200:4200"
     depends_on:
       - server
 
   server:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: votex001/books-server:latest
     container_name: books-server
     restart: always
     env_file:
