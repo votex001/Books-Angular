@@ -28,9 +28,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/fav", userFavorites);
 
-app.get("/**", (req, res) => {
-  res.sendFile(path.resolve("public/browser/index.html"));
-});
+
 
 const port = process.env.PORT || 2027;
 server.listen(port, "0.0.0.0", () => {
