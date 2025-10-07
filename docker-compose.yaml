@@ -1,18 +1,8 @@
-version: "3.8"
 
 services:
-  client:
-    image: votex001/books-client:latest
-    container_name: books-client
-    restart: always
-    ports:
-      - "4200:4200"
-    depends_on:
-      - server
-
   server:
-    image: votex001/books-server:latest
-    container_name: books-server
+    image: votex001/angular-books:latest
+    container_name: angular-books
     restart: always
     env_file:
       - .env
@@ -24,6 +14,9 @@ services:
       - mongo
     networks:
       - books-network
+    volumes:
+      - .:/app         
+      - /app/node_modules 
 
 
   mongo:
