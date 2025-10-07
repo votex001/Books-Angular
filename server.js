@@ -29,7 +29,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/fav", userFavorites);
 
 app.get("/**", (req, res) => {
-  res.redirect("/api/books")
+  res.sendFile(path.resolve("public/browser/index.html"))
 });
 
 const port = process.env.PORT || 2027;

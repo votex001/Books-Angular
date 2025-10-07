@@ -1,6 +1,10 @@
+import { uploadToCloudinary } from "../../middlewares/cloudinary.js";
 import { loggerService } from "../../services/logger.service.js";
 import { authService } from "../auth/auth.service.js";
 import { userService } from "./user.service.js";
+
+
+
 
 export async function verifyToken(req, res) {
   try {
@@ -54,4 +58,20 @@ export async function updateUser(req, res) {
     loggerService.info("updateUser", err);
     res.status(400).send("Could't update user");
   }
+}
+
+
+export async function updateUserImage(req,res) {
+ try {
+    if (!req.file) return res.status(400).json({ message: `Can't get file` });
+
+    const result = await uploadToCloudinary(req.file.buffer);
+    const userToSave = {...req.loggedinUser,imgUrl:result.secure_url}
+    await userService.save(userToSave);
+    res.status(200).json({ message: 'Photo updated'});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: `Could't updated photo` });
+  }
+  res.status(200)
 }

@@ -4,7 +4,6 @@ import {
   BehaviorSubject,
   catchError,
   first,
-  map,
   of,
   retry,
   switchMap,
@@ -106,8 +105,7 @@ export class UserService {
       .post(`${this.url}/auth/logout`, {}, { withCredentials: true })
       .pipe(first())
       .subscribe({
-        next: (msg) => {
-        },
+        next: (msg) => {},
         error: (err) => console.error('Logout failed:', err),
       });
   }
@@ -167,24 +165,15 @@ export class UserService {
   public updateUserPhoto(user: User, file: File) {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', environment.cloudinary.uploadPreset);
 
     return this.http
-      .post(
-        `https://api.cloudinary.com/v1_1/${environment.cloudinary.cloudName}/image/upload`,
-        formData
-      )
+      .post(`${this.url}/user/updateImage`, formData, { withCredentials: true })
       .pipe(
         first(),
         switchMap((ans: any) => {
-          return this.http.put(
-            `${this.url}/user`,
-            {
-              ...user,
-              imgUrl: ans.url,
-            },
-            { withCredentials: true }
-          );
+          return this.http.post(`${this.url}/user/verifyToken`,{}, {
+            withCredentials: true,
+          });
         })
       );
   }
