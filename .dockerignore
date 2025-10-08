@@ -20,4 +20,4 @@ env
 
 # Angular cache
 */.angular
-/public
+*/public

@@ -14,9 +14,10 @@ services:
       - mongo
     networks:
       - books-network
-    volumes:
-      - .:/app         
-      - /app/node_modules 
+    # for develop work
+    # volumes:
+      # - .:/app         
+      # - /app/node_modules 
 
 
   mongo:
