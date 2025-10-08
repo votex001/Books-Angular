@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../services/user/user.service';
-import { Subscription } from 'rxjs';
+import { of, Subscription, switchMap, tap } from 'rxjs';
 import { User } from '../../models/user/user.model';
 import { Router } from '@angular/router';
 import { BooksService } from '../../services/books/books.service';
@@ -48,16 +48,35 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.loadingSubscription = this.loadingService.loadingStatus$.subscribe(
       (boolean) => (this.isLoading = boolean)
     );
-    this.userSubscription = this.userService.login().subscribe((ans) => {
-      if (!ans) {
-        this.router.navigate(['/login']);
-      }
-      this.user = ans;
-    });
-
-    this.favoriteBooksSubscription = this.booksService
-      .getMyFavBooks()
-      .subscribe((ans: any) => (this.favBooksInfo = ans));
+    this.userSubscription = this.userService
+      .login()
+      .pipe(
+        tap((user) => {
+          if (!user) {
+            this.router.navigate(['/login']);
+          }
+          this.user = user;
+        }),
+        switchMap((user) => {
+          if (!user) {
+            return of<{
+              books: Book[];
+              results: number;
+              totalPages: number;
+              currentPage: number;
+            }>({
+              books: [],
+              results: 0,
+              totalPages: 0,
+              currentPage: 1,
+            });
+          }
+          return this.booksService.getMyFavBooks();
+        })
+      )
+      .subscribe((favBooks) => {
+        if (favBooks) this.favBooksInfo = favBooks;
+      });
   }
 
   onSubmit(event: Event) {

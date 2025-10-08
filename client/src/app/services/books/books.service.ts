@@ -290,8 +290,8 @@ export class BooksService {
 
   public getMyFavBooks() {
     return this.favorFilter$.pipe(
+      tap(() => this.loadingService.setLoading(true)),
       switchMap((filter) => {
-        this.loadingService.setLoading(true);
         const queryParams = new URLSearchParams();
         if (filter.booksPerPage) {
           queryParams.append('booksPerPage', String(filter.booksPerPage));
@@ -304,7 +304,14 @@ export class BooksService {
         }
         queryParams.append('page', String(filter.page));
         const url = `${this.url}/fav?${queryParams.toString()}`;
-        return this.http.get(url, { withCredentials: true });
+        return this.http
+          .get<{
+          books: Book[];
+          results: number;
+          totalPages: number;
+          currentPage: number;
+        }>(url, { withCredentials: true })
+          .pipe(finalize(() => this.loadingService.setLoading(false)));
       })
     );
   }
